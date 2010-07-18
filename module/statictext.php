@@ -1,0 +1,81 @@
+<?php
+// <PROGRAM_NAME>
+// Copyright (C) 2010 Emilio Nyaray (emny1105@student.uu.se)
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+/**
+ *
+ */
+class StaticText extends ContentModule
+{
+  private $head;
+  private $body;
+
+  function __construct($settings)
+  {
+    parent::__construct();
+
+    $this->name = "<name>$settings[name]</name>";
+    $this->icon = "<icon>$settings[icon]</icon>";
+
+    $this->head = ($settings['head'] != '')?
+      "<head>$settings[head]</head>": '';
+
+    $this->body = ($settings['body'] != '')?
+      "<body>$settings[body]</body>": '';
+
+    $this->foot = ($settings['foot'] != '')?
+      "<foot>$settings[foot]</foot>": '';
+  }
+
+  protected function generateDefault()
+  {
+    $this->contentXML = <<< XML
+<section>
+  $this->name
+  $this->head
+  $this->body
+  $this->foot
+</section>
+XML;
+  }
+
+  protected function generateToggler()
+  {
+    $this->contentXML = <<< XML
+<toggler>
+  $this->name
+  $this->icon
+  $this->head
+  $this->body
+  $this->foot
+</toggler>
+XML;
+  }
+
+  protected function generateTeaser()
+  {
+    $this->contentXML = <<< XML
+<teaser>
+  $this->name
+  $this->head
+  $this->body
+  $this->foot
+</teaser>
+XML;
+  }
+}
+?>
