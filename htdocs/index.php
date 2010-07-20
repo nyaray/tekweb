@@ -30,6 +30,7 @@ require_once '../conf/config.php';
 // --------
 // END OF BROKEN-NESS
 
+// We do this instead of using the nice functions offered by PHP...
 function __autoload($name)
 {
   $name = strtolower($name);
@@ -90,9 +91,9 @@ $rootItems = ($rootDoc->hasChildNodes())?
 
 if($rootItems)
 {
-  // foreach($rootItems as $item)
+  // This looks hackish because it is. PHP doesn't loop over NodeLists
+  // properly when using the foreach loop.
   $rootItemCount = $rootItems->length;
-  // echo "rootItemCount: $rootItemCount\n";
   $i = 0;
   while($i < $rootItemCount)
   {
