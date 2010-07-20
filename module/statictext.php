@@ -23,6 +23,7 @@ class StaticText extends ContentModule
 {
   private $head;
   private $body;
+  private $foot;
 
   function __construct($settings)
   {

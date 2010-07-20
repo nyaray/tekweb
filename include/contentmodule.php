@@ -22,8 +22,10 @@
 abstract class ContentModule
 {
   protected $contentXML;
-  protected $name;
   protected $mode;
+  protected $name;
+  protected $icon;
+  protected $settings;
 
   function __construct()
   {
