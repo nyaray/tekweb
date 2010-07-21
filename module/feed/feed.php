@@ -1,6 +1,7 @@
 <?php
 // <PROGRAM_NAME>
-// Copyright (C) 2010 Emilio Nyaray (emny1105@student.uu.se)
+// Copyright (C) 2010 Emilio Nyaray (emny1105@student.uu.se) &
+//                    Anders Steinrud (anst7337@student.uu.se)
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,14 +16,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+require_once '../include/lib_rss.php';
 
 /**
- *
+ * Feed presenter, uses a FeedFetcher as a source of data
  */
-class StaticText extends ContentModule
+class Feed extends ContentModule
 {
   private $head;
-  private $body;
+  private $feed;
+  private $type;
   private $foot;
 
   function __construct($settings)
@@ -35,21 +38,47 @@ class StaticText extends ContentModule
     $this->head = ($settings['head'] != '')?
       "<head>$settings[head]</head>": '';
 
-    $this->body = ($settings['body'] != '')?
-      "<body>$settings[body]</body>": '';
+    $this->feed = ($settings['feed'] != '')?
+      "$settings[feed]": '';
+
+    $this->type = ($settings['type'] != '')?
+      "<type>$settings[type]</type>": '';
 
     $this->foot = ($settings['foot'] != '')?
       "<foot>$settings[foot]</foot>": '';
+      
+    }
+  }
+  
+  protected function getXMLfromFeed($src_type, $src_feed) {
+    private $return_feed
+    
+    switch ($src_type) {
+      case 'atom':
+      case 'rss':
+        $return_feed = universal_reader($src_feed);
+        break;
+      
+      default:
+        # code...
+        break;
+    }
+    return $return_feed;
   }
 
   protected function generateDefault()
   {
+    
+    // ojhugk 
+
     $this->contentXML = <<< XML
 <section>
-  $this->name
-  $this->head
-  $this->body
-  $this->foot
+  <feed>
+    $this->name
+    $this->head
+    $this->feed
+    $this->foot
+  </feed>
 </section>
 XML;
   }
@@ -58,23 +87,29 @@ XML;
   {
     $this->contentXML = <<< XML
 <toggler>
-  $this->name
-  $this->icon
-  $this->head
-  $this->body
-  $this->foot
+  <feed>
+    $this->name
+    $this->icon
+    $this->head
+    $this->body
+    $this->foot
+  </feed>
 </toggler>
 XML;
   }
 
   protected function generateTeaser()
   {
+    
+    
     $this->contentXML = <<< XML
 <teaser>
-  $this->name
-  $this->head
-  $this->body
-  $this->foot
+  <feed>
+    $this->name
+    $this->head
+    $this->body
+    $this->foot
+  </feed>
 </teaser>
 XML;
   }

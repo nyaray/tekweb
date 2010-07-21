@@ -1,6 +1,7 @@
 <?php
 // <PROGRAM_NAME>
 // Copyright (C) 2010 Emilio Nyaray (emny1105@student.uu.se)
+//                    Anders Steinrud (anst7337@student.uu.se)
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -38,9 +39,9 @@ function __autoload($name)
   {
     require_once INCLUDE_DIR . $name . '.php';
   }
-  elseif(is_file(MODULE_DIR . $name . '.php'))
+  elseif(is_file(MODULE_DIR . "$name/" . $name . '.php'))
   {
-    require_once MODULE_DIR . $name . '.php';
+    require_once MODULE_DIR . "$name/" . $name . '.php';
   }
   else
   {

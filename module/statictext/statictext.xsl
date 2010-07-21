@@ -3,17 +3,16 @@
 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="html" encoding="utf-8" omit-xml-declaration="yes" />
 
-<xsl:template match="section/feed">
+<xsl:template match="section/statictext">
 <div>
   <xsl:attribute name="id"><xsl:value-of select="./name" /></xsl:attribute>
   <xsl:attribute name="class">section</xsl:attribute>
   <h1><xsl:value-of select="./head" /></h1>
-  <p><xsl:value-of select="./feed" /></p>
-  <p><xsl:value-of select="./foot" /></p>
+  <p><xsl:value-of select="./body" /></p>
 </div>
 </xsl:template>
 
-<xsl:template match="toggler/feed">
+<xsl:template match="toggler/statictext">
 <div>
   <xsl:attribute name="id"><xsl:value-of select="./name" /></xsl:attribute>
   <xsl:attribute name="class">toggler</xsl:attribute>
@@ -27,18 +26,27 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
       </xsl:element>
 
     <div class="togglerbuttontext"><xsl:value-of select="./head" /></div>
+    <!-- <a>
+      <xsl:attribute name="href">?page=<xsl:value-of select="./name" />
+        </xsl:attribute>
+      <div>
+        <xsl:attribute name="class">togglercontent</xsl:attribute>
+        <xsl:attribute name="class">togglerarrow</xsl:attribute>
+        Gå!
+      </div>
+    </a> -->
   </div>
   <div>
     <xsl:attribute name="class">togglercontent</xsl:attribute>
     <div>
       <xsl:attribute name="class">togglercontentbody</xsl:attribute>
-      <xsl:value-of select="./json" />
+      <xsl:value-of select="./body" />
     </div>
   </div>
 </div>
 </xsl:template>
 
-<xsl:template match="teaser/feed">
+<xsl:template match="teaser/statictext">
 <div>
   <xsl:attribute name="id"><xsl:value-of select="./name" /></xsl:attribute>
   <xsl:attribute name="class">teaser</xsl:attribute>
@@ -48,7 +56,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   </h1>
   <div>
     <xsl:attribute name="class">teasertext</xsl:attribute>
-    <xsl:value-of select="./json" />
+    <xsl:value-of select="./body" />
   </div>
   <a>
     <xsl:attribute name="class">teaserlinktext</xsl:attribute>
@@ -58,3 +66,5 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   </a>
 </div>
 </xsl:template>
+
+</xsl:stylesheet>
