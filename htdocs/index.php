@@ -51,7 +51,8 @@ function __autoload($name)
   }
 }
 
-require_once INCLUDE_DIR.'core.php';
+// This is left out for now
+// require_once INCLUDE_DIR.'core.php';
 
 ob_start();
 session_start();
