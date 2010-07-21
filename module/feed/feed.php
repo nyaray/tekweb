@@ -16,7 +16,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require_once '../include/lib_rss.php';
+require_once INCLUDE_DIR.'lib_rss.php';
 
 /**
  * Feed presenter, uses a FeedFetcher as a source of data
@@ -24,9 +24,14 @@ require_once '../include/lib_rss.php';
 class Feed extends ContentModule
 {
   private $head;
+  private $foot;
+  private $body;
+  
+  private $xml;
+  
+  //non-xml vars
   private $feed;
   private $type;
-  private $foot;
 
   function __construct($settings)
   {
@@ -38,45 +43,45 @@ class Feed extends ContentModule
     $this->head = ($settings['head'] != '')?
       "<head>$settings[head]</head>": '';
 
+    $this->foot = ($settings['foot'] != '')?
+      "<foot>$settings[foot]</foot>": '';
+      
+    $this->body = ($settings['feed'] != '')?
+      "<body>$settings[feed]</body>": '';
+    
+    //non xml-vars
+    
     $this->feed = ($settings['feed'] != '')?
       "$settings[feed]": '';
 
     $this->type = ($settings['type'] != '')?
-      "<type>$settings[type]</type>": '';
-
-    $this->foot = ($settings['foot'] != '')?
-      "<foot>$settings[foot]</foot>": '';
-      
-    }
+      "$settings[type]": '';
   }
+
   
-  protected function getXMLfromFeed($src_type, $src_feed) {
-    private $return_feed
-    
-    switch ($src_type) {
-      case 'atom':
-      case 'rss':
-        $return_feed = universal_reader($src_feed);
-        break;
-      
-      default:
-        # code...
-        break;
-    }
-    return $return_feed;
-  }
+  // protected function getXMLFromSrc() {
+  //   switch ($type) {
+  //     case 'atom':
+  //       //same lib as rss
+  //     case 'rss':
+  //       //$xml = universal_reader($src_feed);
+  //       break;
+  //     
+  //     default:
+  //       # code...
+  //       break;
+  //   }
+  //   return $xml;
+  // }
 
-  protected function generateDefault()
+  protected function generateDefault() 
   {
-    
-    // ojhugk 
-
     $this->contentXML = <<< XML
 <section>
   <feed>
     $this->name
     $this->head
-    $this->feed
+    $this->body
     $this->foot
   </feed>
 </section>

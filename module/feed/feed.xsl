@@ -8,7 +8,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <xsl:attribute name="id"><xsl:value-of select="./name" /></xsl:attribute>
   <xsl:attribute name="class">section</xsl:attribute>
   <h1><xsl:value-of select="./head" /></h1>
-  <p><xsl:value-of select="./feed" /></p>
+  <p><xsl:value-of select="./body" /></p>
   <p><xsl:value-of select="./foot" /></p>
 </div>
 </xsl:template>
@@ -32,7 +32,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:attribute name="class">togglercontent</xsl:attribute>
     <div>
       <xsl:attribute name="class">togglercontentbody</xsl:attribute>
-      <xsl:value-of select="./json" />
+      <xsl:value-of select="./body" />
     </div>
   </div>
 </div>
@@ -48,7 +48,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   </h1>
   <div>
     <xsl:attribute name="class">teasertext</xsl:attribute>
-    <xsl:value-of select="./json" />
+    <xsl:value-of select="./body" />
   </div>
   <a>
     <xsl:attribute name="class">teaserlinktext</xsl:attribute>
