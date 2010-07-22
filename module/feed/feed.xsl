@@ -7,10 +7,44 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <div>
   <xsl:attribute name="id"><xsl:value-of select="./name" /></xsl:attribute>
   <xsl:attribute name="class">section</xsl:attribute>
-  <h1><xsl:value-of select="./head" /></h1>
-  <p><xsl:value-of select="./body" /></p>
-  <p><xsl:value-of select="./foot" /></p>
+  <div><xsl:apply-templates select="head" /></div>
+  <div>
+    <!-- <xsl:value-of select="./body" /> -->
+    <xsl:for-each select="body/item">
+      <xsl:apply-templates select="." />
+    </xsl:for-each>
+  </div>
+  <!-- <p><xsl:value-of select="./foot" /></p> -->
 </div>
+</xsl:template>
+
+<xsl:template match="head">
+    <h1>
+      <a>
+        <xsl:attribute name="href">
+          <xsl:value-of select="./link" />
+        </xsl:attribute>
+        <xsl:value-of select="./title" />
+      </a>
+    </h1>
+    <p>
+      <xsl:value-of select="./desc" />
+    </p>
+</xsl:template>
+
+<xsl:template match="body/item">
+  <div>
+    <xsl:attribute name="class">item</xsl:attribute>
+    <a>
+      <xsl:attribute name="href">
+        <xsl:value-of select="./link" />
+      </xsl:attribute>
+      <xsl:value-of select="./title" />
+    </a>
+    <p>
+      <xsl:value-of select="./desc" />
+    </p>
+  </div>
 </xsl:template>
 
 <xsl:template match="toggler/feed">
@@ -32,7 +66,10 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:attribute name="class">togglercontent</xsl:attribute>
     <div>
       <xsl:attribute name="class">togglercontentbody</xsl:attribute>
-      <xsl:value-of select="./body" />
+      <!-- <xsl:value-of select="./body" /> -->
+      <xsl:for-each select="body/item">
+        <xsl:apply-templates select="." />
+      </xsl:for-each>
     </div>
   </div>
 </div>
@@ -48,7 +85,12 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   </h1>
   <div>
     <xsl:attribute name="class">teasertext</xsl:attribute>
-    <xsl:value-of select="./body" />
+    <a>
+      <xsl:attribute name="href">
+        <xsl:value-of select="./body/link" />
+      </xsl:attribute>
+      <xsl:value-of select="./body/title" />
+    </a>
   </div>
   <a>
     <xsl:attribute name="class">teaserlinktext</xsl:attribute>

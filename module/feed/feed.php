@@ -16,7 +16,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require_once INCLUDE_DIR.'lib_rss.php';
+require_once 'rss_atom-reader.php';
 
 /**
  * Feed presenter, uses a FeedFetcher as a source of data
@@ -27,11 +27,13 @@ class Feed extends ContentModule
   private $foot;
   private $body;
   
-  private $xml;
-  
   //non-xml vars
   private $feed;
   private $type;
+  private $feedArray;
+  
+  //feed reader
+  private $reader;
 
   function __construct($settings)
   {
@@ -46,8 +48,8 @@ class Feed extends ContentModule
     $this->foot = ($settings['foot'] != '')?
       "<foot>$settings[foot]</foot>": '';
       
-    $this->body = ($settings['feed'] != '')?
-      "<body>$settings[feed]</body>": '';
+    // $this->body = ($settings['feed'] != '')?
+    //   "<body>$settings[feed]</body>": '';
     
     //non xml-vars
     
@@ -56,26 +58,44 @@ class Feed extends ContentModule
 
     $this->type = ($settings['type'] != '')?
       "$settings[type]": '';
+      
+    $this->getFeed();
   }
 
-  
-  // protected function getXMLFromSrc() {
-  //   switch ($type) {
-  //     case 'atom':
-  //       //same lib as rss
-  //     case 'rss':
-  //       //$xml = universal_reader($src_feed);
-  //       break;
-  //     
-  //     default:
-  //       # code...
-  //       break;
-  //   }
-  //   return $xml;
-  // }
+  protected function getFeed() {
+    switch ($this->type) {
+      case 'atom':
+        //same lib as rss
+      case 'rss':
+        $this->reader = new RssAtomReader();
+        $this->feedArray = $this->reader->Universal_Reader($this->feed);
+        break;
+      
+      default:
+        # code...
+        break;
+    }
+  }
 
   protected function generateDefault() 
   {
+    $this->head = "<head>";
+    $this->head .= "<title>".$this->feedArray[0]["title"]."</title>";
+    $this->head .= "<link>".$this->feedArray[0]["link"]."</link>";
+    $this->head .= "<desc>".$this->feedArray[0]["description"]."</desc>";
+    $this->head .= "</head>";
+    
+    $this->body = "<body>";
+    array_shift($this->feedArray);
+    foreach($this->feedArray as $item) {
+      $this->body .= "<item>";
+      $this->body .= "<title>".$item["title"]."</title>";
+      $this->body .= "<link>".$item["link"]."</link>";
+      $this->body .= "<desc>".$item["description"]."</desc>";
+      $this->body .= "</item>";
+    }
+    $this->body .= "</body>";
+    
     $this->contentXML = <<< XML
 <section>
   <feed>
@@ -86,10 +106,21 @@ class Feed extends ContentModule
   </feed>
 </section>
 XML;
+    $this->contentXML = utf8_decode($this->contentXML);
   }
 
   protected function generateToggler()
   {
+    array_shift($this->feedArray);
+    $this->body = "<body>";
+    foreach($this->feedArray as $item) {
+      $this->body .= "<item>";
+      $this->body .= "<title>".$item["title"]."</title>";
+      $this->body .= "<link>".$item["link"]."</link>";
+      $this->body .= "<desc>".$item["description"]."</desc>";
+      $this->body .= "</item>";
+    }
+    $this->body .= "</body>";
     $this->contentXML = <<< XML
 <toggler>
   <feed>
@@ -101,11 +132,16 @@ XML;
   </feed>
 </toggler>
 XML;
+    $this->contentXML = utf8_decode($this->contentXML);
   }
 
   protected function generateTeaser()
   {
-    
+    $this->body = "<body>";
+    $this->body .= "<title>".$this->feedArray[1]["title"]."</title>";
+    $this->body .= "<link>".$this->feedArray[1]["link"]."</link>";
+    $this->body .= "<desc>".$this->feedArray[1]["description"]."</desc>";
+    $this->body .= "</body>";
     
     $this->contentXML = <<< XML
 <teaser>
@@ -117,6 +153,7 @@ XML;
   </feed>
 </teaser>
 XML;
+    $this->contentXML = utf8_decode($this->contentXML);
   }
 }
 ?>
