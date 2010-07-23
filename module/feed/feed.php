@@ -106,7 +106,7 @@ class Feed extends ContentModule
   </feed>
 </section>
 XML;
-    $this->contentXML = utf8_decode($this->contentXML);
+    $this->contentXML;
   }
 
   protected function generateToggler()
@@ -132,7 +132,7 @@ XML;
   </feed>
 </toggler>
 XML;
-    $this->contentXML = utf8_decode($this->contentXML);
+    $this->contentXML;
   }
 
   protected function generateTeaser()
@@ -153,7 +153,7 @@ XML;
   </feed>
 </teaser>
 XML;
-    $this->contentXML = utf8_decode($this->contentXML);
+    $this->contentXML;
   }
 }
 ?>
