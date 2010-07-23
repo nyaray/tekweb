@@ -50,7 +50,7 @@ function __autoload($name)
   }
 }
 
-require_once INCLUDE_DIR.'core.php';
+//require_once INCLUDE_DIR.'core.php';
 
 ob_start();
 session_start();
@@ -62,7 +62,7 @@ session_start();
 // follows it.
 $page = "";
 
-if($_GET['page'] != '')
+if (isset($_POST['page']))
 {
   $page = $_GET['page'];
 }
@@ -70,7 +70,7 @@ if($_GET['page'] != '')
 // ========
 // = Ajax =
 // ========
-if($_GET['ajax'] == 'true')
+if (isset($_POST['ajax']))
 {
   echo "ajax!";
   die(); // we probably don't want to do this... but it works for now.
