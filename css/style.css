@@ -1,0 +1,25 @@
+a:link {color:#AF1E2D; text-decoration: none}      /* unvisited link */
+a:visited {color:#AF1E2D; text-decoration: none}  /* visited link */
+a:hover {color:#AF1E2D; text-decoration: none}  /* mouse over link */
+a:active {color:#AF1E2D; text-decoration: none}  /* selected link */
+
+#logo {
+}
+
+.teaser {
+
+}
+
+.togglerbutton {
+  color: #AF1E2D;
+}
+
+
+.section {
+
+}
+
+
+.toggle {
+
+}

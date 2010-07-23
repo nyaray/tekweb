@@ -64,7 +64,7 @@ session_start();
 // follows it.
 $page = "";
 
-if($_GET['page'] != '')
+if (isset($_REQUEST['page']))
 {
   $page = $_GET['page'];
 }
@@ -72,7 +72,7 @@ if($_GET['page'] != '')
 // ========
 // = Ajax =
 // ========
-if($_GET['ajax'] == 'true')
+if (isset($_REQUEST['ajax']))
 {
   echo "ajax!";
   die(); // we probably don't want to do this... but it works for now.
