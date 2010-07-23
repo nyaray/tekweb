@@ -8,7 +8,7 @@ class EmpSearch extends ContentModule {
 
     protected $ldap = null;
     protected $searchResult = null;
-    protected $form;
+    protected $form ='';
 
     public function __construct($settings) {
         parent::__construct();
@@ -28,10 +28,15 @@ FORM;
         $this->settings = $settings;
     }
 
+    protected function  generateDefault() {
+        echo 'inside gendef!';
+        $this->contentXML = $this->form;
+    }
+/*
     public function getXML() {
         $this->contentXML = $this->form;
         return $this->contentXML;
     }
-
+*/
 }
 ?>

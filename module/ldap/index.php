@@ -8,7 +8,7 @@ $ldapAttributes = array('givenname', 'sn', 'mail', 'cn',
     'registeredaddress;lang-sv', 'department;lang-sv', 'title;lang-sv',
     'roomnumber');
 $maxEntriesToGet = 500; //Maximum number of entries to get from LDAP-server
-$requestString = strip_tags($_REQUEST['search']);
+//$requestString = strip_tags($_REQUEST['search']);
 
 require_once 'empsearch.php';
 
