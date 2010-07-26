@@ -29,9 +29,11 @@ class StaticText extends ContentModule
   {
     parent::__construct();
 
-    $this->name = "<name>$settings[name]</name>";
+    $this->name = (isset ($settings['name'])) ?
+      "<name>$settings[name]</name>": '';
+
     $this->icon = (isset ($settings['icon'])) ?
-            "<icon>$settings[icon]</icon>": '';
+      "<icon>$settings[icon]</icon>": '';
 
     $this->head = (isset ($settings['head'])) ?
       "<head>$settings[head]</head>": '';
