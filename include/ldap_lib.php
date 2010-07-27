@@ -24,12 +24,9 @@ class LDAP {
     protected $hostUrl;
     protected $hostPort;
     protected $maxEntriesToGet;
-    //Max entries to get from LDAP-server.
-    protected $baseDN;// = 'cn=People,dc=uu,dc=se';
-    protected $ldapAttributes;// = array('givenname', 'sn', 'mail', 'cn',
-//        'telephonenumber', 'mobile', 'facsimiletelephonenumber',
-//        'registeredaddress;lang-sv', 'department;lang-sv', 'title;lang-sv',
-//        'roomnumber');
+ //Max entries to get from LDAP-server.
+    protected $baseDN;
+    protected $ldapAttributes;
     protected $ldapConnection = null;
     protected $bindResult = null;
     protected $searchResult = null;
@@ -67,7 +64,6 @@ class LDAP {
         if (!$this->bindResult) {
             $this->connect();
         }
-        
         $this->searchResult = ldap_search($this->ldapConnection, $this->baseDN, $filter, $this->ldapAttributes);
         $this->numEntries = ldap_count_entries($this->ldapConnection, $this->searchResult);
         return $this->numEntries;
@@ -80,38 +76,5 @@ class LDAP {
         } else
             return false;
     }
-
-    public function getHostUrl() {
-        return $this->hostUrl;
-    }
-
-    public function getHostPort() {
-        return $this->hostPort;
-    }
-
-    public function getMaxEntriesToGet() {
-        return $this->maxEntriesToGet;
-    }
-
-    public function setMaxEntriesToGet($maxEntriesToGet) {
-        $this->maxEntriesToGet = $maxEntriesToGet;
-    }
-
-    public function getBaseDN() {
-        return $this->baseDN;
-    }
-
-    public function setBaseDN($baseDN) {
-        $this->baseDN = $baseDN;
-    }
-
-    public function getLdapAttributes() {
-        return $this->ldapAttributes;
-    }
-
-    public function setLdapAttributes($ldapAttributes) {
-        $this->ldapAttributes = $ldapAttributes;
-    }
-
 }
 ?>

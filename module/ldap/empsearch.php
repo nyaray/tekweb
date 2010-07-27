@@ -57,21 +57,41 @@ FORM;
 
     protected function search() {
         $this->numSearchEntries = 0;
-        $filter = '(givenname=' . $this->searchString . ')'; //FIXME gen filter
+        $filter = '(|(givenname=' . $this->searchString . ')(sn=' . $this->searchString . '))'; //FIXME gen filter
         $this->numSearchEntries = $this->ldap->doSearch($filter);
-        /*
-          if ($this->numSearchEntries > 0) {
-          return $this->ldap->getSearchEntries();
-          } else
-          return false; */
+
         return $this->ldap->getSearchEntries();
+    }
+
+    private function getEmployeeXML($employee, $attribute, $tag) {
+        $numAttribs = $employee[$attribute]['count']; //can return null
+        $replaceStr = (func_num_args() > 4);
+        $tmpStr = '';
+
+        if ($numAttribs > 0) {
+            $tmpArray = $employee[$attribute];
+            if ($replaceStr) {
+                $search = func_get_arg(3);
+                $replace = func_get_arg(4);
+                for ($i = 0; $i < $numAttribs; $i++) {
+                    $tmpA = str_replace($search, $replace, $tmpArray[$i]);
+                    $tmpA = htmlspecialchars($tmpA);
+                    $tmpStr .= '<' . $tag . '>' . $tmpA . '</' . $tag . '>' . "\n";
+                }
+            } else {
+                for ($i = 0; $i < $numAttribs; $i++) {
+                    $tmpA = htmlspecialchars($tmpArray[$i]);
+                    $tmpStr .= '<' . $tag . '>' . $tmpA . '</' . $tag . '>' . "\n";
+                }
+            }
+        }
+        return $tmpStr;
     }
 
     protected function buildEmployeesXML() {
 
-
         if ($this->numSearchEntries > 0) {
-            $buildString = '<message>' . 'Din sökning gav '
+            $tmpStr = '<message>' . 'Din sökning gav '
                     . htmlspecialchars($this->numSearchEntries)
                     . ' resulat' . '</message>' . "\n";
 //determine how many employes to return
@@ -79,45 +99,49 @@ FORM;
                 $numEmps = $this->numSearchEntries;
             else {
                 if ($this->searchResult) {
-                    $buildString .= '<message>visar de ' . $this->numToShow
+                    $tmpStr .= '<message>visar de ' . $this->numToShow
                             . ' första resulaten</message>' . "\n";
 
                     $numEmps = $this->numToShow;
                 } else
-                    $buildString .= '<message>Gör din sökning mer specifik'
+                    $tmpStr .= '<message>Gör din sökning mer specifik'
                             . '</message>' . "\n";
             }
 
-
-           
             if ($this->searchResult) {
-                $buildString .= '<employees>' . "\n";
+                $tmpStr .= '<employeelist>' . "\n";
 
                 for ($i = 0; $i < $numEmps; $i++) {
                     $employee = $this->searchResult[$i];
-                    $buildString .= '<employee>' . "\n";
-                    $buildString .= "<commonname>" . htmlspecialchars($employee["cn"][0]) . "</commonname>\n";
-                    $buildString .= "<titleatdep>" . htmlspecialchars($employee['title;lang-sv'][0]) . ' vid ' . $employee["department;lang-sv"][0] . '</titleatdep>' . "\n";
-                    $buildString .= '</employee>' . "\n";
+                    $tmpStr .= '<employee>' . "\n";
+                    $tmpStr .= "<commonname>" . htmlspecialchars($employee["cn"][0]) . "</commonname>\n";
+                    $tmpStr .= "<titleatdep>" . htmlspecialchars($employee['title;lang-sv'][0] . ' vid ' . $employee["department;lang-sv"][0]) . '</titleatdep>' . "\n";
+                    $tmpStr .= $this->getEmployeeXML($employee, 'registeredaddress;lang-sv', 'visitingaddress', '$', ' ');
+                    $tmpStr .= $this->getEmployeeXML($employee, 'roomnumber', 'roomnumber');
+                    $tmpStr .= $this->getEmployeeXML($employee, 'mail', 'mail');
+                    $tmpStr .= $this->getEmployeeXML($employee, 'telephonenumber', 'phonenumber');
+                    $tmpStr .= $this->getEmployeeXML($employee, 'mobile', 'mobilenumber');
+                    $tmpStr .= $this->getEmployeeXML($employee, 'facsimiletelephonenumber', 'faxnumber');
+                    $tmpStr .= '</employee>' . "\n";
                 }
-                $buildString .= '</employees>';
+                $tmpStr .= '</employeelist>';
             }
-        } else
-        //FIXME ADD ~ search
-            $buildString = '<message>' . htmlspecialchars('Din sökning gav inga träffar') . '</message>';
-
-
-        return $buildString;
+        } else {
+            //FIXME ADD ~ search 
+            $tmpStr = '<message>' . htmlspecialchars('Din sökning gav inga träffar') . '</message>' . "\n";
+        }
+        return $tmpStr;
     }
 
     protected function generateDefault() {
 //$this->contentXML = $this->form;
         if ($this->searchString != '') {
             $this->searchResult = $this->search();
-
+            $this->ldap->disconnect();
             $this->contentXML = '<?xml version="1.0" encoding="utf-8"?>'
-                    . "\n" . '<section>' . "\n" . $this->form . "\n"
-                    . $this->buildEmployeesXML() . "\n" . '</section>';
+                    . "\n" . '<section>' . "\n" . '<empsearch>' . "\n"
+                    . $this->form . "\n" . $this->buildEmployeesXML()
+                    . '</empsearch>' . "\n" . '</section>';
         } else
             $this->contentXML = '<?xml version="1.0" encoding="utf-8"?>' . "\n"
                     . '<section>' . "\n" . $this->form . "\n" . '</section>';
