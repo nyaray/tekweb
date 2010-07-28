@@ -1,3 +1,10 @@
+body {
+/*  background-image:url('../gfx/watermark.png');
+  background-repeat:no-repeat;
+  background-attachment:fixed;
+  background-position:20px 320px;*/
+}
+
 a:link {color:#AF1E2D; text-decoration: none}      /* unvisited link */
 a:visited {color:#AF1E2D; text-decoration: none}  /* visited link */
 a:hover {color:#AF1E2D; text-decoration: none}  /* mouse over link */

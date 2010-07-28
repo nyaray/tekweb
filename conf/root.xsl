@@ -6,6 +6,7 @@
 <xsl:import href="../module/statictext/statictext.xsl" />
 <xsl:import href="../module/feed/feed.xsl" />
 <xsl:import href="../module/uumap/uumap.xsl" />
+<xsl:import href="../module/timeedit/timeedit.xsl" />
 
 <xsl:output method="html" encoding="utf-8" omit-xml-declaration="yes" />
 <xsl:template match="/root">
@@ -17,6 +18,8 @@
     <link rel="stylesheet" type="text/css" href="css/reset.css" media="all" />
     <link rel="stylesheet" type="text/css" href="css/layout.css" media="all" />
     <link rel="stylesheet" type="text/css" href="css/style.css" media="all" />
+
+    <link rel="stylesheet" type="text/css" href="css/module/timeedit.css" media="all" />
 
     <script type="text/javascript"
       src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js">
@@ -39,7 +42,7 @@
     </div>
   </body>
   </html>
-  </xsl:template>
+</xsl:template>
 
   <xsl:template match="root/title">
     <xsl:value-of select="." />
