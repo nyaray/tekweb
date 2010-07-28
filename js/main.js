@@ -18,7 +18,7 @@
 $(document).ready(function() {
   var active;
 
-  $('.toggler .togglercontent').addClass('hidden');
+  //$('.toggler .togglercontent').addClass('hidden');
   $('.toggler .togglerbutton').click(function() {
     var p = $(this).next();
 
@@ -45,7 +45,7 @@ $(document).ready(function() {
       return false;
     }
     else {
-      return true;
+      return false;
     }
   });
 });

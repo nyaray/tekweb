@@ -38,7 +38,7 @@
     </div>
   </body>
   </html>
-  </xsl:template>
+</xsl:template>
 
   <xsl:template match="root/title">
     <xsl:value-of select="." />
