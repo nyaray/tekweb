@@ -51,19 +51,22 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <div>
   <xsl:attribute name="id"><xsl:value-of select="./name" /></xsl:attribute>
   <xsl:attribute name="class">toggler</xsl:attribute>
-  <div>
+  <a>
     <xsl:attribute name="class">togglerbutton</xsl:attribute>
-
-      <xsl:element name="img">
-        <xsl:attribute name="class">togglericon</xsl:attribute>
-        <xsl:attribute name="src"><xsl:value-of select="./icon" />
-          </xsl:attribute>
-      </xsl:element>
-
-    <div class="togglerbuttontext"><xsl:value-of select="./head" /></div>
-  </div>
+    <xsl:attribute name="href">?page=<xsl:value-of select="./name" /></xsl:attribute>
+    <xsl:element name="img">
+      <xsl:attribute name="class">togglericon</xsl:attribute>
+      <xsl:attribute name="src">
+        <xsl:value-of select="./icon" />
+      </xsl:attribute>
+    </xsl:element>
+    <div class="togglerbuttontext">
+      <xsl:value-of select="./head" />
+    </div>
+  </a>
   <div>
     <xsl:attribute name="class">togglercontent</xsl:attribute>
+    <xsl:attribute name="class">hidden</xsl:attribute>
     <div>
       <xsl:attribute name="class">togglercontentbody</xsl:attribute>
       <!-- <xsl:value-of select="./body" /> -->

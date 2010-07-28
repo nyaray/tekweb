@@ -14,11 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
 $(document).ready(function() {
   var active;
 
-  $('.toggler .togglercontent').addClass('hidden');
+  //$('.toggler .togglercontent').addClass('hidden');
   $('.toggler .togglerbutton').click(function() {
     var p = $(this).next();
 
@@ -39,13 +38,6 @@ $(document).ready(function() {
       p.addClass('hidden');           // hide it
       p.prev().children(':first').removeClass('active');
     }
-
-    if(p.hasClass('hidden')) {
-      // window.location = ...
-      return false;
-    }
-    else {
-      return true;
-    }
+    return false
   });
 });
