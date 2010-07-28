@@ -134,7 +134,6 @@ FORM;
                     $tmpStr .= '<employee>' . "\n";
                     $tmpStr .= $this->getEmployeeXML($employee, 'givenname', 'givenname');
                     $tmpStr .= $this->getEmployeeXML($employee, 'sn', 'surname');
-                    //$tmpStr .= "<commonname>" . htmlspecialchars($employee["cn"][0]) . "</commonname>\n";
                     $tmpStr .= "<titleatdep>" . htmlspecialchars($employee['title;lang-sv'][0] . ' vid ' . $employee["department;lang-sv"][0]) . '</titleatdep>' . "\n";
                     $tmpStr .= $this->getEmployeeXML($employee, 'registeredaddress;lang-sv', 'visitingaddress', '$', ' ');
                     $tmpStr .= $this->getEmployeeXML($employee, 'roomnumber', 'roomnumber');
