@@ -33,7 +33,7 @@ class LibTimeEdit
       $objStr .= "=$object";
     }
 
-    $url = "http://schema.angstrom.uu.se/4DACTION/WebShowSearchPrint/2/1?wv_text=text&$objStr&wv_startWeek=$startWeek&wv_stopWeek=$stopWeek";
+    $url = "http://schema.angstrom.uu.se/4DACTION/WebShowSearchPrint/2/1?wv_text=text&wv_startWeek=$startWeek&wv_stopWeek=$stopWeek&$objStr";
 
     // echo "<!--\n";
     // echo "objStr: $objStr\n";
