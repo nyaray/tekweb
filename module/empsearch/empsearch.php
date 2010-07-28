@@ -44,7 +44,8 @@ class EmpSearch extends ContentModule {
 
         $this->ldap = new LDAP($this->settings['hosturl'],
                         $this->settings['hostport'], $this->settings['basedn'],
-                        $this->settings['ldapattribs'], $this->settings['maxetoget']);
+                        $this->settings['ldapattribs'],
+                        $this->settings['maxetoget']);
 
         $this->numToShow = (int) $this->settings['numtoshow'];
         if (isset($_REQUEST['numtoshow'])) {
@@ -54,7 +55,8 @@ class EmpSearch extends ContentModule {
         if (isset($_REQUEST['search'])) {
             $this->searchString = strip_tags($_REQUEST['search']);
             $this->searchString = trim($this->searchString);
-            $this->searchString = preg_replace('/\s+/', ' ', $this->searchString);
+            $this->searchString = preg_replace('/\s+/', ' '
+                            , $this->searchString);
         }
 //Default form.
 //FIXME: action? and function!
@@ -137,9 +139,9 @@ FORM;
                     $tmpStr .= $this->getEmployeeXML($employee, 'registeredaddress;lang-sv', 'visitingaddress', '$', ' ');
                     $tmpStr .= $this->getEmployeeXML($employee, 'roomnumber', 'roomnumber');
                     $tmpStr .= $this->getEmployeeXML($employee, 'mail', 'mail');
-                    $tmpStr .= $this->getEmployeeXML($employee, 'telephonenumber', 'phonenumber');
-                    $tmpStr .= $this->getEmployeeXML($employee, 'mobile', 'mobilenumber');
-                    $tmpStr .= $this->getEmployeeXML($employee, 'facsimiletelephonenumber', 'faxnumber');
+                    $tmpStr .= $this->getEmployeeXML($employee, 'telephonenumber', 'phonenumber',' ', '');
+                    $tmpStr .= $this->getEmployeeXML($employee, 'mobile', 'mobilenumber',' ', '');
+                    $tmpStr .= $this->getEmployeeXML($employee, 'facsimiletelephonenumber', 'faxnumber',' ', '');
                     $tmpStr .= '</employee>' . "\n";
                 }
                 $tmpStr .= '</employeelist>';
@@ -164,6 +166,5 @@ FORM;
             $this->contentXML = '<?xml version="1.0" encoding="utf-8"?>' . "\n"
                     . '<section>' . "\n" . $this->form . "\n" . '</section>';
     }
-
 }
 ?>
