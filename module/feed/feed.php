@@ -16,7 +16,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require_once 'rss_atom-reader.php';
+require_once INCLUDE_DIR.'lib_rss-atom.php';
 
 /**
  * Feed presenter, uses a FeedFetcher as a source of data
@@ -106,7 +106,6 @@ class Feed extends ContentModule
   </feed>
 </section>
 XML;
-    $this->contentXML;
   }
 
   protected function generateToggler()
@@ -132,7 +131,6 @@ XML;
   </feed>
 </toggler>
 XML;
-    $this->contentXML;
   }
 
   protected function generateTeaser()
@@ -153,7 +151,6 @@ XML;
   </feed>
 </teaser>
 XML;
-    $this->contentXML;
   }
 }
 ?>
