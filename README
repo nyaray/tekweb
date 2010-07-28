@@ -1,3 +1,13 @@
-TekWeb is a PHP-based framework for creating smartphone-friendly web-pages,
-the content is gathered from various sources (there is support for static
-content)
+ ==================
+ = What is TekWeb =
+ ==================
+
+ TekWeb is a PHP-based framework for creating smartphone-friendly web-pages,
+ the content is gathered from various sources (there is support for static
+ content)
+
+ ===========
+ = License =
+ ===========
+
+ TekWek is licensed under the GNU GPL v3, the license can be found in LICENSE
