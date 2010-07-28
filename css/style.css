@@ -1,14 +1,18 @@
-a:link {color:#AF1E2D; text-decoration: none}      /* unvisited link */
-a:visited {color:#AF1E2D; text-decoration: none}  /* visited link */
-a:hover {color:#AF1E2D; text-decoration: none}  /* mouse over link */
-a:active {color:#AF1E2D; text-decoration: none}  /* selected link */
-
 #logo {
 }
 
-.teaser {
+#news {
+  
+}
+
+.teaser a{
 
 }
+
+.teaser a:link {color:#AF1E2D; text-decoration: none}      /* unvisited link */
+.teaser a:visited {color:#AF1E2D; text-decoration: none}  /* visited link */
+.teaser a:hover {color:#AF1E2D; text-decoration: none}  /* mouse over link */
+.teaser a:active {color:#AF1E2D; text-decoration: none}  /* selected link */
 
 .togglerbutton {
   color: #AF1E2D;
