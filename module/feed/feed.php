@@ -17,6 +17,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once INCLUDE_DIR.'lib_rss-atom.php';
+require_once INCLUDE_DIR.'lib_facebookfeed.php';
 
 /**
  * Feed presenter, uses a FeedFetcher as a source of data
@@ -69,8 +70,13 @@ class Feed extends ContentModule
       case 'rss':
         $this->reader = new RssAtomReader();
         $this->feedArray = $this->reader->Universal_Reader($this->feed);
+        //var_dump($this->feedArray);
         break;
-      
+      case 'facebook':
+        $this->reader = new FacebookFeedReader();
+        $this->feedArray = $this->reader->Read($this->feed);
+        //var_dump($this->feedArray);
+        break;
       default:
         # code...
         break;

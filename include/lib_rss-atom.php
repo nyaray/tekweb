@@ -6,7 +6,7 @@
 	http://www.xul.fr/feed/
 */
 /*
-Change by Anders Steinrud
+Changes by Anders Steinrud
 Wrapped the lib with the class RssAtomReader.
 All global variables have been set to protected
 All calls to variables and functions start with "$this->"

@@ -11,6 +11,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <div>
     <!-- <xsl:value-of select="./body" /> -->
     <xsl:for-each select="body/item">
+      <br />
       <xsl:apply-templates select="." />
     </xsl:for-each>
   </div>
@@ -71,6 +72,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
       <xsl:attribute name="class">togglercontentbody</xsl:attribute>
       <!-- <xsl:value-of select="./body" /> -->
       <xsl:for-each select="body/item">
+        <br />
         <xsl:apply-templates select="." />
       </xsl:for-each>
     </div>
