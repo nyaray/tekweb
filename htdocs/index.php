@@ -51,41 +51,81 @@ function __autoload($name)
   }
 }
 
-// This is left out for now
-// require_once INCLUDE_DIR.'core.php';
+// Require core functionality
+require_once INCLUDE_DIR.'core.php';
 
 ob_start();
 session_start();
 
-// ===============================================================
-// = Do some black magic with the page field in the get variable =
-// ===============================================================
-// This is meant to affect the behaviour of the ajax block OR the code that
-// follows it.
-$page = "";
-
-if (isset($_REQUEST['page']))
-{
-  $page = $_GET['page'];
-}
-
-// ========
-// = Ajax =
-// ========
-if (isset($_REQUEST['ajax']))
-{
-  echo "ajax!";
-  die(); // we probably don't want to do this... but it works for now.
-}
-
-// =================================
-// = Generate the intermediate XML =
-// =================================
 $rootDoc = new DOMDocument();
+
+// FIXME: What if we can't load the document at the given location?
 $rootDoc->load(CONFIG_DIR.'root.xml');
 // echo "----------------root.xml---------------\n";
 // echo $rootDoc->saveXML();
 
+// ===============================================================
+// = Do some black magic with the page field in the get variable =
+// ===============================================================
+$page = "";
+
+if (isset($_GET['page']))
+{
+  $page = $_GET['page'];
+
+  $xPath = new DOMXPath($rootDoc);
+  $items = $xPath->query("item[settings/name = '$page']");
+  $item = ($items->length > 0)? $items->item(0): false;
+
+  if($item !== false)
+  {
+    if(isset($_GET['ajax']))
+    {
+      echo "ajax!";
+      die(); // we probably don't want to do this... but it works for now.
+    }
+    else
+    {
+      $module = initModule(parseItem($item));
+      $moduleXML = '<?xml version="1.0" encoding="utf-8" ?>' . "\n".
+        $module->getXML();
+
+      $moduleDoc = new DOMDocument();
+      $moduleDoc->loadXML($moduleXML);
+      $moduleElem = $moduleDoc->documentElement;
+
+      $outDoc = new DOMDocument();
+      $outDoc->loadXML('<?xml version="1.0" encoding="utf-8"?><root />');
+
+      $title = $xPath->query("/root/title")->item(0);
+      $titleNode = $outDoc->importNode($title, true);
+      $outDoc->documentElement->appendChild($titleNode);
+
+      $moduleNode = $outDoc->importNode($moduleElem, true);
+      $outDoc->documentElement->appendChild($moduleNode);
+      // echo "---outDoc XML---\n";
+      // echo $outDoc->saveXML()."\n";
+
+      $rootStylesheet = new DOMDocument();
+      $rootStylesheet->load(CONFIG_DIR.'root.xsl');
+      $transformer = new XSLTProcessor();
+      $transformer->importStylesheet($rootStylesheet);
+      echo $transformer->transformToXML($outDoc);
+
+      ob_end_flush();
+      flush();
+      die();
+    }
+  }
+  else
+  {
+    // FIXME: Do something to handle that there was no module with that name
+  }
+}
+
+// =================
+// = The main loop =
+// =================
 // Get the top-level items, instantiate the appropriate modules and generate
 // their XML
 $rootItems = ($rootDoc->hasChildNodes())?
@@ -93,118 +133,43 @@ $rootItems = ($rootDoc->hasChildNodes())?
 
 if($rootItems)
 {
-  // This looks hackish because it is. PHP doesn't loop over NodeLists
-  // properly when using the foreach loop.
-  $rootItemCount = $rootItems->length;
+
+  // We have to do this in an ugly way since DOMNodeLists that are returned
+  // from DOMDocument::getElementsByTagName() seem to differ from those
+  // returned from DOMNode->childNodes. Magic.
+  $itemCount = $rootItems->length;
   $i = 0;
-  while($i < $rootItemCount)
+  while($i < $itemCount)
   {
-    $item = $rootItems->item(0);
-    // echo "$i";
-    // echo "\n";
-
+    // This SHOULDN'T work, but it seems that item(0) moves some internal
+    // pointer one step forward. This issue has 1-3 Crazy Hours
+    $rootItem = $rootItems->item(0);
     $i++;
-    if($item == null)
-    {
-      continue;
-    }
 
-    $itemChildren = ($item->hasChildNodes())?
-      $item->childNodes: false;
+    // echo "inspecting $rootItem->nodeName: $rootItem->nodeValue\n";
+    // The node is a text node, skip it.
+    // Do The Right Thing™ with the node.
+    $itemConfig = parseItem($rootItem);
+    $module = initModule($itemConfig);
 
-    if($itemChildren)
-    {
-      // Create an array to store the modules configuration
-      $itemConfig = array();
+    $moduleXML = '<?xml version="1.0" encoding="utf-8" ?>' . "\n".
+      $module->getXML();
+    // echo "---module XML---\n";
+    // echo "$moduleXML\n";
 
-      // foreach($itemChildren as $conf)
-      $itemChildrenCount = $itemChildren->length;
-      $j = 0;
-      while($j < $itemChildrenCount)
-      {
-        $conf = $itemChildren->item($j);
+    $moduleDoc = new DOMDocument();
+    $moduleDoc->loadXML($moduleXML);
+    // echo "---moduleDoc XML---\n";
+    // echo $moduleDoc->saveXML()."\n";
 
-        if($conf->nodeName == '#text')
-        {
-          // No-op...
-        }
-        elseif($conf->nodeName == 'settings')
-        {
-          $settings = ($conf->hasChildNodes())?
-            $conf->childNodes: false;
-
-          if($settings)
-          {
-            $itemSettings = array();
-
-            // foreach($settings as $setting)
-            $settingCount = $settings->length;
-            $k = 0;
-            while($k < $settingCount)
-            {
-              $setting = $settings->item($k);
-
-              if($setting->nodeName == '#text')
-              {
-                // no-op
-              }
-              else
-              {
-                $itemSettings[$setting->nodeName] = $setting->nodeValue;
-              }
-
-              $k++;
-            }
-
-            $itemConfig['settings'] = $itemSettings;
-          }
-        }
-        else
-        {
-          $itemConfig[$conf->nodeName] = $conf->nodeValue;
-        }
-
-        $j++;
-      }
-
-      if($page != '' && $itemConfig['settings']['name'] == $page)
-      {
-        $module = new $itemConfig['module']($itemConfig['settings']);
-        $module->setMode('default');
-        $moduleXML = "<?xml version=\"1.0\"?>\n<root>\n".
-          $module->getXML().
-          "\n</root>";
-
-        $rootDoc = new DOMDocument();
-        $rootDoc->loadXML($moduleXML);
-
-        break;
-      }
-      elseif($page != '' && $itemConfig['settings']['name'] != $page)
-      {
-        continue;
-      }
-
-      $module = new $itemConfig['module']($itemConfig['settings']);
-      $module->setMode($itemConfig['mode']);
-      $moduleXML = "<?xml version=\"1.0\"?>\n" . $module->getXML();
-      // echo "-----------module XML----------\n$moduleXML\n";
-
-      $moduleDoc = new DOMDocument();
-      /* var_dump */($moduleDoc->loadXML($moduleXML));
-      // echo "-------------moduleDoc XML-------------\n";
-      // echo $moduleDoc->saveXML();
-
-      $moduleElem = $moduleDoc->documentElement;
-      $moduleNode = $rootDoc->importNode($moduleElem, true);
-      
-      $parent = $item->parentNode;
-      $parent->removeChild($item);
-      $parent->appendChild($moduleNode);
-    }
+    $moduleElem = $moduleDoc->documentElement;
+    $moduleNode = $rootDoc->importNode($moduleElem, true);
+    $parent = $rootItem->parentNode;
+    $parent->removeChild($rootItem);
+    $parent->appendChild($moduleNode);
   }
 
-  // echo "----------------altered xml---------------\n";
+  // echo "---altered rootDoc xml---\n";
   // echo $rootDoc->saveXML();
 
   $rootStylesheet = new DOMDocument();
