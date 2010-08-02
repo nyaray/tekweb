@@ -47,7 +47,7 @@ class FacebookFeedReader {
     array_push($this->FeedArray, $h_array);
     
     //get feed
-    $feed_url = preg_replace('/'.$this->g_id.'/', $this->g_id."/feed", $url, 1);
+    $feed_url = $url."/feed";
     //read feed
     $this->Read_feed($feed_url);
    

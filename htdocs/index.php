@@ -101,7 +101,6 @@ if($rootItems)
   {
     $item = $rootItems->item(0);
     // echo "$i";
-    // var_dump($item);
     // echo "\n";
 
     $i++;
