@@ -36,12 +36,19 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template match="body/item">
   <div>
     <xsl:attribute name="class">item</xsl:attribute>
-    <a>
-      <xsl:attribute name="href">
-        <xsl:value-of select="./link" />
-      </xsl:attribute>
-      <xsl:value-of select="./title" />
-    </a>
+    <xsl:choose>
+      <xsl:when test="link">
+      <a>
+        <xsl:attribute name="href">
+          <xsl:value-of select="./link" />
+        </xsl:attribute>
+        <xsl:value-of select="./title" />
+      </a>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="./title" />
+      </xsl:otherwise>
+    </xsl:choose>
     <p>
       <xsl:value-of select="./desc" />
     </p>
@@ -90,12 +97,19 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   </h1>
   <div>
     <xsl:attribute name="class">teasertext</xsl:attribute>
-    <a>
-      <xsl:attribute name="href">
-        <xsl:value-of select="./body/link" />
-      </xsl:attribute>
-      <xsl:value-of select="./body/title" />
-    </a>
+    <xsl:choose>
+      <xsl:when test="body/link">
+        <a>
+          <xsl:attribute name="href">
+            <xsl:value-of select="./body/link" />
+          </xsl:attribute>
+          <xsl:value-of select="./body/title" />
+        </a>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="./body/title" />
+      </xsl:otherwise>
+    </xsl:choose>
   </div>
   <a>
     <xsl:attribute name="class">teaserlinktext</xsl:attribute>

@@ -87,6 +87,7 @@ if (isset($_GET['page']))
     else
     {
       $module = initModule(parseItem($item));
+      $module->setMode("default");
       $moduleXML = '<?xml version="1.0" encoding="utf-8" ?>' . "\n".
         $module->getXML();
 

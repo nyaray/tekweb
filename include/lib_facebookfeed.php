@@ -19,7 +19,7 @@ class FacebookFeedReader {
     foreach($json_output->data as $data) {
       $i_array = array("type" => 1, 
                        "title" => substr($data->created_time,0,10).": ".$data->message,
-                       "link" => "test",
+                       "link" => "",
                        "description" => "",
                        "updated" => substr($data->updated_time,0,10));
       array_push($this->FeedArray, $i_array);
