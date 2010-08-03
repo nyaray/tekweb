@@ -13,6 +13,16 @@ hr {
   font-size:135%;
 }
 
+.weekday {
+  background-color: #AF1E2D;
+  padding: 3px 0;
+  color: white;
+}
+
+.date {
+  margin: 0 5px;
+}
+
 .event {
   width:320px;
   margin:0 auto 10px;
@@ -21,9 +31,9 @@ hr {
 .day, .hiddenBox {
   position:relative;
   display:inline-block;
-  width:40px;
-  height:50px;
-  padding:5px;
+  width:50px;
+  height:60px;
+/*  padding:5px;*/
   text-align:center;
   vertical-align:top;
 
