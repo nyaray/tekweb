@@ -11,7 +11,7 @@ class FacebookFeedReader {
   
   function Read_feed($url) {
     
-    $json = file_get_contents($url,0,null,null);
+    $json = getRemoteFile($url);
     $json_output = json_decode($json);
     
     //var_dump($json_output);
@@ -30,7 +30,7 @@ class FacebookFeedReader {
     
     $this->FeedArray = array();
 
-    $json = file_get_contents($url,0,null,null);
+    $json = getRemoteFile($url);
     $json_output = json_decode($json);
 
     $this->g_id = $json_output->id;
