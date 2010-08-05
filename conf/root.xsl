@@ -24,6 +24,7 @@
       src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js">
       </script>
     <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="js/timeedit.js"></script>
 
     <meta name="viewport" content="width=device-width, user-scalable=no" />
 

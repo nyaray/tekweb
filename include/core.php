@@ -10,6 +10,7 @@ function initModule($itemConfig)
 }
 
 // Takes a DOMNode and extracts its information
+// FIXME: Make this handle DOMDocuments of arbitrary depth
 function parseItem($itemNode)
 {
   $children = ($itemNode->hasChildNodes())? $itemNode->childNodes: false;
@@ -35,6 +36,11 @@ function parseItem($itemNode)
   }
 
   return $item;
+}
+
+function prettyXMLDump($xmlStr)
+{
+  // later...
 }
 
 // FIXME: Implement these functions (are they necessary? not likely...)

@@ -3,16 +3,30 @@
 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="html" encoding="utf-8" omit-xml-declaration="yes" />
 
-<xsl:template match="section/timeedit">
+<xsl:template match="section/timeedit/view">
 <div>
   <xsl:attribute name="id"><xsl:value-of select="name" /></xsl:attribute>
   <xsl:attribute name="class">section</xsl:attribute>
 
   <!-- Head -->
-  <h1><xsl:value-of select="head" /></h1>
+  <xsl:if test="head">
+    <h1><xsl:value-of select="head" /></h1>
+  </xsl:if>
+
+  <!-- Link to the config page -->
+  <xsl:if test="conf">
+    <a>
+      <xsl:attribute name="href">
+        <xsl:value-of select="conf" />
+      </xsl:attribute>
+      Konfigurera schema
+    </a>
+  </xsl:if>
 
   <!-- Events -->
-  <xsl:apply-templates select="events" />
+  <xsl:if test="events">
+    <xsl:apply-templates select="events" />
+  </xsl:if>
 </div>
 </xsl:template>
 
@@ -126,5 +140,12 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
       </div>
     </xsl:if>
   </div>
+</xsl:template>
+
+<xsl:template match="section/timeedit/search">
+<div>
+  <xsl:attribute name="id"><xsl:value-of select="name" /></xsl:attribute>
+  <xsl:copy-of select="@*|node()" />
+</div>
 </xsl:template>
 </xsl:stylesheet>

@@ -86,9 +86,19 @@ if (isset($_GET['page']))
     }
     else
     {
-      $module = initModule(parseItem($item));
+      $config = parseItem($item);
+      $module = initModule($config);
+
       $moduleXML = '<?xml version="1.0" encoding="utf-8" ?>' . "\n".
         $module->getXML();
+
+      // echo "---1---\n";
+      // var_dump($config);
+      // echo "---2---\n";
+      // var_dump($module);
+      // echo "---3---\n";
+      // var_dump($moduleXML);
+      // echo "---END---\n";
 
       $moduleDoc = new DOMDocument();
       $moduleDoc->loadXML($moduleXML);
@@ -152,7 +162,7 @@ if($rootItems)
     $itemConfig = parseItem($rootItem);
     $module = initModule($itemConfig);
 
-    $moduleXML = '<?xml version="1.0" encoding="utf-8" ?>' . "\n".
+    $moduleXML = '<?xml version="1.0" encoding="utf-8"?>' . "\n".
       $module->getXML();
     // echo "---module XML---\n";
     // echo "$moduleXML\n";
@@ -181,7 +191,7 @@ if($rootItems)
 }
 else
 {
-  // Handle the lack of root-level items
+  // FIXME: Is it really a problem that there are no root elements?
 }
 
 ob_end_flush();

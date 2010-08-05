@@ -77,7 +77,10 @@ XML;
         $this->generateDefault();
     }
 
-    return ($this->contentXML);
+    $this->contentXML =
+      str_replace('<?xml version="1.0"?>', '', $this->contentXML);
+
+    return $this->contentXML;
   }
 
   public function getName()

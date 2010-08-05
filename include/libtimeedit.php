@@ -17,7 +17,7 @@
 
 class LibTimeEdit
 {
-  public static function generateCalendar($objects, $startWeek, $stopWeek)
+  public static function generateCalendar($objects)
   {
     if(count($objects) < 1)
       return '<calendar />';
@@ -28,19 +28,13 @@ class LibTimeEdit
     for($i = 1; $i < $objectCount; $i++)
     {
       $object = $objects[$i];
-      $objStr .= "&wv_obj";
-      $objStr .= $i+1;
-      $objStr .= "=$object";
+      $num = $i+1;
+
+      $objStr = "&wv_obj$num=$object";
     }
 
-    $url = "http://schema.angstrom.uu.se/4DACTION/WebShowSearchPrint/2/1?wv_text=text&wv_startWeek=$startWeek&wv_stopWeek=$stopWeek&$objStr";
-
-    // echo "<!--\n";
-    // echo "objStr: $objStr\n";
-    // echo "startWeek: $startWeek\n";
-    // echo "stopWeek: $stopWeek\n";
-    // echo "url: $url\n";
-    // echo "-->\n";
+    $url = "http://schema.angstrom.uu.se/4DACTION/WebShowSearchPrint/2/1?".
+      "wv_text=text&$objStr";
 
     $doc = new DOMDocument();
     $doc->loadHTMLFile($url);
@@ -51,39 +45,53 @@ class LibTimeEdit
     $proc = new XSLTProcessor();
     $proc->importStyleSheet($xsl);
     $procXML = $proc->transformToXML($doc);
+
+    // echo "---calXML---\n";
+    // var_dump($procXML);
     return ($procXML);
-    // fwrite(fopen('./lintit.xml', 'w'), $procXML);
-    // echo exec("xmllint --format lintit.xml > lintfree 2> linterr");
-    // return file_get_contents('lintfree');
   }
 
-  public static function generateConfigForm()
+  public static function generateConfigForm($head)
   {
-    // basket + search
-    // $url = "http://schema.angstrom.uu.se/4DACTION/WebShowSearch/2/1-0?wv_type=3&wv_ts=20100724T151511X%3C%3C%3C%3C&wv_search=kanddv&wv_startWeek=1029&wv_stopWeek=1031&wv_first=0&wv_addObj=75598000&wv_delObj=&wv_obj1=69016002&wv_obj2=69016003";
+    $wvStr = '';
+    $firstSet = false;
+    foreach($_GET as $key => $val)
+    {
+      if(preg_match('/wv_[a-z0-9]+/', $key))
+      {
+        if($firstSet)
+        {
+          $wvStr .= "&$key=$val";
+        }
+        else
+        {
+          $wvStr .= "$key=$val";
+          $firstSet = true;
+        }
+      }
+    }
 
-    // search
-    // $url = "http://schema.angstrom.uu.se/4DACTION/WebShowSearch/2/1-0?wv_type=3&wv_ts=20100724T174107X%3C%3C%3C%3C&wv_search=kanddv&wv_startWeek=1029&wv_stopWeek=1031&wv_first=0&wv_addObj=&wv_delObj=75598000&wv_obj1=75598000";
+    $url = "http://schema.angstrom.uu.se/4DACTION/WebShowSearch/2/1?$wvStr";
 
-    // basket
-    // $url = "http://schema.angstrom.uu.se/4DACTION/WebShowSearch/2/1-0?wv_type=3&wv_ts=20100724T183603X%3C%3C%3C%3C&wv_bSearch=S%F6k&wv_startWeek=1029&wv_stopWeek=1031&wv_first=0&wv_addObj=&wv_delObj=&wv_obj1=96003&wv_obj2=69016002&wv_obj3=75598000";
-
-    // plain form
-    $url = "http://schema.angstrom.uu.se/4DACTION/WebShowSearch/2/1";
-
-    $doc = new DOMDocument();
-    $doc->loadHTMLFile($url);
+    $xml = new DOMDocument();
+    $xml->loadHTMLFile($url);
 
     $xsl = new DOMDocument();
-    $xsl->load('search.xsl');
+    $xsl->load(MODULE_DIR.'timeedit/search.xsl');
 
     $proc = new XSLTProcessor();
     $proc->importStyleSheet($xsl);
-    $procXML = ($proc->transformToXML($doc));
-    return ($procXML);
-    // fwrite(fopen('./lintit.xml', 'w'), $procXML);
-    // echo exec("xmllint --format lintit.xml > lintfree 2> linterr");
-    // return file_get_contents('lintfree');
+    $doc = $proc->transformToDoc($xml);
+
+    $headElem = $doc->createElement('head', $head);
+    $searchNode = $doc->getElementsByTagName('search')->item(0);
+    $searchNode->appendChild($headElem);
+
+    $confXML = $doc->saveXML();
+
+    // echo "---generateConfigForm XML---\n";
+    // var_dump($confXML);
+    return $confXML;
   }
 }
 ?>
