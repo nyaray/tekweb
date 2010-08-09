@@ -6,6 +6,7 @@
 <xsl:import href="../module/statictext/statictext.xsl" />
 <xsl:import href="../module/feed/feed.xsl" />
 <xsl:import href="../module/timeedit/timeedit.xsl" />
+<xsl:import href="../module/multifeed/multifeed.xsl" />
 
 <xsl:output method="html" encoding="utf-8" omit-xml-declaration="yes" />
 <xsl:template match="/root">

@@ -7,10 +7,10 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <div>
   <xsl:attribute name="id"><xsl:value-of select="./name" /></xsl:attribute>
   <xsl:attribute name="class">section</xsl:attribute>
-  <div><xsl:apply-templates select="head" /></div>
+  <div><xsl:apply-templates select="../feed/head" /></div>
   <div>
     <!-- <xsl:value-of select="./body" /> -->
-    <xsl:for-each select="body/item">
+    <xsl:for-each select="../feed/body/item">
       <br />
       <xsl:apply-templates select="." />
     </xsl:for-each>
@@ -19,7 +19,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 </div>
 </xsl:template>
 
-<xsl:template match="head">
+<xsl:template match="feed/head">
     <h1>
       <a>
         <xsl:attribute name="href">
@@ -33,7 +33,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     </p>
 </xsl:template>
 
-<xsl:template match="body/item">
+<xsl:template match="feed/body/item">
   <div>
     <xsl:attribute name="class">item</xsl:attribute>
     <xsl:choose>
@@ -78,7 +78,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <div>
       <xsl:attribute name="class">togglercontentbody</xsl:attribute>
       <!-- <xsl:value-of select="./body" /> -->
-      <xsl:for-each select="body/item">
+      <xsl:for-each select="../feed/body/item">
         <br />
         <xsl:apply-templates select="." />
       </xsl:for-each>

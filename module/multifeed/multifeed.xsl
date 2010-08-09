@@ -3,14 +3,21 @@
 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="html" encoding="utf-8" omit-xml-declaration="yes" />
 
-<xsl:template match="section/feed">
+<xsl:template match="section/multifeed">
 <div>
   <xsl:attribute name="id"><xsl:value-of select="./name" /></xsl:attribute>
   <xsl:attribute name="class">section</xsl:attribute>
-  <div><xsl:apply-templates select="head" /></div>
+  <div>
+    <xsl:for-each select="../multifeed/head/item">
+      <xsl:apply-templates select="." />
+    </xsl:for-each>
+  </div>
   <div>
     <!-- <xsl:value-of select="./body" /> -->
-    <xsl:for-each select="body/item">
+    <xsl:for-each select="../multifeed/body/item">
+      <xsl:sort select="substring(./title,1,4)" data-type="number" order="descending" />
+      <xsl:sort select="substring(./title,6,2)" data-type="number" order="descending" />
+      <xsl:sort select="substring(./title,9,2)" data-type="number" order="descending" />
       <br />
       <xsl:apply-templates select="." />
     </xsl:for-each>
@@ -19,7 +26,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 </div>
 </xsl:template>
 
-<xsl:template match="head">
+<xsl:template match="multifeed/head/item">
     <h1>
       <a>
         <xsl:attribute name="href">
@@ -33,9 +40,14 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     </p>
 </xsl:template>
 
-<xsl:template match="body/item">
+<xsl:template match="multifeed/body/item">
   <div>
     <xsl:attribute name="class">item</xsl:attribute>
+    <span>
+      <xsl:attribute name="class">author</xsl:attribute>
+      <xsl:value-of select="./author" />
+    </span>
+    <xsl:text> @ </xsl:text>
     <xsl:choose>
       <xsl:when test="link">
       <a>
@@ -49,13 +61,15 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
         <xsl:value-of select="./title" />
       </xsl:otherwise>
     </xsl:choose>
-    <p>
-      <xsl:value-of select="./desc" />
-    </p>
+    <xsl:if test="desc">
+      <p>
+        <xsl:value-of select="./desc" />
+      </p>
+    </xsl:if>
   </div>
 </xsl:template>
 
-<xsl:template match="toggler/feed">
+<xsl:template match="toggler/multifeed">
 <div>
   <xsl:attribute name="id"><xsl:value-of select="./name" /></xsl:attribute>
   <xsl:attribute name="class">toggler</xsl:attribute>
@@ -87,7 +101,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 </div>
 </xsl:template>
 
-<xsl:template match="teaser/feed">
+<xsl:template match="teaser/multifeed">
 <div>
   <xsl:attribute name="id"><xsl:value-of select="./name" /></xsl:attribute>
   <xsl:attribute name="class">teaser</xsl:attribute>
