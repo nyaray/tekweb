@@ -22,7 +22,7 @@ require_once INCLUDE_DIR.'lib_facebookfeed.php';
 /**
  * Feed presenter, uses a FeedFetcher as a source of data
  */
-class Feed extends ContentModule
+class MultiFeed extends ContentModule
 {
   private $head;
   private $foot;
@@ -64,7 +64,7 @@ class Feed extends ContentModule
 
   protected function getFeeds() {
     $count = 0;
-    foreach($this->feeds as $src) {
+    foreach($this->feeds['feed'] as $src) {
       switch ($src['type']) {
         case 'atom':
           //same lib as rss
@@ -73,7 +73,7 @@ class Feed extends ContentModule
 
           $this->resultArray[$count] = array(
               "author" => $src['author'],
-              "feed" => $this->reader->Universal_Reader($this->feed),
+              "feed" => $this->reader->Universal_Reader($src['src']),
               );
           // var_dump($this->feedArray);
           break;
@@ -82,7 +82,7 @@ class Feed extends ContentModule
           
           $this->resultArray[$count] = array(
               "author" => $src['author'],
-              "feed" => $this->resultArray = $this->reader->Read($this->feed)
+              "feed" => $this->resultArray = $this->reader->Read($src['src'])
               );
           //var_dump($this->feedArray);
           break;
@@ -97,7 +97,7 @@ class Feed extends ContentModule
   protected function generateDefault() 
   {
     $i = 0;
-    while($i < $resultArray.count()) {
+    while($i < count($resultArray)) {
       $this->head = "<head>";
       $this->head .= "<title>".$this->resultArray[$i][0]["title"]."</title>";
       if($this->resultArray[0]["link"] != "") {
@@ -111,7 +111,7 @@ class Feed extends ContentModule
     
     $this->body = "<body>";
     $i = 0;
-    while($i < $resultArray.count()) {
+    while($i < count($resultArray)) {
       array_shift($this->resultArray[$i]);
       foreach($this->resultArray[$i] as $item) {
         $this->body .= "<item>";
@@ -142,7 +142,7 @@ XML;
   {
     $this->body = "<body>";
     $i = 0;
-    while($i < $resultArray.count()) {
+    while($i < count($resultArray)) {
       array_shift($this->resultArray[$i]);
       foreach($this->resultArray[$i] as $item) {
         $this->body .= "<item>";
@@ -174,13 +174,13 @@ XML;
     $this->body = "<body>";
     
     $i = 0;
-    while($i < $resultArray.count()) {
+    while($i < count($resultArray)) {
       $this->body = "<item>";
-      $this->body .= "<title>".$this->feedArray[1]["title"]."</title>";
+      $this->body .= "<title>".$this->resultArray[$i][1]["title"]."</title>";
       if($this->feedArray[1]["link"] != "") {
-        $this->body .= "<link>".$this->feedArray[1]["link"]."</link>";
+        $this->body .= "<link>".$this->resultArray[$i][1]["link"]."</link>";
       }
-      $this->body .= "<desc>".$this->feedArray[1]["description"]."</desc>";
+      $this->body .= "<desc>".$this->resultArray[$i][1]["description"]."</desc>";
       $this->body = "</item>";
       $i++;
     }

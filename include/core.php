@@ -9,6 +9,16 @@ function initModule($itemConfig)
   return $module;
 }
 
+function hasChild($p) {
+ if ($p->hasChildNodes()) {
+  foreach ($p->childNodes as $c) {
+   if ($c->nodeType == XML_ELEMENT_NODE)
+    return true;
+  }
+ }
+ return false;
+}
+
 // Takes a DOMNode and extracts its information
 function parseItem($itemNode)
 {
@@ -19,17 +29,35 @@ function parseItem($itemNode)
   {
     foreach($children as $child)
     {
-      if($child->nodeName == '#text')
-      {
-        continue;
-      }
-      elseif($child->nodeName == 'settings')
-      {
-        $item['settings'] = parseItem($child);
-      }
-      else
-      {
-        $item[$child->nodeName] = $child->nodeValue;
+      if($child->nodeType == XML_ELEMENT_NODE) {
+        // if($child->nodeName == '#text')
+        // {
+        //   continue;
+        // }
+        if(hasChild($child)) {
+          if(isset($item[$child->nodeName])) {
+            if(isset($item[$child->nodeName][0])) {
+              $item[$child->nodeName][] = parseItem($child);
+            }
+            else {
+              $tmp = array();
+              $tmp[] = $item[$child->nodeName];
+              $tmp[] = parseItem($child);
+              $item[$child->nodeName] = $tmp;
+            }
+          }
+          else {
+            $item[$child->nodeName] = parseItem($child);
+          }
+        }
+        elseif($child->nodeName == 'settings')
+        {
+          $item['settings'] = parseItem($child);
+        }
+        else
+        {
+          $item[$child->nodeName] = $child->nodeValue;
+        }
       }
     }
   }
