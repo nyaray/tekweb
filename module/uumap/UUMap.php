@@ -16,6 +16,9 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
+define('UUMAP_XML_TO_REPLACE', '<?xml version="1.0" encoding="UTF-8"?>');
+
+
 /**
  *
  */
@@ -29,7 +32,7 @@ class UUMap extends ContentModule
   function __construct($settings)
   {
     parent::__construct();
-		$this->configPath = $settings['configpath'];
+    $this->configPath = '../module/uumap/uumap.xml';
     $this->name = "<name>$settings[name]</name>";
     $this->icon = (isset ($settings['icon'])) ?
             "<icon>$settings[icon]</icon>": '';
@@ -40,7 +43,7 @@ class UUMap extends ContentModule
   protected function generateDefault()
   {
     $config = file_get_contents($this->configPath);
-    $config = str_replace('<?xml version="1.0" encoding="UTF-8">',"",$config); // <?xml version="1.0" encoding="UTF-8">FRÅGETECKEN>
+    $config = str_replace(UUMAP_XML_TO_REPLACE, '', $config);
 
     $this->contentXML = <<< XML
 <section>
@@ -55,9 +58,10 @@ XML;
 }
   protected function generateToggler()
   {
+    
     $config = file_get_contents($this->configPath);
-    $config = str_replace('<?xml version="1.0" encoding="UTF-8">',"",$config); // <?xml version="1.0" encoding="UTF-8">FRÅGETECKEN>
-
+    $config = str_replace(UUMAP_XML_TO_REPLACE, '', $config);
+    
     $this->contentXML = <<< XML
 <toggler>
   <uumap>
@@ -68,6 +72,7 @@ XML;
   </uumap>
 </toggler>
 XML;
+// var_dump($this->contentXML);
   }
 
   protected function generateTeaser()
@@ -87,6 +92,5 @@ XML;
   //   $proc->importStyleSheet($xsl);
   //   return $proc->transformToXML($mapDoc);
   // }
-  
 }
 ?>

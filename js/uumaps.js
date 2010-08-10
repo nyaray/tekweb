@@ -146,7 +146,7 @@ function createMarker(markLocation, type) {
     zindex=100;
   }
   else if (type == "nation") {
-    NewIcon = "../gfx/icons/stockholms.png";
+    NewIcon = "../gfx/icons/nation.png";
     zindex=7;
   }
   else if (type == "bus"){
