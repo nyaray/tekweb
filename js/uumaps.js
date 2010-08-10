@@ -87,7 +87,7 @@ function Geocoding(success, fail, getAdress,  fieldtext)
 }
 
 //Function for opening the info window and display, depending on the marker type, address, businfo and title
-function openInfoWindow(Title, infomarker, infowindow, Address,type)
+function openInfoWindow(Title, infomarker, infowindow, Address,type, busstation)
 {
   return function()
   {    
@@ -99,7 +99,7 @@ function openInfoWindow(Title, infomarker, infowindow, Address,type)
     }
     else
     {
-      infowindow.setContent("<div id=\"infoWindow\"> <p id=\"infoWindowText\">" + Title + "<br/>Bussar: " +Address+ "</p></div>");
+      infowindow.setContent("<div id=\"infoWindow\"> <p id=\"infoWindowText\">" + Title + "<br/>Bussar: "+ "<a target=\"_blank\" href=\"http://www.ul.se/sv/resw/?to=&from="+ busstation+ "\">"+Address+"</a></p></div>");
       infowindow.open(map, infomarker);
     }
 
@@ -340,7 +340,7 @@ $(document).ready(function () {
         else if(type == "bus")
         {
           busMarkers[temp] = createMarker(coordinates[temp], "bus");
-          google.maps.event.addListener(busMarkers[temp], 'click', openInfoWindow($(this).find("title").first().text(), busMarkers[temp], infowindow,buslines[temp],type));
+          google.maps.event.addListener(busMarkers[temp], 'click', openInfoWindow($(this).find("title").first().text(), busMarkers[temp], infowindow,buslines[temp],type,$(this).find("ulname").first().text()));
           busMarkers[temp].setVisible(false);
         }
         else

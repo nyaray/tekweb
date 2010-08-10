@@ -76,7 +76,7 @@
                     <xsl:attribute name="for">naMarkers</xsl:attribute>
                     <img>
                       <xsl:attribute name="class">MarkerCheckBox</xsl:attribute>
-                      <xsl:attribute name="src">./gfx/icons/uupoint.png</xsl:attribute>
+                      <xsl:attribute name="src">./gfx/icons/nation.png</xsl:attribute>
                     </img>
                   </label>                    
                   <input type="checkbox">
@@ -126,7 +126,7 @@
                   </option>
                   <xsl:for-each select="./map/locationlist/location">
                     <xsl:sort select="./title"/>
-                    <xsl:if test="type != 'bus' or type='nation'" > 
+                    <xsl:if test="type != 'bus' and type!='nation'" > 
                       <option>
                         <xsl:attribute name="value"><xsl:value-of select="./alias"/></xsl:attribute>
                         <xsl:value-of select="./title"/>
