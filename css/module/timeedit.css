@@ -6,6 +6,15 @@ hr {
 /*  width:140px;*/
 }
 
+li {
+  margin:10px 0;
+}
+
+li img {
+  width:20px;
+  height:20px;
+}
+
 .weekyear {
 /*  width:200px;*/
 /*  border-left:10px solid #e5e5e5;*/

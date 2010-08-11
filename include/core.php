@@ -20,6 +20,7 @@ function hasChild($p) {
 }
 
 // Takes a DOMNode and extracts its information
+// FIXME: Make this handle DOMDocuments of arbitrary depth
 function parseItem($itemNode)
 {
   $children = ($itemNode->hasChildNodes())? $itemNode->childNodes: false;

@@ -19,7 +19,9 @@
 
 <xsl:template match="/">
   <calendar>
-    <xsl:apply-templates select="./*" />
+    <view>
+      <xsl:apply-templates select="./*" />
+    </view>
   </calendar>
 </xsl:template>
 

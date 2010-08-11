@@ -22,4 +22,5 @@ define('MODULE_DIR', '../module/');
 define('INCLUDE_DIR', '../include/');
 define('TEMPLATE_DIR', '../template/');
 
+date_default_timezone_set('Europe/Berlin');
 ?>
