@@ -109,7 +109,7 @@ background-image: -webkit-gradient(linear, left top, left bottom, from(#ff0000),
 /*------------------DirectionsField------------------*/
 #uuMapModule #DirectionsField
 {
-  margin:15px auto;
+  margin:5px auto;
   border:2px solid #b2b2b2;
   border-radius:10px;
   padding:5px;
@@ -148,6 +148,7 @@ background-image: -webkit-gradient(linear, left top, left bottom, from(#ff0000),
   opacity:0;
   border:2px solid #b2b2b2;
   text-align:left;  
+  margin:5px;
 }
 
 #uuMapModule #Information .list
