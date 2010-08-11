@@ -31,8 +31,8 @@ abstract class ContentModule
   {
     // FIXME: Decide on this behaviour
     // // Is this The Right Thing(TM)?
-    // $this->name = 'anon';
-    // $this->mode = 'default';
+    $this->name = 'anon';
+    $this->mode = 'default';
 
     $this->contentXML = <<< XML
 <section>
@@ -69,15 +69,14 @@ XML;
       case 'toggler':
         $this->generateToggler(); break;
 
-      case '':
-        // no-op
-        break;
-
       default:
         $this->generateDefault();
     }
 
-    return ($this->contentXML);
+    $this->contentXML =
+      str_replace('<?xml version="1.0"?>', '', $this->contentXML);
+
+    return $this->contentXML;
   }
 
   public function getName()

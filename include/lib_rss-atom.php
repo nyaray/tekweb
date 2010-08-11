@@ -6,7 +6,7 @@
 	http://www.xul.fr/feed/
 */
 /*
-Change by Anders Steinrud
+Changes by Anders Steinrud
 Wrapped the lib with the class RssAtomReader.
 All global variables have been set to protected
 All calls to variables and functions start with "$this->"
@@ -219,8 +219,10 @@ class RssAtomReader {
   	$this->Universal_FeedArray = array();
 
   	$this->Universal_Doc  = new DOMDocument("1.0");
-  	$this->Universal_Doc->load($url);
-
+  	$test = getRemoteFile($url);
+    //var_dump($test);
+  	$this->Universal_Doc->loadXML($test);
+    //var_dump($this->Universal_Doc);
   	$this->Universal_Content = array();
 
   	$channel = $this->extractChannel("feed");

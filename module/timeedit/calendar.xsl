@@ -19,7 +19,9 @@
 
 <xsl:template match="/">
   <calendar>
-    <xsl:apply-templates select="./*" />
+    <view>
+      <xsl:apply-templates select="./*" />
+    </view>
   </calendar>
 </xsl:template>
 
@@ -46,8 +48,8 @@
         </xsl:when>
         <xsl:otherwise>
           <xsl:choose>
-            <!-- FIXME: Maybe explode the week and the year, make some
-              sort of header like node -->
+            <!-- FIXME: Maybe explode the week and the year...
+              make some sort of header like node -->
             <xsl:when test="substring(td[1], 1, 1) = 'V'">
               <weekyear>
                 <xsl:value-of select="substring(., 7, 8)" />

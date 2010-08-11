@@ -1,0 +1,202 @@
+#uuMapModule
+{
+  font-size:12pt;
+}
+
+#uuMapModule .button{
+background: #af1e2d;
+display: inline-block;
+padding: 5px 10px 6px;
+color: #fff;
+text-decoration: none;
+font-weight: bold;
+line-height: 1;
+-moz-border-radius: 10px;
+-webkit-border-radius: 10px;
+-moz-box-shadow: 0 1px 3px #999;
+-webkit-box-shadow: 0 1px 3px #999;
+text-shadow: 0 1px 4px #222;
+border-bottom: 1px solid #222;
+position: relative;
+cursor: pointer;
+font-size:10pt;
+background-image: -webkit-gradient(linear, left top, left bottom, from(#ff0000), to(#af1e2d),color-stop(0.1, #ff0000));
+}
+
+#uuMapModule .button:hover
+{ 
+  top:1px;
+  -webkit-border-radius: 10px;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  background-color: #2300;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#af1e2d), to(#ff0000),color-stop(0.1, #ff0000));
+  
+}
+
+#uuMapModule legend
+{
+  color: #b2b2b2;
+  text-align:left;
+  margin-left:15px;
+}
+
+
+#uuMapModule #infoWindowText
+{
+  font-size:8pt;
+  font-style:italic;
+}
+
+#uuMapModule #infoWindow a
+{
+  font-size:10pt;
+}
+/*-----------------------MyMap-----------------------*/
+#uuMapModule #MyMap
+{
+  border:2px solid #b2b2b2;
+  border-radius:12px;
+  padding:10px 5px;
+  margin:10px auto;
+  background-color:#e5e5e5;
+}
+
+#uuMapModule #MyMap #DirectionsGeolocater
+{
+  margin:0 auto;
+}
+
+#uuMapModule #MyMap #GetMyGPS
+{
+  margin:5px auto;
+  margin-top:10px;
+}
+
+
+#uuMapModule #MyMap #map_canvas
+{
+  width:92%;
+  height:250px;
+  margin:0 auto;
+  border:2px solid #b2b2b2;
+}
+#uuMapModule .MarkerWrapper
+{
+  display:inline;
+  margin:4px;
+}
+
+#uuMapModule #MyMap #loadmyGPS
+{
+  opacity:0;
+}
+/*--------------------SelectField--------------------*/
+
+#uuMapModule #SelectField select
+{
+  display:inline;
+  text-align:center;
+}
+#uuMapModule #SelectField #RouteType
+{
+  width:25%;
+}
+#uuMapModule #SelectField #Locations
+{
+  width:75%;
+}
+/*------------------DirectionsField------------------*/
+#uuMapModule #DirectionsField
+{
+  margin:5px auto;
+  border:2px solid #b2b2b2;
+  border-radius:10px;
+  padding:5px;
+  color:#b2b2b2;
+}
+#uuMapModule #DirectionsField #myAddress
+{
+  margin-top:-2px;
+  margin-bottom:5px;
+}
+#uuMapModule #DirectionsField .ButtonContainer
+{
+  margin:5px auto;
+}
+#uuMapModule #DirectionsField #GeolocatorContainer
+{
+  border-top:1px solid #b2b2b2;
+  padding-top:10px;
+}
+#uuMapModule #DirectionsField input[type="text"]
+{
+  font-size:10pt;
+  color:#b5b5b5;
+  height:12pt;
+  margin-bottom:5px;
+}
+#uuMapModule #DirectionsField .AddressWrapper
+{
+  display:inline-block;
+}
+
+/*--------------------Information--------------------*/
+#uuMapModule #Information
+{
+  border-radius:10px;
+  opacity:0;
+  border:2px solid #b2b2b2;
+  text-align:left;  
+  margin:5px;
+}
+
+#uuMapModule #Information .list
+{
+  display:block-inline;
+  float:left;
+  margin:0 5px 5px 0px;
+}
+
+#uuMapModule #Information #ServiceList
+{
+  margin:0 0 5px 5px;
+}
+#uuMapModule #Information #ServiceList li
+{
+  font-size:8pt;
+}
+#uuMapModule #Information #Address
+{
+  margin:5px;
+  font-size:10pt;
+}
+
+#uuMapModule #Information .bold
+{
+  font-weight:bold;
+  font-size:11pt;
+}
+
+
+#uuMapModule #Information #Description
+{
+  margin:5px;
+  font-size:10pt;
+}
+
+/*-------------------CampusOverview-------------------*/
+#uuMapModule #CampusOverview
+{
+  border-radius:10px;
+  display:none;
+  opacity:0;
+  border:2px solid #b2b2b2;
+  padding:5px;
+}
+
+#uuMapModule #CampusOverview img
+{
+  width:95%;
+  max-height:100%;
+}

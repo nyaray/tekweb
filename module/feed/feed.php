@@ -17,6 +17,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once INCLUDE_DIR.'lib_rss-atom.php';
+require_once INCLUDE_DIR.'lib_facebookfeed.php';
 
 /**
  * Feed presenter, uses a FeedFetcher as a source of data
@@ -69,8 +70,13 @@ class Feed extends ContentModule
       case 'rss':
         $this->reader = new RssAtomReader();
         $this->feedArray = $this->reader->Universal_Reader($this->feed);
+        // var_dump($this->feedArray);
         break;
-      
+      case 'facebook':
+        $this->reader = new FacebookFeedReader();
+        $this->feedArray = $this->reader->Read($this->feed);
+        //var_dump($this->feedArray);
+        break;
       default:
         # code...
         break;
@@ -81,7 +87,9 @@ class Feed extends ContentModule
   {
     $this->head = "<head>";
     $this->head .= "<title>".$this->feedArray[0]["title"]."</title>";
-    $this->head .= "<link>".$this->feedArray[0]["link"]."</link>";
+    if($this->feedArray[0]["link"] != "") {
+      $this->head .= "<link>".$this->feedArray[0]["link"]."</link>";
+    }
     $this->head .= "<desc>".$this->feedArray[0]["description"]."</desc>";
     $this->head .= "</head>";
     
@@ -90,7 +98,9 @@ class Feed extends ContentModule
     foreach($this->feedArray as $item) {
       $this->body .= "<item>";
       $this->body .= "<title>".$item["title"]."</title>";
-      $this->body .= "<link>".$item["link"]."</link>";
+      if($item["link"] != "") {
+        $this->body .= "<link>".$item["link"]."</link>";
+      }
       $this->body .= "<desc>".$item["description"]."</desc>";
       $this->body .= "</item>";
     }
@@ -115,7 +125,9 @@ XML;
     foreach($this->feedArray as $item) {
       $this->body .= "<item>";
       $this->body .= "<title>".$item["title"]."</title>";
-      $this->body .= "<link>".$item["link"]."</link>";
+      if($item["link"] != "") {
+        $this->body .= "<link>".$item["link"]."</link>";
+      }
       $this->body .= "<desc>".$item["description"]."</desc>";
       $this->body .= "</item>";
     }
@@ -137,7 +149,9 @@ XML;
   {
     $this->body = "<body>";
     $this->body .= "<title>".$this->feedArray[1]["title"]."</title>";
-    $this->body .= "<link>".$this->feedArray[1]["link"]."</link>";
+    if($this->feedArray[1]["link"] != "") {
+      $this->body .= "<link>".$this->feedArray[1]["link"]."</link>";
+    }
     $this->body .= "<desc>".$this->feedArray[1]["description"]."</desc>";
     $this->body .= "</body>";
     

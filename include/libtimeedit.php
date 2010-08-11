@@ -15,75 +15,182 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+
+// This static class acts as a proxy for the timeedit server at
+// schema.angstrom.uu.se, with some suitable additions
 class LibTimeEdit
 {
-  public static function generateCalendar($objects, $startWeek, $stopWeek)
+  // generate XML for the config/search form
+  public static function generateSearch($name, $head)
   {
-    if(count($objects) < 1)
-      return '<calendar />';
+    echo "<!--\n";
 
-    $objStr = 'wv_obj1='.$objects[0];
+    // get the timeedit arguments
+    $wvArgs = self::filterGETParams();
 
-    $objectCount = count($objects);
-    for($i = 1; $i < $objectCount; $i++)
+    //$wvObjects = (isset($_COOKIE['timeeditobjects']) &&
+    //  $_COOKIE['timeeditobjects'] != '')?
+    //  explode(',', $_COOKIE['timeeditobjects']): array();
+    //$wvObjects = array('29123000', '991000');
+    //$wvObjects = self::manageObjects($wvArgs, $wvObjects);
+
+    $i = 1;
+    foreach($wvObjects as $objectID)
     {
-      $object = $objects[$i];
-      $objStr .= "&wv_obj";
-      $objStr .= $i+1;
-      $objStr .= "=$object";
+      $wvArgs["wv_obj$i"] = $objectID;
+      $i++;
     }
 
-    $url = "http://schema.angstrom.uu.se/4DACTION/WebShowSearchPrint/2/1?wv_text=text&wv_startWeek=$startWeek&wv_stopWeek=$stopWeek&$objStr";
+    $wvStr = http_build_query($wvArgs, '', '&');
+    
+    $url = "http://schema.angstrom.uu.se/4DACTION/WebShowSearch/2/1?$wvStr";
+    echo "---url---\n";
+    var_dump($url);
 
-    // echo "<!--\n";
-    // echo "objStr: $objStr\n";
-    // echo "startWeek: $startWeek\n";
-    // echo "stopWeek: $stopWeek\n";
-    // echo "url: $url\n";
-    // echo "-->\n";
+    $timeeditHTML = getRemoteFile($url);
+    $searchXML = self::transform($timeeditHTML, MODULE_DIR.'timeedit/search.xsl');
+    $searchDoc = new DOMDocument();
+    $searchDoc->loadXML($searchXML);
 
-    $doc = new DOMDocument();
-    $doc->loadHTMLFile($url);
+    // augment DOM document
+    self::augmentSearchDOM($searchDoc, $head, $name);
 
-    $xsl = new DOMDocument();
-    $xsl->load(MODULE_DIR.'timeedit/calendar.xsl');
+    $configXML = $searchDoc->saveXML();
+    $configXML = str_replace('<?xml version="1.0"?'.'>', '', $configXML);
 
-    $proc = new XSLTProcessor();
-    $proc->importStyleSheet($xsl);
-    $procXML = $proc->transformToXML($doc);
-    return ($procXML);
-    // fwrite(fopen('./lintit.xml', 'w'), $procXML);
-    // echo exec("xmllint --format lintit.xml > lintfree 2> linterr");
-    // return file_get_contents('lintfree');
+    echo "---config XML---\n";
+    var_dump($configXML);
+    echo "-->\n";
+    return $configXML;
   }
 
-  public static function generateConfigForm()
+  // generate XML for displaying the calendar
+  public static function generateView()
   {
-    // basket + search
-    // $url = "http://schema.angstrom.uu.se/4DACTION/WebShowSearch/2/1-0?wv_type=3&wv_ts=20100724T151511X%3C%3C%3C%3C&wv_search=kanddv&wv_startWeek=1029&wv_stopWeek=1031&wv_first=0&wv_addObj=75598000&wv_delObj=&wv_obj1=69016002&wv_obj2=69016003";
+    echo "<!--\n";
+    //$objects = ...;
+    //if(is_array($objects) && count($objects) < 1)
+    //  return '<calendar><view /></calendar>';
 
-    // search
-    // $url = "http://schema.angstrom.uu.se/4DACTION/WebShowSearch/2/1-0?wv_type=3&wv_ts=20100724T174107X%3C%3C%3C%3C&wv_search=kanddv&wv_startWeek=1029&wv_stopWeek=1031&wv_first=0&wv_addObj=&wv_delObj=75598000&wv_obj1=75598000";
+    $wvObjects = array("73744000", "18962000");
+    $objStr = '';
 
-    // basket
-    // $url = "http://schema.angstrom.uu.se/4DACTION/WebShowSearch/2/1-0?wv_type=3&wv_ts=20100724T183603X%3C%3C%3C%3C&wv_bSearch=S%F6k&wv_startWeek=1029&wv_stopWeek=1031&wv_first=0&wv_addObj=&wv_delObj=&wv_obj1=96003&wv_obj2=69016002&wv_obj3=75598000";
+    $wvArgs = array();
+    $i = 1;
+    foreach($wvObjects as $objectID)
+    {
+      $wvArgs["wv_obj$i"] = $objectID;
+      $i++;
+    }
 
-    // plain form
-    $url = "http://schema.angstrom.uu.se/4DACTION/WebShowSearch/2/1";
+    $objStr = http_build_query($wvArgs, '', '&');
+    $url = "http://schema.angstrom.uu.se/4DACTION/WebShowSearchPrint/2/1?".
+      "wv_text=text&$objStr";
 
-    $doc = new DOMDocument();
-    $doc->loadHTMLFile($url);
+    echo "---objStr---\n";
+    var_dump($objStr);
+    echo "---url---\n";
+    var_dump($url);
+
+    $timeeditHTML = getRemoteFile($url);
+    $calendarXML =
+      self::transform($timeeditHTML, MODULE_DIR.'timeedit/calendar.xsl');
+
+    echo "---calendarXML---\n";
+    var_dump($calendarXML);
+
+    echo "-->\n";
+
+    //return '<calendar><view /></calendar>';
+    return $calendarXML;
+  }
+
+  // gather all timeedit arguments in an array
+  private static function filterGETParams()
+  {
+    $wvArgs = array();
+
+    // store timeedit variables from get in $wvArgs, unless they are objects,
+    // which are stored in $wvObjects
+    foreach($_GET as $key => $val)
+    {
+      // ignore objects in the request string
+      //if(preg_match('/wv_obj[1-9]+[0-9]*/', $key))
+      //  continue;
+
+      if(preg_match('/wv_[a-zA-Z0-9]+/', $key))
+        $wvArgs[$key] = $val;
+    }
+
+    return $wvArgs;
+  }
+
+  private static function manageObjects($wvArgs, $wvObjects)
+  {
+    if(isset($wvArgs['wv_addObj']) && $wvArgs['wv_addObj'] != '')
+    {
+      if(!in_array($wvArgs['wv_addObj'], $wvObjects))
+        $wvObjects[] = $wvArgs['wv_addObj'];
+    }
+
+    // delObj...
+
+    return $wvObjects;
+  }
+
+  private static function transform($htmlSrc, $xslPath)
+  {
+    $html = new DOMDocument();
+    $html->loadHTML($htmlSrc);
 
     $xsl = new DOMDocument();
-    $xsl->load('search.xsl');
+    $xsl->load($xslPath);
 
     $proc = new XSLTProcessor();
     $proc->importStyleSheet($xsl);
-    $procXML = ($proc->transformToXML($doc));
-    return ($procXML);
-    // fwrite(fopen('./lintit.xml', 'w'), $procXML);
-    // echo exec("xmllint --format lintit.xml > lintfree 2> linterr");
-    // return file_get_contents('lintfree');
+    $procXML = $proc->transformToXML($html);
+    $procXML = str_replace('<?xml version="1.0"?'.'>', '', $procXML);
+
+    return $procXML;
+  }
+
+  private static function augmentSearchDOM($searchDoc, $head, $name)
+  {
+    $nameElem = $searchDoc->createElement('name', $name);
+    $headElem = $searchDoc->createElement('head', $head);
+    $saveElem = $searchDoc->createElement('input');
+    $saveElem->setAttribute('type', 'checkbox');
+    $saveElem->setAttribute('id', 'save');
+    $saveElem->setAttribute('value', 'true');
+    $saveLabelElem = $searchDoc->createElement('label', 'Spara valda kurser');
+    $saveLabelElem->setAttribute('for', 'save');
+
+    $docElem = $searchDoc->getElementsByTagName('search')->item(0);
+    $docElem->appendChild($nameElem);
+    $docElem->appendChild($headElem);
+    $docElem->appendChild($saveElem);
+    $docElem->appendChild($saveLabelElem);
+
+    // bring the user back to the current page if it was set when the form was
+    // submitted
+    if(isset($_GET['page']) && $_GET['page'] !== '')
+    {
+      $pageElem = $searchDoc->createElement('input');
+      $pageElem->setAttribute('type', 'hidden');
+      $pageElem->setAttribute('name', 'page');
+      $pageElem->setAttribute('value', $_GET['page']);
+      $docElem->appendChild($pageElem);
+    }
+
+    // set the view again if it was set before the form was submitted
+    if(isset($_GET['view']) && $_GET['view'] !== '')
+    {
+      $viewElem = $searchDoc->createElement('input');
+      $viewElem->setAttribute('type', 'hidden');
+      $viewElem->setAttribute('name', 'view');
+      $viewElem->setAttribute('value', $_GET['view']);
+      $docElem->appendChild($viewElem);
+    }
   }
 }
 ?>
