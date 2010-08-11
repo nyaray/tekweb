@@ -69,10 +69,6 @@ XML;
       case 'toggler':
         $this->generateToggler(); break;
 
-      case '':
-        // no-op
-        break;
-
       default:
         $this->generateDefault();
     }
