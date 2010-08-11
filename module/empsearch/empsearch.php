@@ -15,7 +15,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 //FIXME: Just for testing reqs
 require_once '../../include/contentmodule.php';
 require_once '../../include/lib_ldap.php';
@@ -60,6 +59,12 @@ class EmpSearch extends ContentModule {
         }
 //Default form.
 //FIXME: action? and function!
+        if ($this->searchString != '')
+            $formValue = '<value>' . $this->searchString . '</value>';
+        else
+            $formValue = '';
+
+
         $this->form = <<< FORM
 <form>
   <name>search</name>
@@ -138,9 +143,9 @@ FORM;
                     $tmpStr .= $this->getEmployeeXML($employee, 'registeredaddress;lang-sv', 'visitingaddress', '$', ' ');
                     $tmpStr .= $this->getEmployeeXML($employee, 'roomnumber', 'roomnumber');
                     $tmpStr .= $this->getEmployeeXML($employee, 'mail', 'mail');
-                    $tmpStr .= $this->getEmployeeXML($employee, 'telephonenumber', 'phonenumber',' ', '');
-                    $tmpStr .= $this->getEmployeeXML($employee, 'mobile', 'mobilenumber',' ', '');
-                    $tmpStr .= $this->getEmployeeXML($employee, 'facsimiletelephonenumber', 'faxnumber',' ', '');
+                    $tmpStr .= $this->getEmployeeXML($employee, 'telephonenumber', 'phonenumber', ' ', '');
+                    $tmpStr .= $this->getEmployeeXML($employee, 'mobile', 'mobilenumber', ' ', '');
+                    $tmpStr .= $this->getEmployeeXML($employee, 'facsimiletelephonenumber', 'faxnumber', ' ', '');
                     $tmpStr .= '</employee>' . "\n";
                 }
                 $tmpStr .= '</employeelist>';
@@ -165,5 +170,7 @@ FORM;
             $this->contentXML = '<?xml version="1.0" encoding="utf-8"?>' . "\n"
                     . '<section>' . "\n" . $this->form . "\n" . '</section>';
     }
+
 }
+
 ?>

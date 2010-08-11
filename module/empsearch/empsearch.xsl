@@ -84,8 +84,9 @@
                             <li class="phonenumber">
                                 <a>
                                     <xsl:attribute name="href">
-                                        <xsl:text>tel:</xsl:text>
-                                        <xsl:value-of select="phonenumber"/>
+                                        <xsl:text>tel:0</xsl:text>
+                                        <xsl:value-of select="substring(phonenumber, 4)"/>
+<!--                                        <xsl:value-of select="phonenumber"/>-->
                                     </xsl:attribute>
                                     <xsl:text>TEL: 0</xsl:text>
                                     <xsl:value-of select="substring(phonenumber, 4, 2)"/>
@@ -100,8 +101,10 @@
                             <li class="mobilenumber">
                                 <a>
                                     <xsl:attribute name="href">
-                                        <xsl:text>tel:</xsl:text>
-                                        <xsl:value-of select="mobilenumber"/>
+                                        <xsl:text>tel:0</xsl:text>
+                                        <xsl:value-of select="substring(mobilenumber, 4)"/>
+<!--                                        <xsl:text>tel:</xsl:text>
+                                        <xsl:value-of select="mobilenumber"/>-->
                                     </xsl:attribute>
                                     <xsl:text>TEL: 0</xsl:text>
                                     <xsl:value-of select="substring(mobilenumber, 4, 2)"/>

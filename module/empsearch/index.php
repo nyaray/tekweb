@@ -9,7 +9,7 @@
         require_once 'empsearch.php';
         $empsearch = new EmpSearch(array('banan' => 45));
         $kul = $empsearch->getXML();
-//echo $kul;
+        //echo 'hurp' . $kul . 'hurp';
         $tmpDOM = new DOMDocument();
         $tmpDOM->loadXML($kul);
         $xsl = new DOMDocument();
