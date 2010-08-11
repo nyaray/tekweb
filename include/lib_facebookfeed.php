@@ -17,11 +17,22 @@ class FacebookFeedReader {
     //var_dump($json_output);
     
     foreach($json_output->data as $data) {
+      //var_dump($data);
+      date_default_timezone_set('Europe/Berlin');
+      
+      // if(isset($data->message)) {
+      //         echo hej;
+      //         $title = $data->message;
+      //       }
+      //       else {
+      //         $title = "";
+      //       }
       $i_array = array("type" => 1, 
-                       "title" => substr($data->created_time,0,10).": ".$data->message,
+                       "title" => $data->message,
                        "link" => "",
                        "description" => "",
-                       "updated" => substr($data->updated_time,0,10));
+                       "pubDate" => date(DateTime::RFC822,strtotime(substr($data->created_time,0,19))),
+                       "updated" => date(DateTime::RFC822,strtotime(substr($data->updated_time,0,19))));
       array_push($this->FeedArray, $i_array);
     }
   }

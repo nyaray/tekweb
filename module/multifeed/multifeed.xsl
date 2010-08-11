@@ -15,9 +15,10 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <div>
     <!-- <xsl:value-of select="./body" /> -->
     <xsl:for-each select="../multifeed/body/item">
-      <xsl:sort select="substring(./title,1,4)" data-type="number" order="descending" />
-      <xsl:sort select="substring(./title,6,2)" data-type="number" order="descending" />
-      <xsl:sort select="substring(./title,9,2)" data-type="number" order="descending" />
+      <xsl:sort select="substring(./pubDate,1,4)" data-type="number" order="descending" />
+      <xsl:sort select="substring(./pubDate,6,2)" data-type="number" order="descending" />
+      <xsl:sort select="substring(./pubDate,9,2)" data-type="number" order="descending" />
+      <!-- <xsl:sort select="substring(./title,1,5)" /> -->
       <br />
       <xsl:apply-templates select="." />
     </xsl:for-each>
@@ -48,6 +49,10 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
       <xsl:value-of select="./author" />
     </span>
     <xsl:text> @ </xsl:text>
+    <xsl:if test="pubDate">
+      <xsl:value-of select="./pubDate" />
+      <xsl:text>: </xsl:text>
+    </xsl:if>
     <xsl:choose>
       <xsl:when test="link">
       <a>

@@ -55,6 +55,7 @@ class MultiFeed extends ContentModule
     
     $this->feeds = ($settings['feeds'] != '')?
       $settings['feeds']: '';
+      //var_dump($this->feeds);
       
     $this->getFeeds();
   }
@@ -72,7 +73,7 @@ class MultiFeed extends ContentModule
               "author" => $src['author'],
               "feed" => $this->reader->Universal_Reader($src['src'])
               );
-          // var_dump($this->feedArray);
+          // var_dump($this->resultArray);
           break;
         case 'facebook':
           $this->reader = new FacebookFeedReader();
@@ -81,7 +82,7 @@ class MultiFeed extends ContentModule
               "author" => $src['author'],
               "feed" => $this->reader->Read($src['src'])
               );
-          //var_dump($this->feedArray);
+              //var_dump($this->resultArray[$count]);
           break;
         default:
           # code...
@@ -89,6 +90,7 @@ class MultiFeed extends ContentModule
       }
       $count++;
     }
+    //var_dump($this->resultArray);
   }
 
   protected function generateDefault() 
@@ -121,6 +123,27 @@ class MultiFeed extends ContentModule
         }
         if($item["description"] != "") {
           $this->body .= "<desc>".$item["description"]."</desc>";
+        }
+        if($item["pubDate"] != "") {
+          $date = explode(' ',$item["pubDate"]);
+          $translateMonth = array("Jan" => '01',
+                                  "Feb" => '02',
+                                  "Mar" => '03',
+                                  "Apr" => '04',
+                                  "May" => '05',
+                                  "Jun" => '06',
+                                  "Jul" => '07',
+                                  "Aug" => '08',
+                                  "Sep" => '09',
+                                  "Oct" => '10',
+                                  "Nov" => '11',
+                                  "Dec" => '12');
+          //var_dump($date);
+          $this->body .= "<pubDate>";
+          $this->body .= $date[3].'-';
+          $this->body .= $translateMonth[$date[2]].'-';
+          $this->body .= $date[1];
+          $this->body .= "</pubDate>";
         }
         $this->body .= "</item>";
       }

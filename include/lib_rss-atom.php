@@ -30,7 +30,7 @@ class RssAtomReader {
     "subTitle"=>"description",
     "summary"=>"description",
     "lastBuildDate"=>"updated",
-    "pubDate"=>"updated");
+    "pubDate"=>"pubDate");
 
   protected $Universal_Doc = false;
 
