@@ -20,6 +20,9 @@
 // ========
 // = Init =
 // ========
+ob_start();
+session_start();
+
 define('in_index', true);
 require_once '../conf/config.php';
 
@@ -54,9 +57,6 @@ function __autoload($name)
 // Require core functionality
 require_once INCLUDE_DIR.'core.php';
 
-ob_start();
-session_start();
-
 $rootDoc = new DOMDocument();
 
 // FIXME: What if we can't load the document at the given location?
@@ -88,7 +88,7 @@ if (isset($_GET['page']))
     {
       $config = parseItem($item);
       $module = initModule($config);
-
+      $module->setMode("default");
       $moduleXML = '<?xml version="1.0" encoding="utf-8" ?>' . "\n".
         $module->getXML();
 

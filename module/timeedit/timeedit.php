@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require_once INCLUDE_DIR.'core.php';
+//require_once INCLUDE_DIR.'core.php';
 
 /**
 * 
@@ -35,10 +35,6 @@ class TimeEdit extends ContentModule
       $name = $settings['name'];
 
       $this->name = "<name>$name</name>";
-      if(isset($_GET['page']) && $_GET['page'] == $name)
-      {
-        
-      }
     }
 
     // FIXME: failout or default value if head is omitted?
@@ -48,134 +44,69 @@ class TimeEdit extends ContentModule
     $this->contentXML = <<< XML
 <section>
   <timeedit>
-    $this->name
-    $this->head
+    <view>
+      $this->name
+      $this->head
+    </view>
   </timeedit>
 </section>
 XML;
   }
 
-  public function getXML()
+  protected function generateDefault()
   {
     $doc = new DOMDocument();
 
-    if($this->mode == 'toggler' ||
-       !isset($_GET['view']) ||
-       $_GET['view'] != 'config')
+    if(isset($_GET['view']) &&
+       $_GET['view'] == 'config' &&
+       $this->mode == 'default')
     {
-      $this->generateViewXML($doc);
+      $this->generateSearchDoc($doc);
     }
     else
     {
-      $this->generateConfigXML($doc);
+      $this->generateViewDoc($doc);
     }
 
-    // echo "---timeedit generated XML---\n";
-    // var_dump($doc->saveXML());
-
-    $template = ($this->mode == 'toggler')? 'toggler': 'default';
     $modXSL = new DOMDocument();
-    $modXSL->load(MODULE_DIR."timeedit/$template.xsl");
+    $modXSL->load(MODULE_DIR."timeedit/default.xsl");
     $proc = new XSLTProcessor();
     $proc->importStyleSheet($modXSL);
     $this->contentXML = $proc->transformToXML($doc);
-    // $this->contentXML = $doc->saveXML();
-
-    // var_dump($doc->documentElement->nodeName);
-    // var_dump($this->contentXML);
-
-    // echo "---timeedit transformed XML ($template)---\n";
-    // var_dump($this->contentXML);
-
-    // the ... 1.0"'.'>' ... is because the line otherwise messes up the
-    // syntax highlighting in some text editors
     $this->contentXML =
       str_replace('<?xml version="1.0"?'.'>', '', $this->contentXML);
-    // echo "---timeedit returning---\n";
-    // var_dump($this->contentXML);
-    return ($this->contentXML);
+
+    // print contentXML to see what's going on
+    //echo "---contentXML---\n";
+    //var_dump($this->contentXML);
   }
 
-  protected function generateConfigXML($doc)
+  protected function generateToggler()
   {
-    $doc->loadXML(LibTimeEdit::generateConfigForm($this->settings['head']));
-    // echo "---LibTimeEdit::generateConfigForm()---\n";
-    // var_dump($doc->saveXML());
+    $this->generateDefault();
 
-    // FIXME: Check that this is what we want to look for
-    if(isset($_GET['action']) /*&& $_GET['action'] == 'save'*/)
-    {
-      $this->saveObjects($doc);
-    }
-
-    // add "save button"
-    $saveElem = $doc->createElement('input', '');
-    $saveElem->setAttribute('type', 'submit');
-    $saveElem->setAttribute('name', 'wv_bSearch');
-    $saveElem->setAttribute('value', 'Spara');
-
-    $docElem = $doc->getElementsByTagName('search')->item(0);
-    $docElem->appendChild($saveElem);
-    // echo "---LibTimeEdit::generateConfigXML()---\n";
-    // var_dump($doc->saveXML());
+    /*
+    $doc = new DOMDocument();
+    ...
+     */
   }
 
-  protected function generateViewXML($doc)
+  protected function generateTeaser()
   {
-    if(isset($_COOKIE['timeedit.objects']) &&
-      $_COOKIE['timeedit.objects'] != '')
-    {
-      $objects = json_decode($_COOKIE['timeedit.objects']);
-      $calXML = LibTimeEdit::generateCalendar($objects);
-      $doc->loadXML($calXML);
-    }
-    else
-    {
-      $doc->loadXML('<calendar></calendar>');
-    }
-
-    // echo "---generateViewXML()---\n";
-    // var_dump($doc->saveXML());
-
-    // inject conf-link
-    $name = (isset($this->settings['name']))?
-      $this->settings['name']: '';
-    $confElem = $doc->createElement('conf', "?page=$name&amp;view=config");
-
-    $viewList = $doc->getElementsByTagName('view')->item(0);
-    if($viewList != null && $viewList->length > 0)
-    {
-      $docElem = $viewList->item(0);
-      $docElem->appendChild($confElem);
-    }
-    else
-    {
-      $docElem = $doc->documentElement;
-      $docElem->appendChild($confElem);
-    }
-    // echo "---generateViewXML()---\n";
-    // var_dump($doc->saveXML());
+    $this->generateDefault();
   }
 
-  protected function saveObjects($doc)
+  protected function generateSearchDoc(&$doc)
   {
-    // echo "IMMA CHARGIN' MA SAVINS!!\n";
+    $docXML = LibTimeEdit::generateSearch(
+      $this->settings['name'], $this->settings['head']);
+    $doc->loadXML($docXML);
+  }
 
-    $objects = array();
-    foreach($_GET as $key => $val)
-    {
-      if(preg_match('/wv_obj[0-9]+/', $key))
-      {
-        $objects[$key] = $val;
-      }
-    }
-
-    // echo "IMMA SAVING THE SETTINGS\n";
-    setcookie('timeedit.objects', json_encode($objects));
-    $noticeElem = $doc->createElement('notice', 'Sparade kurserna');
-    $docElem = $doc->documentElement;
-    $docElem->appendChild($noticeElem);
-
+  protected function generateViewDoc($doc)
+  {
+    $docXML = LibTimeEdit::generateView();
+    $doc->loadXML($docXML);
   }
 }
 ?>

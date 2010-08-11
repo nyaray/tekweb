@@ -15,83 +15,182 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+
+// This static class acts as a proxy for the timeedit server at
+// schema.angstrom.uu.se, with some suitable additions
 class LibTimeEdit
 {
-  public static function generateCalendar($objects)
+  // generate XML for the config/search form
+  public static function generateSearch($name, $head)
   {
-    if(count($objects) < 1)
-      return '<calendar />';
+    echo "<!--\n";
 
-    $objStr = 'wv_obj1='.$objects[0];
+    // get the timeedit arguments
+    $wvArgs = self::filterGETParams();
 
-    $objectCount = count($objects);
-    for($i = 1; $i < $objectCount; $i++)
+    //$wvObjects = (isset($_COOKIE['timeeditobjects']) &&
+    //  $_COOKIE['timeeditobjects'] != '')?
+    //  explode(',', $_COOKIE['timeeditobjects']): array();
+    //$wvObjects = array('29123000', '991000');
+    //$wvObjects = self::manageObjects($wvArgs, $wvObjects);
+
+    $i = 1;
+    foreach($wvObjects as $objectID)
     {
-      $object = $objects[$i];
-      $num = $i+1;
-
-      $objStr = "&wv_obj$num=$object";
+      $wvArgs["wv_obj$i"] = $objectID;
+      $i++;
     }
 
+    $wvStr = http_build_query($wvArgs, '', '&');
+    
+    $url = "http://schema.angstrom.uu.se/4DACTION/WebShowSearch/2/1?$wvStr";
+    echo "---url---\n";
+    var_dump($url);
+
+    $timeeditHTML = getRemoteFile($url);
+    $searchXML = self::transform($timeeditHTML, MODULE_DIR.'timeedit/search.xsl');
+    $searchDoc = new DOMDocument();
+    $searchDoc->loadXML($searchXML);
+
+    // augment DOM document
+    self::augmentSearchDOM($searchDoc, $head, $name);
+
+    $configXML = $searchDoc->saveXML();
+    $configXML = str_replace('<?xml version="1.0"?'.'>', '', $configXML);
+
+    echo "---config XML---\n";
+    var_dump($configXML);
+    echo "-->\n";
+    return $configXML;
+  }
+
+  // generate XML for displaying the calendar
+  public static function generateView()
+  {
+    echo "<!--\n";
+    //$objects = ...;
+    //if(is_array($objects) && count($objects) < 1)
+    //  return '<calendar><view /></calendar>';
+
+    $wvObjects = array("73744000", "18962000");
+    $objStr = '';
+
+    $wvArgs = array();
+    $i = 1;
+    foreach($wvObjects as $objectID)
+    {
+      $wvArgs["wv_obj$i"] = $objectID;
+      $i++;
+    }
+
+    $objStr = http_build_query($wvArgs, '', '&');
     $url = "http://schema.angstrom.uu.se/4DACTION/WebShowSearchPrint/2/1?".
       "wv_text=text&$objStr";
 
-    $doc = new DOMDocument();
-    $doc->loadHTMLFile($url);
+    echo "---objStr---\n";
+    var_dump($objStr);
+    echo "---url---\n";
+    var_dump($url);
 
-    $xsl = new DOMDocument();
-    $xsl->load(MODULE_DIR.'timeedit/calendar.xsl');
+    $timeeditHTML = getRemoteFile($url);
+    $calendarXML =
+      self::transform($timeeditHTML, MODULE_DIR.'timeedit/calendar.xsl');
 
-    $proc = new XSLTProcessor();
-    $proc->importStyleSheet($xsl);
-    $procXML = $proc->transformToXML($doc);
+    echo "---calendarXML---\n";
+    var_dump($calendarXML);
 
-    // echo "---calXML---\n";
-    // var_dump($procXML);
-    return ($procXML);
+    echo "-->\n";
+
+    //return '<calendar><view /></calendar>';
+    return $calendarXML;
   }
 
-  public static function generateConfigForm($head)
+  // gather all timeedit arguments in an array
+  private static function filterGETParams()
   {
-    $wvStr = '';
-    $firstSet = false;
+    $wvArgs = array();
+
+    // store timeedit variables from get in $wvArgs, unless they are objects,
+    // which are stored in $wvObjects
     foreach($_GET as $key => $val)
     {
-      if(preg_match('/wv_[a-z0-9]+/', $key))
-      {
-        if($firstSet)
-        {
-          $wvStr .= "&$key=$val";
-        }
-        else
-        {
-          $wvStr .= "$key=$val";
-          $firstSet = true;
-        }
-      }
+      // ignore objects in the request string
+      //if(preg_match('/wv_obj[1-9]+[0-9]*/', $key))
+      //  continue;
+
+      if(preg_match('/wv_[a-zA-Z0-9]+/', $key))
+        $wvArgs[$key] = $val;
     }
 
-    $url = "http://schema.angstrom.uu.se/4DACTION/WebShowSearch/2/1?$wvStr";
+    return $wvArgs;
+  }
 
-    $xml = new DOMDocument();
-    $xml->loadHTMLFile($url);
+  private static function manageObjects($wvArgs, $wvObjects)
+  {
+    if(isset($wvArgs['wv_addObj']) && $wvArgs['wv_addObj'] != '')
+    {
+      if(!in_array($wvArgs['wv_addObj'], $wvObjects))
+        $wvObjects[] = $wvArgs['wv_addObj'];
+    }
+
+    // delObj...
+
+    return $wvObjects;
+  }
+
+  private static function transform($htmlSrc, $xslPath)
+  {
+    $html = new DOMDocument();
+    $html->loadHTML($htmlSrc);
 
     $xsl = new DOMDocument();
-    $xsl->load(MODULE_DIR.'timeedit/search.xsl');
+    $xsl->load($xslPath);
 
     $proc = new XSLTProcessor();
     $proc->importStyleSheet($xsl);
-    $doc = $proc->transformToDoc($xml);
+    $procXML = $proc->transformToXML($html);
+    $procXML = str_replace('<?xml version="1.0"?'.'>', '', $procXML);
 
-    $headElem = $doc->createElement('head', $head);
-    $searchNode = $doc->getElementsByTagName('search')->item(0);
-    $searchNode->appendChild($headElem);
+    return $procXML;
+  }
 
-    $confXML = $doc->saveXML();
+  private static function augmentSearchDOM($searchDoc, $head, $name)
+  {
+    $nameElem = $searchDoc->createElement('name', $name);
+    $headElem = $searchDoc->createElement('head', $head);
+    $saveElem = $searchDoc->createElement('input');
+    $saveElem->setAttribute('type', 'checkbox');
+    $saveElem->setAttribute('id', 'save');
+    $saveElem->setAttribute('value', 'true');
+    $saveLabelElem = $searchDoc->createElement('label', 'Spara valda kurser');
+    $saveLabelElem->setAttribute('for', 'save');
 
-    // echo "---generateConfigForm XML---\n";
-    // var_dump($confXML);
-    return $confXML;
+    $docElem = $searchDoc->getElementsByTagName('search')->item(0);
+    $docElem->appendChild($nameElem);
+    $docElem->appendChild($headElem);
+    $docElem->appendChild($saveElem);
+    $docElem->appendChild($saveLabelElem);
+
+    // bring the user back to the current page if it was set when the form was
+    // submitted
+    if(isset($_GET['page']) && $_GET['page'] !== '')
+    {
+      $pageElem = $searchDoc->createElement('input');
+      $pageElem->setAttribute('type', 'hidden');
+      $pageElem->setAttribute('name', 'page');
+      $pageElem->setAttribute('value', $_GET['page']);
+      $docElem->appendChild($pageElem);
+    }
+
+    // set the view again if it was set before the form was submitted
+    if(isset($_GET['view']) && $_GET['view'] !== '')
+    {
+      $viewElem = $searchDoc->createElement('input');
+      $viewElem->setAttribute('type', 'hidden');
+      $viewElem->setAttribute('name', 'view');
+      $viewElem->setAttribute('value', $_GET['view']);
+      $docElem->appendChild($viewElem);
+    }
   }
 }
 ?>

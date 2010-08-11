@@ -31,8 +31,8 @@ abstract class ContentModule
   {
     // FIXME: Decide on this behaviour
     // // Is this The Right Thing(TM)?
-    // $this->name = 'anon';
-    // $this->mode = 'default';
+    $this->name = 'anon';
+    $this->mode = 'default';
 
     $this->contentXML = <<< XML
 <section>

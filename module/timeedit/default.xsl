@@ -35,11 +35,11 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   </weekyear>
 </xsl:template>
 
-<xsl:template match="event">
+<!-- <xsl:template match="event">
   <event>
     <xsl:copy-of select="*" />
   </event>
-</xsl:template>
+</xsl:template> -->
 
 
 <!-- Viewing the search form -->

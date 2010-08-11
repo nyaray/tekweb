@@ -145,7 +145,94 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template match="section/timeedit/search">
 <div>
   <xsl:attribute name="id"><xsl:value-of select="name" /></xsl:attribute>
-  <xsl:copy-of select="@*|node()" />
+  <h1><xsl:value-of select="head" /></h1>
+  <h2>Välj kurser</h2>
+
+  <!-- <xsl:apply-templates select="form/instructions" /> -->
+  <form>
+    <xsl:attribute name="method">
+      <xsl:value-of select="form/@method" />
+    </xsl:attribute>
+    <xsl:attribute name="name">timeeditform</xsl:attribute>
+
+    <xsl:copy-of select="input[@name = 'view' or @name = 'page']" />
+    <xsl:apply-templates select="form/basket" />
+    <xsl:apply-templates select="form/details" />
+    <xsl:copy-of select="label[@for = 'save']" />
+    <xsl:copy-of select="input[@id = 'save']" />
+    <xsl:apply-templates select="form/searchresult" />
+    <!-- <xsl:copy-of select="form/" /> -->
+  </form>
+
 </div>
+</xsl:template>
+
+<xsl:template match="basket">
+<div>
+  <xsl:attribute name="class">timeeditbasket</xsl:attribute>
+
+  <xsl:copy-of select="input" />
+  <div><xsl:value-of select="head" /></div>
+  <xsl:if test="item">
+  <ul>
+    <xsl:attribute name="class">timeeditbasketitems</xsl:attribute>
+    <xsl:for-each select="item">
+      <li>
+        <xsl:attribute name="class">timeeditbasketitem</xsl:attribute>
+
+        <xsl:copy-of select="input" />
+        <xsl:copy-of select="a" />
+        <xsl:value-of select="name/long" />
+      </li>
+    </xsl:for-each>
+  </ul>
+  </xsl:if>
+</div>
+</xsl:template>
+
+<xsl:template match="details">
+<div id="timeeditdetails">
+  <xsl:copy-of select="@*|node()" />
+  <!--<xsl:copy-of select="//input[@name= 'save']" />-->
+</div>
+</xsl:template>
+
+<xsl:template match="searchresult">
+<div>
+  <xsl:attribute name="class">
+    timeeditsearchresult
+  </xsl:attribute>
+
+  <div><xsl:value-of select="description/b" /></div>
+  
+  <xsl:if test="results/result">
+  <ul>
+    <xsl:for-each select="results/result">
+      <li style="text-align: left">
+        <xsl:attribute name="class">timeeditbasketitem</xsl:attribute>
+
+        <xsl:copy-of select="a" />
+        <xsl:value-of select="name/long" />
+        <!--(<xsl:value-of select="name/short" />)-->
+      </li>
+    </xsl:for-each>
+  </ul>
+  </xsl:if>
+  
+</div>
+</xsl:template>
+
+<xsl:template match="instructions">
+  <ul>
+    <li>
+      <h2>Instruktioner</h2>
+    </li>
+  <xsl:for-each select="instruction">
+    <li>
+        <xsl:value-of select="number" />
+        <xsl:value-of select="desc" />
+    </li>
+  </xsl:for-each>
+  </ul>
 </xsl:template>
 </xsl:stylesheet>
