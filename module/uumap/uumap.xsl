@@ -44,7 +44,7 @@
                     <xsl:attribute name="for">uuMarkers</xsl:attribute>
                     <img>
                       <xsl:attribute name="class">MarkerCheckBox</xsl:attribute>
-                      <xsl:attribute name="src">./gfx/icons/uupoint.png</xsl:attribute>
+                      <xsl:attribute name="src">./gfx/module/uumap/markers/uupoint.png</xsl:attribute>
                     </img>
                   </label>
                   <input type="checkbox">
@@ -60,7 +60,7 @@
                     <xsl:attribute name="for">utnMarkers</xsl:attribute>
                     <img>
                       <xsl:attribute name="class">MarkerCheckBox</xsl:attribute>
-                      <xsl:attribute name="src">./gfx/icons/utnpoint.png</xsl:attribute>
+                      <xsl:attribute name="src">./gfx/module/uumap/markers/utnpoint.png</xsl:attribute>
                     </img>
                   </label>
                   <input type="checkbox">
@@ -76,7 +76,7 @@
                     <xsl:attribute name="for">naMarkers</xsl:attribute>
                     <img>
                       <xsl:attribute name="class">MarkerCheckBox</xsl:attribute>
-                      <xsl:attribute name="src">./gfx/icons/nation.png</xsl:attribute>
+                      <xsl:attribute name="src">./gfx/module/uumap/markers/nation.png</xsl:attribute>
                     </img>
                   </label>                    
                   <input type="checkbox">
@@ -91,7 +91,7 @@
                     <xsl:attribute name="for">busMarkers</xsl:attribute>
                     <img>
                       <xsl:attribute name="class">MarkerCheckBox</xsl:attribute>
-                      <xsl:attribute name="src">./gfx/icons/buspoint.png</xsl:attribute>
+                      <xsl:attribute name="src">./gfx/module/uumap/markers/buspoint.png</xsl:attribute>
                     </img>
                   </label>
                   <input type="checkbox">
