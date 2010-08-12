@@ -447,6 +447,9 @@ $(document).ready(function () {
         map.setZoom(markerZoom);
         google.maps.event.trigger(map, 'resize');
         map.setCenter(marker.getPosition());
+        var target = $("#uumap > div");
+        var height = target.children(":first").height();
+        target.height(height);
       });
       //This is for the address field, its displayed when the addressfield is empty and unselected 
       $("#uuMapModule #DirectionsAddress").focus(function()
@@ -460,7 +463,7 @@ $(document).ready(function () {
         {
           $("#uuMapModule #DirectionsAddress").val(AddressField);
           $("#uuMapModule #DirectionsAddress").css('color','#b5b5b5');
-        }
+        
       });
 
       //This function will hide and show markers of a specific type
@@ -530,9 +533,7 @@ $(document).ready(function () {
 
           }
         }
-        var target = $("#uumap > div");
-        var height = target.children(":first").height();
-        target.height(height);
+
       });
       //Click-event for obtaining your location by W3C's GeoLocation 
       //when pressing Geolocation-button
