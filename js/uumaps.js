@@ -449,7 +449,7 @@ $(document).ready(function () {
         map.setCenter(marker.getPosition());
         var target = $("#uumap > div");
         var height = target.children(":first").height();
-        target.height(height);
+        target.height(height+5);
       });
       //This is for the address field, its displayed when the addressfield is empty and unselected 
       $("#uuMapModule #DirectionsAddress").focus(function()
