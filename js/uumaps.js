@@ -420,7 +420,16 @@ $(document).ready(function () {
           {
             $("#uuMapModule #CampusOverview").css('display', 'block');
             $("#uuMapModule #Information").css("display","block");
-            $("#uuMapModule #CampusOverview div").html("<img src='gfx/module/uumap/cmaps/" + CampusMaps[ID] + "'/>");
+            // $("#uuMapModule #CampusOverview div").html("<img src='gfx/module/uumap/cmaps/" + CampusMaps[ID] + "'/>");
+            img = new Image();
+            img.src = "gfx/module/uumap/cmaps/" + CampusMaps[ID];
+            $(img).load(function()
+            {
+              $("#uuMapModule #CampusOverview div").html(this);
+              var target = $("#uumap > div");
+              var height = target.children(":first").height();
+              target.height(height+10);
+            });
           }
         }
         else if(utnMarkers[ID] != null)
@@ -449,7 +458,7 @@ $(document).ready(function () {
         map.setCenter(marker.getPosition());
         var target = $("#uumap > div");
         var height = target.children(":first").height();
-        target.height(height+5);
+        target.height(height+10);
       });
       //This is for the address field, its displayed when the addressfield is empty and unselected 
       $("#uuMapModule #DirectionsAddress").focus(function()
