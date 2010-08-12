@@ -133,7 +133,7 @@ function createMarker(markLocation, type) {
   var zindex;
   if (type == "University") {
     Click=true;
-    NewIcon = "../gfx/module/uumap/markers/uupoint.png";
+    NewIcon = "gfx/module/uumap/markers/uupoint.png";
     zindex:300;
   }
   else if (type == "MyPos") {
@@ -142,15 +142,15 @@ function createMarker(markLocation, type) {
     zindex=1000;
   }
   else if (type == "utn") {
-    NewIcon = "../gfx/module/uumap/markers/utnpoint.png";
+    NewIcon = "gfx/module/uumap/markers/utnpoint.png";
     zindex=100;
   }
   else if (type == "nation") {
-    NewIcon = "../gfx/module/uumap/markers/nation.png";
+    NewIcon = "gfx/module/uumap/markers/nation.png";
     zindex=7;
   }
   else if (type == "bus"){
-    NewIcon = "../gfx/module/uumap/markers/buspoint.png";
+    NewIcon = "gfx/module/uumap/markers/buspoint.png";
     zindex=1;
   }
   else
@@ -348,7 +348,7 @@ $(document).ready(function () {
           //put another marker type here
         }
       });
-      uuMarkers['SLU'].setIcon('../gfx/module/uumap/markers/slu.png'); //I'm setting the icon manually because there's only one place that is interesting for Teknat Students
+      uuMarkers['SLU'].setIcon('gfx/module/uumap/markers/slu.png'); //I'm setting the icon manually because there's only one place that is interesting for Teknat Students
       myMarker = createMarker(defaultLocation, "MyPos");
       marker = createMarker(defaultLocation, "");
       
@@ -420,7 +420,7 @@ $(document).ready(function () {
           {
             $("#uuMapModule #CampusOverview").css('display', 'block');
             $("#uuMapModule #Information").css("display","block");
-            $("#uuMapModule #CampusOverview div").html("<img src='../gfx/module/uumap/cmaps/" + CampusMaps[ID] + "'/>");
+            $("#uuMapModule #CampusOverview div").html("<img src='gfx/module/uumap/cmaps/" + CampusMaps[ID] + "'/>");
           }
         }
         else if(utnMarkers[ID] != null)
