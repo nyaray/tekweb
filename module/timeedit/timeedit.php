@@ -15,52 +15,80 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// require_once INCLUDE_DIR.'lib_timeedit';
-require_once INCLUDE_DIR.'core.php';
+//require_once INCLUDE_DIR.'core.php';
 
 /**
 * 
 */
 class TimeEdit extends ContentModule
 {
-  private $calendarData;
+  protected $view;
 
   function __construct($settings)
   {
     parent::__construct();
     $this->settings = $settings;
 
-    $this->name = (isset($settings['name']) && $settings['name'] != '')?
-      "<name>$settings[name]</name>": '';
+    // FIXME: failout when name is not set
+    if(isset($settings['name']) && $settings['name'] != '')
+    {
+      $name = $settings['name'];
 
+      $this->name = "<name>$name</name>";
+    }
+
+    // FIXME: failout or default value if head is omitted?
     $this->head = (isset($settings['head']) && $settings['head'] != '')?
       "<head>$settings[head]</head>": '';
 
-    $this->calendarData = <<< XML
+    $this->contentXML = <<< XML
 <section>
-  <timeedit />
+  <timeedit>
+    <view>
+      $this->name
+      $this->head
+    </view>
+  </timeedit>
 </section>
 XML;
   }
 
   protected function generateDefault()
   {
-    $this->generateCalendarXML();
-    $doc = $this->transformCalendarData(
-      file_get_contents(MODULE_DIR.'timeedit/default.xsl'));
+    $doc = new DOMDocument();
 
-    $headNode = $doc->getElementsByTagName("head")->item(0);
-    // var_dump($headNode->nodeName);
-    ($headNode->nodeValue = $this->settings['head']);
+    if(isset($_GET['view']) &&
+       $_GET['view'] == 'config' &&
+       $this->mode == 'default')
+    {
+      $this->generateSearchDoc($doc);
+    }
+    else
+    {
+      $this->generateViewDoc($doc);
+    }
 
-    $this->contentXML = $doc->saveXML();
+    $modXSL = new DOMDocument();
+    $modXSL->load(MODULE_DIR."timeedit/default.xsl");
+    $proc = new XSLTProcessor();
+    $proc->importStyleSheet($modXSL);
+    $this->contentXML = $proc->transformToXML($doc);
     $this->contentXML =
-      str_replace('<?xml version="1.0"?>', '', $this->contentXML);
+      str_replace('<?xml version="1.0"?'.'>', '', $this->contentXML);
+
+    // print contentXML to see what's going on
+    //echo "---contentXML---\n";
+    //var_dump($this->contentXML);
   }
 
   protected function generateToggler()
   {
     $this->generateDefault();
+
+    /*
+    $doc = new DOMDocument();
+    ...
+     */
   }
 
   protected function generateTeaser()
@@ -68,27 +96,17 @@ XML;
     $this->generateDefault();
   }
 
-  protected function transformCalendarData($template)
+  protected function generateSearchDoc(&$doc)
   {
-    $calendarDoc = new DOMDocument();
-    $calendarDoc->loadXML($this->calendarData);
-
-    $xsl = new DOMDocument();
-    $xsl->loadXML($template);
-
-    $proc = new XSLTProcessor();
-    $proc->importStyleSheet($xsl);
-    return $proc->transformToDoc($calendarDoc);
+    $docXML = LibTimeEdit::generateSearch(
+      $this->settings['name'], $this->settings['head']);
+    $doc->loadXML($docXML);
   }
 
-  protected function generateCalendarXML()
+  protected function generateViewDoc($doc)
   {
-    $objects = array(73744000, 18962000);
-    $startWeek = "1010";
-    $stopWeek = "1050";
-
-    $this->calendarData =
-      LibTimeEdit::generateCalendar($objects, $startWeek, $stopWeek);
+    $docXML = LibTimeEdit::generateView();
+    $doc->loadXML($docXML);
   }
 }
 ?>

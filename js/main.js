@@ -15,6 +15,23 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 $(document).ready(function() {
+  var currScreenWidth = screen.width;
+  
+  // Detect whether device supports orientationchange event, otherwise fall back to
+  // the resize event.
+  var supportsOrientationChange = "onorientationchange" in window,
+      orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
+
+  window.addEventListener(orientationEvent, function() {
+      if((screen.width != currScreenWidth) && active) {
+        currScreenWidth = screen.width;
+        //alert('HOLY ROTATING SCREENS BATMAN:' + window.orientation + " " + screen.width + "\n"+orientationEvent);
+        active.prev().click(); // closes the active toggler
+        active.prev().click(); // opens it again (recalculating it's position)
+      }
+  }, false);
+  
+  
   var active;
 
   //$('.toggler .togglercontent').addClass('hidden');
@@ -31,7 +48,7 @@ $(document).ready(function() {
       var left = $(this).parent().position().left;
       p.children(':first').css('margin-left',-left);
       
-      var height = p.children(':first').height();
+      var height = p.children(':first').height() + 10;
       p.height(height);
       active = p;                     // set active to the clicked
     } else {                        // if p is already visible
