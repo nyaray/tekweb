@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-//FIXME: Just for testing reqs
+
 require_once '../../include/contentmodule.php';
 require_once '../../include/lib_ldap.php';
 
@@ -28,25 +28,19 @@ class EmpSearch extends ContentModule {
     protected $searchResult = null;
     protected $numToShow = null;
     protected $form = '';
+    protected $nonEmptySearchStr = false;
 
     public function __construct($settings) {
         parent::__construct();
-//FIXME local $tmpSettings should be removed
-        $tmpSettings = array('hosturl' => 'ldap.user.uu.se',
-            'hostport' => '389',
-            'basedn' => 'cn=People,dc=uu,dc=se',
-            'numentriestoshow' => '20',
-            'ldapattribs' => 'givenname sn mail telephonenumber mobile facsimiletelephonenumber registeredaddress;lang-sv department;lang-sv title;lang-sv roomnumber',
-            'numtoshow' => '20', 'maxetoget' => '500');
-//FIXME $tmpSettings
-        $this->settings = $tmpSettings;
 
-        $this->ldap = new LDAP($this->settings['hosturl'],
-                        $this->settings['hostport'], $this->settings['basedn'],
-                        $this->settings['ldapattribs'],
-                        $this->settings['maxetoget']);
+        $this->settings = $settings;
 
-        $this->numToShow = (int) $this->settings['numtoshow'];
+        $this->ldap = new LDAP($settings['hosturl'],
+                        $settings['hostport'], $settings['basedn'],
+                        $settings['ldapattribs'],
+                        $settings['maxetoget']);
+//FIXME only for testing with many replies?
+        $this->numToShow = (int) $settings['numtoshow'];
         if (isset($_REQUEST['numtoshow'])) {
             $this->numToShow = strip_tags($_REQUEST['numtoshow']);
         }
@@ -57,9 +51,10 @@ class EmpSearch extends ContentModule {
             $this->searchString = preg_replace('/\s+/', ' '
                             , $this->searchString);
         }
+
+        $this->nonEmptySearchStr = ($this->searchString != '');
 //Default form.
-//FIXME: action? and function!
-        if ($this->searchString != '')
+        if ($this->nonEmptySearchStr)
             $formValue = '<value>' . $this->searchString . '</value>';
         else
             $formValue = '';
@@ -68,8 +63,9 @@ class EmpSearch extends ContentModule {
         $this->form = <<< FORM
 <form>
   <name>search</name>
-  <action>index.php</action>
+  <action></action>
   <method>get</method>
+  $formValue
   <button>
     <type>submit</type>
     <value>Sök</value>
@@ -158,8 +154,7 @@ FORM;
     }
 
     protected function generateDefault() {
-//$this->contentXML = $this->form;
-        if ($this->searchString != '') {
+        if ($this->nonEmptySearchStr) {
             $this->searchResult = $this->search();
             $this->ldap->disconnect();
             $this->contentXML = '<?xml version="1.0" encoding="utf-8"?>'
@@ -169,6 +164,19 @@ FORM;
         } else
             $this->contentXML = '<?xml version="1.0" encoding="utf-8"?>' . "\n"
                     . '<section>' . "\n" . $this->form . "\n" . '</section>';
+    }
+
+    protected function generateToggler() {
+        if ($this->nonEmptySearchStr) {
+            $this->searchResult = $this->search();
+            $this->ldap->disconnect();
+            $this->contentXML = '<?xml version="1.0" encoding="utf-8"?>'
+                    . "\n" . '<toggler>' . "\n" . '<empsearch>' . "\n"
+                    . $this->form . "\n" . $this->buildEmployeesXML()
+                    . '</empsearch>' . "\n" . '</toggler>';
+        } else
+            $this->contentXML = '<?xml version="1.0" encoding="utf-8"?>' . "\n"
+                    . '<toggler>' . "\n" . $this->form . "\n" . '</toggler>';
     }
 
 }

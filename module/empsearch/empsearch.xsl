@@ -17,21 +17,52 @@
 
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
     <xsl:output method="html" encoding="utf-8" omit-xml-declaration="yes" />
-    
+
+    <xsl:template match="section/empsearch">
+        <div id="empsearch" class="section">
+        <xsl:apply-templates select="form"/>
+        <xsl:apply-templates select="message"/>
+        <xsl:apply-templates select="employeelist"/>
+        </div>
+    </xsl:template>
+
+    <xsl:template match="toggler/empsearch">
+        <div id="empsearch" class="toggler">
+        <xsl:apply-templates select="form"/>
+        <xsl:apply-templates select="message"/>
+        <xsl:apply-templates select="employeelist"/>
+        </div>
+    </xsl:template>
+
     <xsl:template match="form">
         <form>
             <xsl:attribute name="action">
-                <xsl:value-of select="action" />
+                <xsl:value-of select="action"/>
             </xsl:attribute>
             <xsl:attribute name="method">
-                <xsl:value-of select="method" />
+                <xsl:value-of select="method"/>
             </xsl:attribute>
             <input type="text">
                 <xsl:attribute name="name">
-                    <xsl:value-of select="name" />
+                    <xsl:value-of select="name"/>
+                </xsl:attribute>
+                <xsl:attribute name="value">
+                    <xsl:value-of select="value"/>
                 </xsl:attribute>
             </input>
+            <xsl:apply-templates select="button"/>
         </form>
+    </xsl:template>
+
+    <xsl:template match="button">
+        <input>
+            <xsl:attribute name="value">
+                <xsl:value-of select="value"/>
+            </xsl:attribute>
+            <xsl:attribute name="type">
+                <xsl:value-of select="type"/>
+            </xsl:attribute>
+        </input>
     </xsl:template>
 
     <xsl:template match="message">
