@@ -22,6 +22,7 @@
     
     <link rel="stylesheet" type="text/css" href="css/module/uumaps.css" media="all" />
     <link rel="stylesheet" type="text/css" href="css/module/timeedit.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="css/module/feed.css" media="all" />
 
     <script type="text/javascript"
       src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js">      

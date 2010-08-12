@@ -36,6 +36,13 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template match="feed/body/item">
   <div>
     <xsl:attribute name="class">item</xsl:attribute>
+    <xsl:if test="pubDate">
+      <span>
+        <xsl:attribute name="class">timestamp</xsl:attribute>
+        <xsl:value-of select="./pubDate" />
+      </span>
+      <xsl:text>: </xsl:text>
+    </xsl:if>
     <xsl:choose>
       <xsl:when test="link">
       <a>
@@ -97,6 +104,13 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   </h1>
   <div>
     <xsl:attribute name="class">teasertext</xsl:attribute>
+    <xsl:if test="./body/pubDate">
+      <span>
+        <xsl:attribute name="class">timestamp</xsl:attribute>
+        <xsl:value-of select="./body/pubDate" />
+      </span>
+      <xsl:text>: </xsl:text>
+    </xsl:if>
     <xsl:choose>
       <xsl:when test="body/link">
         <a>
