@@ -145,10 +145,11 @@ background-image: -webkit-gradient(linear, left top, left bottom, from(#ff0000),
 #uuMapModule #Information
 {
   border-radius:10px;
-  opacity:0;
   border:2px solid #b2b2b2;
   text-align:left;  
   margin:5px;
+  display:none;
+  
 }
 
 #uuMapModule #Information .list
@@ -164,6 +165,7 @@ background-image: -webkit-gradient(linear, left top, left bottom, from(#ff0000),
 }
 #uuMapModule #Information #ServiceList li
 {
+  margin:0; 
   font-size:8pt;
 }
 #uuMapModule #Information #Address
@@ -190,7 +192,6 @@ background-image: -webkit-gradient(linear, left top, left bottom, from(#ff0000),
 {
   border-radius:10px;
   display:none;
-  opacity:0;
   border:2px solid #b2b2b2;
   padding:5px;
 }

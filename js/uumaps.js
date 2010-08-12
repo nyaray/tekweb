@@ -133,7 +133,7 @@ function createMarker(markLocation, type) {
   var zindex;
   if (type == "University") {
     Click=true;
-    NewIcon = "../gfx/icons/uupoint.png";
+    NewIcon = "../gfx/module/uumap/markers/uupoint.png";
     zindex:300;
   }
   else if (type == "MyPos") {
@@ -142,15 +142,15 @@ function createMarker(markLocation, type) {
     zindex=1000;
   }
   else if (type == "utn") {
-    NewIcon = "../gfx/icons/utnpoint.png";
+    NewIcon = "../gfx/module/uumap/markers/utnpoint.png";
     zindex=100;
   }
   else if (type == "nation") {
-    NewIcon = "../gfx/icons/nation.png";
+    NewIcon = "../gfx/module/uumap/markers/nation.png";
     zindex=7;
   }
   else if (type == "bus"){
-    NewIcon = "../gfx/icons/buspoint.png";
+    NewIcon = "../gfx/module/uumap/markers/buspoint.png";
     zindex=1;
   }
   else
@@ -348,7 +348,7 @@ $(document).ready(function () {
           //put another marker type here
         }
       });
-      uuMarkers['SLU'].setIcon('../gfx/icons/slu.png'); //I'm setting the icon manually because there's only one place that is interesting for Teknat Students
+      uuMarkers['SLU'].setIcon('../gfx/module/uumap/markers/slu.png'); //I'm setting the icon manually because there's only one place that is interesting for Teknat Students
       myMarker = createMarker(defaultLocation, "MyPos");
       marker = createMarker(defaultLocation, "");
       
@@ -361,9 +361,12 @@ $(document).ready(function () {
       //This Function will move the different
       $("#uuMapModule #Locations").change(function () {
         //Reseting all other markers, windows, information and campus maps
+        var target = $("#uumap > div");
+        var height = target.children(":first").height();
+        target.height(height);
         $("#uuMapModule #CampusListText").remove();
-        $("#uuMapModule #CampusOverview").animate({opacity:0});
-        $("#uuMapModule #Information").animate({opacity:0});
+        $("#uuMapModule #CampusOverview").css("display","none");        
+        $("#uuMapModule #Information").css("display","none");
         infowindow.close();
         var ID = $("#uuMapModule #Locations option:selected").val();
         myMarker.setVisible(false);
@@ -418,9 +421,8 @@ $(document).ready(function () {
           if(CampusMaps[ID] != null && CampusMaps[ID] !="")
           {
             $("#uuMapModule #CampusOverview").css('display', 'block');
-            $("#uuMapModule #CampusOverview").animate({opacity:1});
-            $("#uuMapModule #Information").animate({opacity:1});
-            $("#uuMapModule #CampusOverview div").html("<img src='gfx/cmaps/" + CampusMaps[ID] + "'/>");
+            $("#uuMapModule #Information").css("display","block");
+            $("#uuMapModule #CampusOverview div").html("<img src='../gfx/module/uumap/cmaps/" + CampusMaps[ID] + "'/>");
           }
         }
         else if(utnMarkers[ID] != null)
@@ -431,9 +433,7 @@ $(document).ready(function () {
             {
               utnMarkers[x].setVisible(true);
             }
-          }
-          $("#uuMapModule #CampusOverview").css('display', 'none');		
-          utnMarkers[ID].setVisible(false);
+          }          utnMarkers[ID].setVisible(false);
         }
         else
         { 
@@ -444,7 +444,6 @@ $(document).ready(function () {
               naMarkers[x].setVisible(true);
             }
           }
-          $("#uuMapModule #CampusOverview").css('display', 'none');		
           naMarkers[ID].setVisible(false);
         }
         map.setZoom(markerZoom);
@@ -468,6 +467,7 @@ $(document).ready(function () {
 
       //This function will hide and show markers of a specific type
       $("#uuMapModule .ShowHide").change(function () {
+        infowindow.close();
         var ID = $(this).attr('id');
         var checked = $(this).attr('checked');
         if(ID == "uuMarkers")
