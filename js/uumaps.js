@@ -348,7 +348,7 @@ $(document).ready(function () {
           //put another marker type here
         }
       });
-      
+      uuMarkers['SLU'].setIcon('../gfx/icons/slu.png'); //I'm setting the icon manually because there's only one place that is interesting for Teknat Students
       myMarker = createMarker(defaultLocation, "MyPos");
       marker = createMarker(defaultLocation, "");
       
