@@ -463,7 +463,7 @@ $(document).ready(function () {
         {
           $("#uuMapModule #DirectionsAddress").val(AddressField);
           $("#uuMapModule #DirectionsAddress").css('color','#b5b5b5');
-        
+        }
       });
 
       //This function will hide and show markers of a specific type
