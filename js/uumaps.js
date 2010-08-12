@@ -361,9 +361,7 @@ $(document).ready(function () {
       //This Function will move the different
       $("#uuMapModule #Locations").change(function () {
         //Reseting all other markers, windows, information and campus maps
-        var target = $("#uumap > div");
-        var height = target.children(":first").height();
-        target.height(height);
+
         $("#uuMapModule #CampusListText").remove();
         $("#uuMapModule #CampusOverview").css("display","none");        
         $("#uuMapModule #Information").css("display","none");
@@ -532,6 +530,9 @@ $(document).ready(function () {
 
           }
         }
+        var target = $("#uumap > div");
+        var height = target.children(":first").height();
+        target.height(height);
       });
       //Click-event for obtaining your location by W3C's GeoLocation 
       //when pressing Geolocation-button
