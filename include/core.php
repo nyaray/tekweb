@@ -57,7 +57,20 @@ function parseItem($itemNode)
         }
         else
         {
-          $item[$child->nodeName] = $child->nodeValue;
+          if(isset($item[$child->nodeName])) {
+            if(is_array($item[$child->nodeName])) {
+              $item[$child->nodeName][] = $child->nodeValue;
+            }
+            else {
+              $tmp = array();
+              $tmp[] = $item[$child->nodeName];
+              $tmp[] = $child->nodeValue;
+              $item[$child->nodeName] = $tmp;
+            }
+          }
+          else {
+            $item[$child->nodeName] = $child->nodeValue;
+          }
         }
       }
     }

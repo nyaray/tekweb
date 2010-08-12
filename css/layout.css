@@ -35,11 +35,6 @@ h1 {
   display: none;
 }
 
-.active {
-  border: 3px solid #AF1E2D;
-  border-radius: 5px;
-}
-
 .section, .teaser, .toggler {
   margin: 10px 0;
 /*  margin-bottom:20px;*/
@@ -85,6 +80,15 @@ h1 {
   border-color: #b2b2b2;
 }
 
+.togglericon {
+  border: 3px solid white;
+  border-radius: 5px;
+}
+
+.active {
+  border: 3px solid #AF1E2D;
+  border-radius: 5px;
+}
 /*#about {
   text-align: center;
   font-size: 60%;

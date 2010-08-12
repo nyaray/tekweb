@@ -4,6 +4,7 @@
 
 <!-- module imports -->
 <xsl:import href="../module/statictext/statictext.xsl" />
+<xsl:import href="../module/about/about.xsl" />
 <xsl:import href="../module/feed/feed.xsl" />
 <xsl:import href="../module/uumap/uumap.xsl" />
 <xsl:import href="../module/timeedit/timeedit.xsl" />
@@ -23,6 +24,7 @@
     <link rel="stylesheet" type="text/css" href="css/module/uumaps.css" media="all" />
     <link rel="stylesheet" type="text/css" href="css/module/timeedit.css" media="all" />
     <link rel="stylesheet" type="text/css" href="css/module/feed.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="css/module/about.css" media="all" />
 
     <script type="text/javascript"
       src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js">      

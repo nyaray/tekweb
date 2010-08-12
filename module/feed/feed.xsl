@@ -8,13 +8,12 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <xsl:attribute name="id"><xsl:value-of select="./name" /></xsl:attribute>
   <xsl:attribute name="class">section</xsl:attribute>
   <div><xsl:apply-templates select="../feed/head" /></div>
-  <div>
     <!-- <xsl:value-of select="./body" /> -->
-    <xsl:for-each select="../feed/body/item">
-      <br />
-      <xsl:apply-templates select="." />
-    </xsl:for-each>
-  </div>
+    <ul>
+      <xsl:for-each select="../feed/body/item">
+        <xsl:apply-templates select="." />
+      </xsl:for-each>
+    </ul>
   <!-- <p><xsl:value-of select="./foot" /></p> -->
 </div>
 </xsl:template>
@@ -34,7 +33,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 </xsl:template>
 
 <xsl:template match="feed/body/item">
-  <div>
+  <li>
     <xsl:attribute name="class">item</xsl:attribute>
     <xsl:if test="pubDate">
       <span>
@@ -56,10 +55,12 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
         <xsl:value-of select="./title" />
       </xsl:otherwise>
     </xsl:choose>
-    <p>
-      <xsl:value-of select="./desc" />
-    </p>
-  </div>
+    <xsl:if test="desc">
+      <p>
+        <xsl:value-of select="./desc" />
+      </p>
+    </xsl:if>
+  </li>
 </xsl:template>
 
 <xsl:template match="toggler/feed">
@@ -82,14 +83,13 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <div>
     <xsl:attribute name="class">togglercontent</xsl:attribute>
     <xsl:attribute name="class">hidden</xsl:attribute>
-    <div>
+    <ul>
       <xsl:attribute name="class">togglercontentbody</xsl:attribute>
       <!-- <xsl:value-of select="./body" /> -->
       <xsl:for-each select="../feed/body/item">
-        <br />
         <xsl:apply-templates select="." />
       </xsl:for-each>
-    </div>
+    </ul>
   </div>
 </div>
 </xsl:template>
