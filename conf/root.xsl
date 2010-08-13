@@ -36,6 +36,7 @@
     <script type="text/javascript" src="http://code.google.com/apis/gears/gears_init.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
     <script type="text/javascript" src="js/uumaps.js"></script>
+    <script type="text/javascript" src="js/empsearch.js"></script>
     <meta name="viewport" content="width=device-width, user-scalable=no" />
 
     <title><xsl:apply-templates select="./title" /></title>

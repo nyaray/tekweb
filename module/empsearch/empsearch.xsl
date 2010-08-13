@@ -43,7 +43,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
         </div>
     </xsl:template>
     <xsl:template match="form">
-        <form>
+        <form id="empform">
             <xsl:attribute name="action">
                 <xsl:value-of select="action"/>
             </xsl:attribute>
