@@ -47,7 +47,7 @@ function Geocoding(success, fail, getAdress,  fieldtext)
     else
     {
       var request = {
-        address:$('#uuMapModule #DirectionsAddress').val(),
+        address:$('#uuMapModule #DirectionsAddress').val()
       };
       myGeocode.geocode(request, function(results, status)
       {         
