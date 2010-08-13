@@ -7,19 +7,18 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <div>
   <xsl:attribute name="id"><xsl:value-of select="./name" /></xsl:attribute>
   <xsl:attribute name="class">section</xsl:attribute>
-  <div><xsl:apply-templates select="head" /></div>
-  <div>
+  <div><xsl:apply-templates select="../feed/head" /></div>
     <!-- <xsl:value-of select="./body" /> -->
-    <xsl:for-each select="body/item">
-      <br />
-      <xsl:apply-templates select="." />
-    </xsl:for-each>
-  </div>
+    <ul>
+      <xsl:for-each select="../feed/body/item">
+        <xsl:apply-templates select="." />
+      </xsl:for-each>
+    </ul>
   <!-- <p><xsl:value-of select="./foot" /></p> -->
 </div>
 </xsl:template>
 
-<xsl:template match="head">
+<xsl:template match="feed/head">
     <h1>
       <a>
         <xsl:attribute name="href">
@@ -33,9 +32,16 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     </p>
 </xsl:template>
 
-<xsl:template match="body/item">
-  <div>
+<xsl:template match="feed/body/item">
+  <li>
     <xsl:attribute name="class">item</xsl:attribute>
+    <xsl:if test="pubDate">
+      <span>
+        <xsl:attribute name="class">timestamp</xsl:attribute>
+        <xsl:value-of select="./pubDate" />
+      </span>
+      <xsl:text>: </xsl:text>
+    </xsl:if>
     <xsl:choose>
       <xsl:when test="link">
       <a>
@@ -49,10 +55,12 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
         <xsl:value-of select="./title" />
       </xsl:otherwise>
     </xsl:choose>
-    <p>
-      <xsl:value-of select="./desc" />
-    </p>
-  </div>
+    <xsl:if test="desc">
+      <p>
+        <xsl:value-of select="./desc" />
+      </p>
+    </xsl:if>
+  </li>
 </xsl:template>
 
 <xsl:template match="toggler/feed">
@@ -75,14 +83,13 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <div>
     <xsl:attribute name="class">togglercontent</xsl:attribute>
     <xsl:attribute name="class">hidden</xsl:attribute>
-    <div>
+    <ul>
       <xsl:attribute name="class">togglercontentbody</xsl:attribute>
       <!-- <xsl:value-of select="./body" /> -->
-      <xsl:for-each select="body/item">
-        <br />
+      <xsl:for-each select="../feed/body/item">
         <xsl:apply-templates select="." />
       </xsl:for-each>
-    </div>
+    </ul>
   </div>
 </div>
 </xsl:template>
@@ -97,6 +104,13 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   </h1>
   <div>
     <xsl:attribute name="class">teasertext</xsl:attribute>
+    <xsl:if test="./body/pubDate">
+      <span>
+        <xsl:attribute name="class">timestamp</xsl:attribute>
+        <xsl:value-of select="./body/pubDate" />
+      </span>
+      <xsl:text>: </xsl:text>
+    </xsl:if>
     <xsl:choose>
       <xsl:when test="body/link">
         <a>

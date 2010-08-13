@@ -30,7 +30,7 @@ class RssAtomReader {
     "subTitle"=>"description",
     "summary"=>"description",
     "lastBuildDate"=>"updated",
-    "pubDate"=>"updated");
+    "pubDate"=>"pubDate");
 
   protected $Universal_Doc = false;
 
@@ -53,6 +53,10 @@ class RssAtomReader {
     }  
     $x = $x->item(0);
     $x = $x->firstChild->textContent;
+    //remove initial spaces
+    while(substr($x,0,1) == ' ') {
+      $x = substr($x,1);
+    }
     return $x;
   }
 

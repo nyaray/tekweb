@@ -1,0 +1,10 @@
+h1.head {
+  font-size: 14pt;
+  font-weight: bold;
+}
+
+.person {
+  color: #b5b5b5;
+  margin: 5px;
+  font-size: 9pt;
+}
