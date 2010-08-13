@@ -4,11 +4,12 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:output method="xml" encoding="utf-8" omit-xml-declaration="yes" />
     <xsl:template match="section/empsearch">
         <div id="empsearch" class="section">
-<!--            <xsl:apply-templates select="form"/>-->
+            <xsl:apply-templates select="form"/>
             <xsl:apply-templates select="message"/>
             <xsl:apply-templates select="employeelist"/>
         </div>
     </xsl:template>
+
     <xsl:template match="toggler/empsearch">
         <div>
             <xsl:attribute name="id">
@@ -31,11 +32,13 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
                 </div>
             </a>
             <div>
-                <xsl:attribute name="class">togglercontent</xsl:attribute>
                 <xsl:attribute name="class">hidden</xsl:attribute>
-                <xsl:apply-templates select="form"/>
-                <xsl:apply-templates select="message"/>
-                <xsl:apply-templates select="employeelist"/>
+                <div>
+                    <xsl:attribute name="class">togglercontent</xsl:attribute>
+                    <xsl:apply-templates select="form"/>
+                    <xsl:apply-templates select="message"/>
+                    <xsl:apply-templates select="employeelist"/>
+                </div>
             </div>
         </div>
     </xsl:template>
@@ -47,7 +50,6 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
             <xsl:attribute name="method">
                 <xsl:value-of select="method"/>
             </xsl:attribute>
-            
             <input type="text">
                 <xsl:attribute name="name">
                     <xsl:value-of select="name"/>
@@ -57,6 +59,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
                 </xsl:attribute>
             </input>
             <xsl:apply-templates select="button"/>
+            <xsl:apply-templates select="page"/>
         </form>
     </xsl:template>
     <xsl:template match="button">
@@ -74,6 +77,14 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
             <xsl:value-of select="."/>
         </div>
     </xsl:template>
+    <xsl:template match="page">
+        <input type="hidden" name="page">
+            <xsl:attribute name="value">
+                <xsl:value-of select="value"/>
+            </xsl:attribute>
+        </input>
+    </xsl:template>
+
     <xsl:template match="employeelist">
         <ul class="employees">
             <xsl:for-each select="employee">

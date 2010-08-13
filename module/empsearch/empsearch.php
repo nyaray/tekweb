@@ -29,6 +29,7 @@ class EmpSearch extends ContentModule {
     protected $form = '';
     protected $nonEmptySearchStr = false;
     protected $head = '';
+    protected $page = '';
 
     public function __construct($settings) {
         parent::__construct();
@@ -45,6 +46,10 @@ class EmpSearch extends ContentModule {
         $this->numToShow = (int) $settings['numtoshow'];
         if (isset($_REQUEST['numtoshow'])) {
             $this->numToShow = strip_tags($_REQUEST['numtoshow']);
+        }
+
+        if (isset($_REQUEST['page'])) {
+            $this->page = '<page><value>' . strip_tags($_REQUEST['page']) . '</value></page>';
         }
 
         if (isset($_REQUEST['search'])) {
@@ -68,6 +73,7 @@ class EmpSearch extends ContentModule {
   <action></action>
   <method>get</method>
   $formValue
+  $this->page
   <button>
     <type>submit</type>
     <value>Sök</value>
