@@ -134,7 +134,7 @@
                     </xsl:if>
                   </xsl:for-each>
                 </select>
-                <select>
+                <!-- <select>
                   <xsl:attribute name="id">RouteType</xsl:attribute>
                   <option>
                     <xsl:attribute name="value">DRIVING</xsl:attribute>
@@ -148,15 +148,30 @@
                     <xsl:attribute name="value">WALKING</xsl:attribute>
                     Gå
                   </option>
-                </select>
+                </select> -->
               </div>    
             </div>
             <form>
               <fieldset>
                 <xsl:attribute name="id">DirectionsField</xsl:attribute>
-                <legend>Vägbeskrivning</legend>
+                <legend>Vägbeskrivning<select>
+                  <xsl:attribute name="id">RouteType</xsl:attribute>
+                  <option>
+                    <xsl:attribute name="value">DRIVING</xsl:attribute>
+                    Åka bil
+                  </option>
+                  <option>
+                    <xsl:attribute name="value">BICYCLING</xsl:attribute>
+                    Cykla
+                  </option>
+                  <option>
+                    <xsl:attribute name="value">WALKING</xsl:attribute>
+                    Gå
+                  </option>
+                </select></legend>
                 <div>
                   <xsl:attribute name="class">AddressWrapper</xsl:attribute>
+                  Från:
                   <input type="text">
                     <xsl:attribute name="id">DirectionsAddress</xsl:attribute>
                     <xsl:attribute name="value">Skriv in din adress här</xsl:attribute>
