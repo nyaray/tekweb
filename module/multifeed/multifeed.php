@@ -55,41 +55,73 @@ class MultiFeed extends ContentModule
     
     $this->feeds = ($settings['feeds'] != '')?
       $settings['feeds']: '';
-      //var_dump($this->feeds);
+      var_dump($this->feeds);
       
     $this->getFeeds();
   }
 
   protected function getFeeds() {
     $count = 0;
-    foreach($this->feeds['feed'] as $src) {
-      switch ($src['type']) {
-        case 'atom':
-          //same lib as rss
-        case 'rss':
-          $this->reader = new RssAtomReader();
+	if(!is_array($this->feeds))
+		return;
 
-          $this->resultArray[$count] = array(
-              "author" => $src['author'],
-              "feed" => $this->reader->Universal_Reader($src['src'])
-              );
-          // var_dump($this->resultArray);
-          break;
-        case 'facebook':
-          $this->reader = new FacebookFeedReader();
-          
-          $this->resultArray[$count] = array(
-              "author" => $src['author'],
-              "feed" => $this->reader->Read($src['src'])
-              );
-              //var_dump($this->resultArray[$count]);
-          break;
-        default:
-          # code...
-          break;
-      }
-      $count++;
-    }
+	if(isset($this->feeds["feed"]["author"])) {
+		switch ($this->feeds["feed"]['type']) {
+			case 'atom':
+			  //same lib as rss
+			case 'rss':
+			  $this->reader = new RssAtomReader();
+
+			  $this->resultArray[$count] = array(
+				  "author" => $this->feeds["feed"]['author'],
+				  "feed" => $this->reader->Universal_Reader($this->feeds["feed"]['src'])
+				  );
+			  // var_dump($this->resultArray);
+			  break;
+			case 'facebook':
+			  $this->reader = new FacebookFeedReader();
+			  
+			  $this->resultArray[$count] = array(
+				  "author" => $this->feeds["feed"]['author'],
+				  "feed" => $this->reader->Read($this->feeds["feed"]['src'])
+				  );
+				  //var_dump($this->resultArray[$count]);
+			  break;
+			default:
+			  # code...
+			  break;
+		  }
+	}
+	else {
+		foreach($this->feeds['feed'] as $src) {
+		  switch ($src['type']) {
+			case 'atom':
+			  //same lib as rss
+			case 'rss':
+			  $this->reader = new RssAtomReader();
+
+			  $this->resultArray[$count] = array(
+				  "author" => $src['author'],
+				  "feed" => $this->reader->Universal_Reader($src['src'])
+				  );
+			  // var_dump($this->resultArray);
+			  break;
+			case 'facebook':
+			  $this->reader = new FacebookFeedReader();
+			  
+			  $this->resultArray[$count] = array(
+				  "author" => $src['author'],
+				  "feed" => $this->reader->Read($src['src'])
+				  );
+				  //var_dump($this->resultArray[$count]);
+			  break;
+			default:
+			  # code...
+			  break;
+		  }
+		  $count++;
+		}
+	}
     //var_dump($this->resultArray);
   }
 
