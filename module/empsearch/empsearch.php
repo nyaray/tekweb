@@ -16,8 +16,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require_once '../../include/contentmodule.php';
-require_once '../../include/lib_ldap.php';
+require_once INCLUDE_DIR . 'lib_ldap.php';
 
 class EmpSearch extends ContentModule {
 
@@ -29,10 +28,13 @@ class EmpSearch extends ContentModule {
     protected $numToShow = null;
     protected $form = '';
     protected $nonEmptySearchStr = false;
+    protected $head = '';
 
     public function __construct($settings) {
         parent::__construct();
-
+        $this->name = "<name>$settings[name]</name>";
+        $this->icon = "<icon>$settings[icon]</icon>";
+        $this->head = "<head>$settings[head]</head>";
         $this->settings = $settings;
 
         $this->ldap = new LDAP($settings['hosturl'],
@@ -50,6 +52,7 @@ class EmpSearch extends ContentModule {
             $this->searchString = trim($this->searchString);
             $this->searchString = preg_replace('/\s+/', ' '
                             , $this->searchString);
+            $this->searchString = mb_ereg_replace('/[^a-zA-ZåäöÅÄÖ]/', '', $this->searchString);
         }
 
         $this->nonEmptySearchStr = ($this->searchString != '');
@@ -58,7 +61,6 @@ class EmpSearch extends ContentModule {
             $formValue = '<value>' . $this->searchString . '</value>';
         else
             $formValue = '';
-
 
         $this->form = <<< FORM
 <form>
@@ -157,28 +159,29 @@ FORM;
         if ($this->nonEmptySearchStr) {
             $this->searchResult = $this->search();
             $this->ldap->disconnect();
-            $this->contentXML = '<?xml version="1.0" encoding="utf-8"?>'
-                    . "\n" . '<section>' . "\n" . '<empsearch>' . "\n"
-                    . $this->form . "\n" . $this->buildEmployeesXML()
-                    . '</empsearch>' . "\n" . '</section>';
+            $this->contentXML = '<section><empsearch>' . $this->name
+                    . $this->head . $this->icon . $this->form . "\n"
+                    . $this->buildEmployeesXML()
+                    . "\n" . '</empsearch></section>';
         } else
-            $this->contentXML = '<?xml version="1.0" encoding="utf-8"?>' . "\n"
-                    . '<section>' . "\n" . $this->form . "\n" . '</section>';
+            $this->contentXML = '<section><empsearch>' . $this->name
+                    . $this->head . $this->icon . "\n" . $this->form . "\n"
+                    . '</empsearch></section>';
     }
 
     protected function generateToggler() {
+
         if ($this->nonEmptySearchStr) {
             $this->searchResult = $this->search();
             $this->ldap->disconnect();
-            $this->contentXML = '<?xml version="1.0" encoding="utf-8"?>'
-                    . "\n" . '<toggler>' . "\n" . '<empsearch>' . "\n"
-                    . $this->form . "\n" . $this->buildEmployeesXML()
-                    . '</empsearch>' . "\n" . '</toggler>';
+            $this->contentXML = '<toggler><empsearch>' . $this->name
+                    . $this->head . $this->icon . $this->form . "\n"
+                    . $this->buildEmployeesXML()
+                    . "\n" . '</empsearch></toggler>';
         } else
-            $this->contentXML = '<?xml version="1.0" encoding="utf-8"?>' . "\n"
-                    . '<toggler>' . "\n" . $this->form . "\n" . '</toggler>';
+            $this->contentXML = '<toggler><empsearch>' . $this->name . "\n"
+                    . $this->head . $this->icon . $this->form . "\n"
+                    . '</empsearch></toggler>';
     }
-
 }
-
 ?>

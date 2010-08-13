@@ -1,11 +1,13 @@
-<!DOCTYPE html> 
-<html> 
-    <head> 
+<!DOCTYPE html>
+<html>
+    <head>
         <meta charset="utf-8" />
-        <title>Sök personal</title> 
-    </head> 
-    <body> 
+        <title>Sök personal</title>
+    </head>
+    <body>
         <?php
+        define('INCLUDE_DIR', '../../include/');
+        require_once INCLUDE_DIR . 'contentmodule.php';
         $tmpSettings = array('hosturl' => 'ldap.user.uu.se',
             'hostport' => '389',
             'basedn' => 'cn=People,dc=uu,dc=se',
@@ -17,16 +19,13 @@
         $empsearch->setMode('toggler');
 
         $kul = $empsearch->getXML();
-//        echo '<b>XML</b>'."\n" . $kul . "\n" . '<b>/XML</b>';
+        echo '<b>XML</b>' . "\n" . $kul . "\n" . '<b>/XML</b>';
         $tmpDOM = new DOMDocument();
         $tmpDOM->loadXML($kul);
         $xsl = new DOMDocument();
         $xsl->load("empsearch.xsl");
         $proc = new XSLTProcessor();
         $proc->importStyleSheet($xsl);
-        ?>
-        <hr/>
-        <?php
         echo $proc->transformToXML($tmpDOM);
         ?>
     </body>
