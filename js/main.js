@@ -39,7 +39,13 @@ $(document).ready(function() {
     var p = $(this).next();
 
     if(p.hasClass('hidden')) {      // if p is hidden
+       if($(this).parent(':first').attr('id')=="uumap")
+        {
+          StartUUMap();
+          // UUMapModule();
+        }
       if(active) {                    // if there is an active toggler 
+       
         active.addClass('hidden');      // Hide the active toggler
         active.prev().children(':first').removeClass('active');
       }

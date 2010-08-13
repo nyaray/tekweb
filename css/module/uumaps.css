@@ -98,18 +98,21 @@ background-image: -webkit-gradient(linear, left top, left bottom, from(#ff0000),
   display:inline;
   text-align:center;
 }
-#uuMapModule #SelectField #RouteType
-{
-  width:25%;
-}
+
 #uuMapModule #SelectField #Locations
 {
-  width:75%;
+/*  width:75%;*/
 }
 /*------------------DirectionsField------------------*/
+#uuMapModule #DirectionsField #RouteType
+{
+  font-size:10pt;
+}
 #uuMapModule #DirectionsField
 {
+  display:none;
   margin:5px auto;
+  margin-top:10px;
   border:2px solid #b2b2b2;
   border-radius:10px;
   padding:5px;
