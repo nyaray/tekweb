@@ -87,9 +87,9 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
         <xsl:value-of select="./icon" />
       </xsl:attribute>
     </xsl:element>
-    <div class="togglerbuttontext">
+    <span class="togglerbuttontext">
       <xsl:value-of select="./head" />
-    </div>
+    </span>
   </a>
   <div>
     <xsl:attribute name="class">togglercontent</xsl:attribute>
