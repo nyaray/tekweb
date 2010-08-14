@@ -2,6 +2,7 @@
 // <PROGRAM_NAME>
 // Copyright (C) 2010 Emilio Nyaray (emny1105@student.uu.se)
 //                    Anders Steinrud (anst7337@student.uu.se)
+//                    Magnus Söderling (magnus.soderling@gmail.com)
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -69,9 +70,9 @@ $rootDoc->load(CONFIG_DIR.'root.xml');
 // ===============================================================
 $page = "";
 
-if (isset($_GET['page']))
+if (isset($_REQUEST['page']))
 {
-  $page = $_GET['page'];
+  $page = $_REQUEST['page'];
 
   $xPath = new DOMXPath($rootDoc);
   $items = $xPath->query("item[settings/name = '$page']");
@@ -79,7 +80,7 @@ if (isset($_GET['page']))
 
   if($item !== false)
   {
-    if(isset($_GET['ajax']))
+    if(isset($_REQUEST['ajax']))
     {
       echo "ajax!";
       die(); // we probably don't want to do this... but it works for now.
