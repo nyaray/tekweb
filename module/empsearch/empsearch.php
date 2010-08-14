@@ -52,8 +52,8 @@ class EmpSearch extends ContentModule {
             $this->page = '<page><value>' . strip_tags($_REQUEST['page']) . '</value></page>';
         }
 
-        if (isset($_REQUEST['search'])) {
-            $this->searchString = strip_tags($_REQUEST['search']);
+        if (isset($_REQUEST['empsearchstring'])) {
+            $this->searchString = strip_tags($_REQUEST['empsearchstring']);
             $this->searchString = trim($this->searchString);
             $this->searchString = preg_replace('/\s+/', ' '
                             , $this->searchString);
@@ -69,7 +69,7 @@ class EmpSearch extends ContentModule {
 
         $this->form = <<< FORM
 <form>
-  <name>search</name>
+  <name>empsearchstring</name>
   <action></action>
   <method>get</method>
   $formValue

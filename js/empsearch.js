@@ -18,33 +18,31 @@
 /* 
  * This script requires jquery.
  */
-
-
 $(function() {
-    //var theForm = $('#empsearch form');
+    var togglerBtn = $('div#empsearch .togglerbutton');
+    var tContentBody = $('div#empsearch div.togglercontentbody');
+    var sectionBody = $('div#empsearch.section');
+    var toggler = (tContentBody.length > 0);
     
- 
-    //theForm
     $('#empsearch form').live('submit', function() {
-        var searchField = $('#empsearch form input[type=text][name=search]');
-        var searchVal = searchField.val();
-        $.get("index.php", {
-            search : searchVal,
+        var searchVal = $('#empsearch form input[name=empsearchstring]').val();
+
+        $.get("index.php", {//Framework uses $_get
+            empsearchstring : searchVal,
             page : "empsearch"
         },
         function(data){
-            var args = $(data).find('div#empsearch').html();
-            $('div#empsearch div.togglercontentbody').html(args);
-
-
-            var height = $('div#empsearch div.togglercontentbody').height();
-//            if (height != 35)
-//                height += 10;
-//            alert(height);
-            $('div#empsearch > div').height(height);
+            var content = $(data).find('div#empsearch').html();
+            
+            if (toggler){
+                tContentBody.html(content);
+                //Resize togglercontent
+                togglerBtn.trigger('click').trigger('click');
+            }
+            else{
+            sectionBody.html(content);
+        }
         });
         return false;
     });
-
 });
-
