@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0"
 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-    <xsl:output method="xml" encoding="utf-8" omit-xml-declaration="yes" />
+    <xsl:output method="html" encoding="utf-8" omit-xml-declaration="yes" />
     <xsl:template match="section/empsearch">
         <div id="empsearch" class="section">
             <xsl:apply-templates select="form"/>
@@ -27,14 +27,14 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
                         <xsl:value-of select="./icon" />
                     </xsl:attribute>
                 </xsl:element>
-                <div class="togglerbuttontext">
+                <span class="togglerbuttontext">
                     <xsl:value-of select="head" />
-                </div>
+                </span>
             </a>
             <div>
                 <xsl:attribute name="class">hidden</xsl:attribute>
                 <div>
-                    <xsl:attribute name="class">togglercontent</xsl:attribute>
+                    <xsl:attribute name="class">togglercontentbody</xsl:attribute>
                     <xsl:apply-templates select="form"/>
                     <xsl:apply-templates select="message"/>
                     <xsl:apply-templates select="employeelist"/>

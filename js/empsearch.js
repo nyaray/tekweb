@@ -34,10 +34,10 @@ $(function() {
         },
         function(data){
             var args = $(data).find('div#empsearch').html();
-            $('div#empsearch div.togglercontent').html(args);
+            $('div#empsearch div.togglercontentbody').html(args);
 
 
-            var height = $('div#empsearch div.togglercontent').height();
+            var height = $('div#empsearch div.togglercontentbody').height();
 //            if (height != 35)
 //                height += 10;
 //            alert(height);

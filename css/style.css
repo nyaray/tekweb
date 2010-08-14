@@ -24,6 +24,8 @@ a:active {color:#AF1E2D; text-decoration: none}  /* selected link */
   color: #AF1E2D;
 }
 
+.togglerbuttontext{display: block;}
+
 
 .section {
 
