@@ -36,12 +36,13 @@ $(function() {
             
             if (toggler){
                 tContentBody.html(content);
-                //Resize togglercontent
-                togglerBtn.trigger('click').trigger('click');
+                //Resize togglercontent DO NOT chain!
+                togglerBtn.triggerHandler('click');
+                togglerBtn.triggerHandler('click');
             }
             else{
-            sectionBody.html(content);
-        }
+                sectionBody.html(content);
+            }
         });
         return false;
     });

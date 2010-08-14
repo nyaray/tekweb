@@ -1,5 +1,4 @@
 <?php
-
 // <PROGRAM_NAME>
 // Copyright (C) 2010 Magnus Söderling (magnus.soderling@gmail.com)
 // 
