@@ -42,7 +42,6 @@ $(document).ready(function() {
        if($(this).parent(':first').attr('id')=="uumap")
         {
           StartUUMap();
-          // UUMapModule();
         }
       if(active) {                    // if there is an active toggler 
        
