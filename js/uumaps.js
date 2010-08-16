@@ -13,15 +13,22 @@
 // 
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-
-var marker;
-var myMarker;
-var directionsR;
-var directionsS;
-var defaultLocation;
-var map;
-
+function StartUUMap()
+{
+  var marker;
+  var myMarker;
+  var directionsR;
+  var directionsS;
+  var defaultLocation;
+  var map;
+  UUMapModule();
+ 
+ //This function handles a bug with googlemaps that appear when resizing divs containging map_canvas
+function Resize() 
+{
+  google.maps.event.trigger(map, 'resize');
+  map.setCenter(defaultLocation);
+}
 //This function will first check if a campus is selected.
 //then it will determine if the user want to have directions
 //from an address or W3C's Geolocation
@@ -205,8 +212,8 @@ function GetDirection(myposition) {
   $('#uuMapModule #loadmyGPS').css('opacity', 0);
 }
 
-$(document).ready(function () {
-
+// $(document).ready(function () {
+function UUMapModule() {
   //declearing variables
   var uuMarkers = new Array();
   var naMarkers = new Array();
@@ -226,7 +233,8 @@ $(document).ready(function () {
   var fieldtext;
   var defaultZoom = 12; //Zoom when the map i loaded
   var markerZoom = 15; //Zoom when a location is choosen
-
+  defaultLocation = new google.maps.LatLng(59.858100, 17.644000); //sets Uppsala as default location
+  
   //Map options
   var defaultOpt = {
     zoom: defaultZoom,
@@ -238,10 +246,10 @@ $(document).ready(function () {
       MaxWidth:50 //this options doesn't work for the moment. Hopefully google will fix it, but they haven't in the last 2 years...
     });
 
-    defaultLocation = new google.maps.LatLng(59.858100, 17.644000); //sets Uppsala as default location
     //Create Map
     map = new google.maps.Map(document.getElementById("map_canvas"), defaultOpt);
-
+    google.maps.event.trigger(map, 'resize');
+    map.setCenter(defaultLocation);
     //Create the two objects nessecary for retrieving Directions and a Geocoder for retrieving coord. from adresses
     directionsR = new google.maps.DirectionsRenderer();
     directionsS = new google.maps.DirectionsService();
@@ -256,8 +264,8 @@ $(document).ready(function () {
           var initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
           map.setCenter(initialLocation);
           myMarker.setPosition(initialLocation);
-          myMarker.setVisible(true);
           $('#uuMapModule #loadmyGPS').css('opacity', 0);
+          myMarker.setVisible(true);
         }
       }
       //this is a callbackfunction for geolocation when we want directions to a campus, if we get a positive result following will happen:
@@ -353,10 +361,7 @@ $(document).ready(function () {
       marker = createMarker(defaultLocation, "");
 
       //This function handles a bug with googlemaps that appear when resizing divs containging map_canvas
-      $("#uumap .togglerbutton").click(function () {
-        google.maps.event.trigger(map, 'resize');
-        map.setCenter(defaultLocation);
-      });
+      Resize(); 
 
       //This Function will move the different
       $("#uuMapModule #Locations").change(function () {
@@ -381,10 +386,7 @@ $(document).ready(function () {
           //Show descriptions or services if the selected location have any 
           if(Description[ID] != null)
           {
-            if(uuMarkers[ID] == null)
-            {
-              $("#uuMapModule #Information").animate({opacity:1});
-            }
+            $("#uuMapModule #Information").css("display","block");
             $("#uuMapModule #Information > #Description").html("<span class=\"bold\">Beskrivning: </span>" + Description[ID]);
           }
           if(service[ID] != null)
@@ -422,7 +424,6 @@ $(document).ready(function () {
             if(CampusMaps[ID] != null && CampusMaps[ID] !="")
             {
               $("#uuMapModule #CampusOverview").css('display', 'block');
-              $("#uuMapModule #Information").css("display","block");
               // $("#uuMapModule #CampusOverview div").html("<img src='gfx/module/uumap/cmaps/" + CampusMaps[ID] + "'/>");
               img = new Image();
               img.src = "gfx/module/uumap/cmaps/" + CampusMaps[ID];
@@ -443,27 +444,28 @@ $(document).ready(function () {
               {
                 utnMarkers[x].setVisible(true);
               }
-              }          utnMarkers[ID].setVisible(false);
-            }
-            else
-            { 
-              if($("#uuMapModule #naMarkers").attr('checked'))
-              {
-                for(x in naMarkers)
-                {
-                  naMarkers[x].setVisible(true);
-                }
-              }
-              naMarkers[ID].setVisible(false);
-            }
-            map.setZoom(markerZoom);
-            google.maps.event.trigger(map, 'resize');
-            map.setCenter(marker.getPosition());
-            var target = $("#uumap > div");
-            var height = target.children(":first").height();
-            target.height(height+10);
+            }          
+            utnMarkers[ID].setVisible(false);
           }
-        });
+          else
+          { 
+            if($("#uuMapModule #naMarkers").attr('checked'))
+          {
+              for(x in naMarkers)
+              {
+                naMarkers[x].setVisible(true);
+              }
+            }
+            naMarkers[ID].setVisible(false);
+          }
+          map.setZoom(markerZoom);
+          google.maps.event.trigger(map, 'resize');
+          map.setCenter(marker.getPosition());
+          var target = $("#uumap > div");
+          var height = target.children(":first").height();
+          target.height(height+10);
+        }
+      });
         //This is for the address field, its displayed when the addressfield is empty and unselected 
         $("#uuMapModule #DirectionsAddress").focus(function()
         {
@@ -600,4 +602,6 @@ $(document).ready(function () {
 
         });
       }); 
-    });
+    }// );
+    
+  }

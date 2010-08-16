@@ -160,10 +160,10 @@
                     <xsl:attribute name="value">DRIVING</xsl:attribute>
                     Åka bil
                   </option>
-                  <option>
+                  <!-- <option>
                     <xsl:attribute name="value">BICYCLING</xsl:attribute>
                     Cykla
-                  </option>
+                  </option> -->
                   <option>
                     <xsl:attribute name="value">WALKING</xsl:attribute>
                     Gå
