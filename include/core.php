@@ -130,6 +130,77 @@ function getRemoteFile($url)
    return $response;
 }
 
+function handleInstanceReq($rootDoc, $req, $name) {
+  $xPath = new DOMXPath($rootDoc);
+  $items = $xPath->query("item[settings/name = '$name']");
+  $item = ($items->length > 0)? $items->item(0): false;
+  
+  if($item !== false)
+  {
+    // if(isset($_REQUEST['ajax']))
+    // {
+    //   echo "ajax!";
+    //   die(); // we probably don't want to do this... but it works for now.
+    // }
+    // else
+    // {
+      $config = parseItem($item);
+      $module = initModule($config);
+      switch ($req) {
+        case 'ajax':
+          $module->setMode("ajax");
+          break;
+        case 'page':
+          $module ->setMode("default");
+          break;
+        default:
+          die();
+          break;
+        }
+      $moduleXML = '<?xml version="1.0" encoding="utf-8" ?>' . "\n".
+        $module->getXML();
+
+      // echo "---1---\n";
+      // var_dump($config);
+      // echo "---2---\n";
+      // var_dump($module);
+      // echo "---3---\n";
+      // var_dump($moduleXML);
+      // echo "---END---\n";
+
+      $moduleDoc = new DOMDocument();
+      $moduleDoc->loadXML($moduleXML);
+      $moduleElem = $moduleDoc->documentElement;
+
+      $outDoc = new DOMDocument();
+      $outDoc->loadXML('<?xml version="1.0" encoding="utf-8"?><root />');
+
+      $title = $xPath->query("/root/title")->item(0);
+      $titleNode = $outDoc->importNode($title, true);
+      $outDoc->documentElement->appendChild($titleNode);
+
+      $moduleNode = $outDoc->importNode($moduleElem, true);
+      $outDoc->documentElement->appendChild($moduleNode);
+      // echo "---outDoc XML---\n";
+      // echo $outDoc->saveXML()."\n";
+
+      $rootStylesheet = new DOMDocument();
+      $rootStylesheet->load(CONFIG_DIR.'root.xsl');
+      $transformer = new XSLTProcessor();
+      $transformer->importStylesheet($rootStylesheet);
+      echo $transformer->transformToXML($outDoc);
+
+      ob_end_flush();
+      flush();
+      die();
+    // }
+  }
+  else
+  {
+    // FIXME: Do something to handle that there was no module with that name
+  }
+}
+
 // FIXME: Implement these functions (are they necessary? not likely...)
 function getRequestVars($moduleName) {}
 function getGetVars($moduleName) {}
