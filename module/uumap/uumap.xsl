@@ -34,6 +34,9 @@
           <xsl:attribute name="class">togglercontentbody</xsl:attribute>
           <div>
             <xsl:attribute name="id">uuMapModule</xsl:attribute>
+            <script type="text/javascript" src="js/uumaps.js"></script>
+            <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+            <script type="text/javascript" src="http://code.google.com/apis/gears/gears_init.js"></script>
             <div>
               <div>
                 <xsl:attribute name="id">MyMap</xsl:attribute>
