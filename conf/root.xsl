@@ -8,7 +8,9 @@
 <xsl:import href="../module/feed/feed.xsl" />
 <xsl:import href="../module/uumap/uumap.xsl" />
 <xsl:import href="../module/timeedit/timeedit.xsl" />
+<xsl:import href="../module/empsearch/empsearch.xsl" />
 <xsl:import href="../module/multifeed/multifeed.xsl" />
+
 
 <xsl:output method="html" encoding="utf-8" omit-xml-declaration="yes" />
 <xsl:template match="/root">
@@ -34,9 +36,8 @@
     <script type="text/javascript" src="http://code.google.com/apis/gears/gears_init.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
     <script type="text/javascript" src="js/uumaps.js"></script>
-    <script type="text/javascript" src="js/timeedit.js"></script>
-
-    <meta name="viewport" content="width=device-width" />
+    <script type="text/javascript" src="js/empsearch.js"></script>
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
 
     <title><xsl:apply-templates select="./title" /></title>
   </head>
