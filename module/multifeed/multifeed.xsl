@@ -42,7 +42,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 </xsl:template>
 
 <xsl:template match="multifeed/body/item">
-  <div>
+  <li>
     <xsl:attribute name="class">item</xsl:attribute>
     <span>
       <xsl:attribute name="class">author</xsl:attribute>
@@ -71,7 +71,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
         <xsl:value-of select="./desc" />
       </p>
     </xsl:if>
-  </div>
+  </li>
 </xsl:template>
 
 <xsl:template match="toggler/multifeed">
@@ -87,23 +87,35 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
         <xsl:value-of select="./icon" />
       </xsl:attribute>
     </xsl:element>
-    <span class="togglerbuttontext">
+    <div class="togglerbuttontext">
       <xsl:value-of select="./head" />
-    </span>
+    </div>
   </a>
   <div>
     <xsl:attribute name="class">togglercontent</xsl:attribute>
     <xsl:attribute name="class">hidden</xsl:attribute>
     <div>
       <xsl:attribute name="class">togglercontentbody</xsl:attribute>
+	  
       <!-- <xsl:value-of select="./body" /> -->
-      <xsl:for-each select="body/item">
+<!--      <xsl:for-each select="body/item">
         <br />
         <xsl:apply-templates select="." />
-      </xsl:for-each>
+      </xsl:for-each> -->
+	  <li><img src="gfx/load.gif" /></li>
     </div>
   </div>
 </div>
+</xsl:template>
+
+<xsl:template match="ajax/multifeed">
+<ul>
+  <xsl:attribute name="class">togglercontentbody</xsl:attribute>
+ <xsl:for-each select="body/item">
+        <br />
+        <xsl:apply-templates select="." />
+ </xsl:for-each>
+</ul>
 </xsl:template>
 
 <xsl:template match="teaser/multifeed">
