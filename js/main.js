@@ -39,7 +39,7 @@ $(document).ready(function() {
     var p = $(this).next();
 
     if(p.hasClass('hidden')) {      // if p is hidden
-       if($(this).parent(':first').attr('id')=="uumap")
+      if($(this).parent(':first').attr('id')=="uumap")
         {
           StartUUMap();
         }
@@ -52,10 +52,20 @@ $(document).ready(function() {
       p.prev().children(':first').addClass('active');
       var left = $(this).parent().position().left;
       p.children(':first').css('margin-left',-left);
-      
       var height = p.children(':first').height() + 10;
       p.height(height);
-      active = p;                     // set active to the clicked
+
+      $.get("index.php", {//Framework uses $_get
+          ajax : $(this).attr('href').substring(6)
+      },
+      function(data) {
+        var content = $(data).html();
+        p.children(':first').html(content);
+      
+        var height = p.children(':first').height() + 10;
+        p.height(height);
+        active = p;                     // set active to the clicked
+      });
     } else {                        // if p is already visible
       p.addClass('hidden');           // hide it
       p.prev().children(':first').removeClass('active');

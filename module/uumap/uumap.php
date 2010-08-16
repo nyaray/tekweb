@@ -20,14 +20,14 @@ define('UUMAP_XML_TO_REPLACE', '<?xml version="1.0" encoding="UTF-8"?>');
 
 
 /**
- *
- */
+*
+*/
 class UUMap extends ContentModule
 {
 
-	private $configPath;
-	private $mapData;
-	private $head;
+  private $configPath;
+  private $mapData;
+  private $head;
 
   function __construct($settings)
   {
@@ -35,9 +35,9 @@ class UUMap extends ContentModule
     $this->configPath = '../module/uumap/uumap.xml';
     $this->name = "<name>$settings[name]</name>";
     $this->icon = (isset ($settings['icon'])) ?
-            "<icon>$settings[icon]</icon>": '';
+      "<icon>$settings[icon]</icon>": '';
     $this->head = (isset ($settings['head'])) ?
-            "<head>$settings[head]</head>": '';
+      "<head>$settings[head]</head>": '';
   }
 
   protected function generateDefault()
@@ -46,51 +46,51 @@ class UUMap extends ContentModule
     $config = str_replace(UUMAP_XML_TO_REPLACE, '', $config);
 
     $this->contentXML = <<< XML
-<section>
-  <uumap>
-    $this->head
-    $this->name
-    $this->icon
-    $config
-  </uumap>
-</section>
-XML;
+    <section>
+    <uumap>
+      $this->head
+      $this->name
+      $this->icon
+      $config
+    </uumap>
+  </section>
+  XML;
 }
-  protected function generateToggler()
+protected function generateToggler()
   {
-    
-    $config = file_get_contents($this->configPath);
-    $config = str_replace(UUMAP_XML_TO_REPLACE, '', $config);
-    
-    $this->contentXML = <<< XML
+
+$config = file_get_contents($this->configPath);
+$config = str_replace(UUMAP_XML_TO_REPLACE, '', $config);
+
+$this->contentXML = <<< XML
 <toggler>
-  <uumap>
-    $this->head
-    $this->name
-    $this->icon
-    $config
-  </uumap>
+<uumap>
+  $this->head
+  $this->name
+  $this->icon
+  $config
+</uumap>
 </toggler>
 XML;
 // var_dump($this->contentXML);
-  }
+}
 
-  protected function generateTeaser()
-  {
-    $this->generateToggler();
-  }
+protected function generateTeaser()
+{
+  $this->generateToggler();
+}
+protected function generateAjax()
+{
 
-  // protected function transformMapXML()
-  // {
-  //   $mapDoc = new DOMDocument();
-  //   $mapDoc->load($this->configPath);
-  // 
-  //   $xsl = new DOMDocument();
-  //   $xsl->load('uumap.xsl');
-  // 
-  //   $proc = new XSLTProcessor();
-  //   $proc->importStyleSheet($xsl);
-  //   return $proc->transformToXML($mapDoc);
-  // }
+  $config = file_get_contents($this->configPath);
+  $config = str_replace(UUMAP_XML_TO_REPLACE, '', $config);
+
+  $this->contentXML = <<< XML
+<Ajax>
+  <uumap>
+    $config
+  </uumap>
+</Ajax>
+XML;
 }
 ?>
