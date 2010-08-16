@@ -76,7 +76,7 @@ class MultiFeed extends ContentModule
 				  "author" => $this->feeds["feed"]['author'],
 				  "feed" => $this->reader->Universal_Reader($this->feeds["feed"]['src'])
 				  );
-			  // var_dump($this->resultArray);
+			   //var_dump($this->resultArray);
 			  break;
 			case 'facebook':
 			  $this->reader = new FacebookFeedReader();
@@ -148,7 +148,7 @@ class MultiFeed extends ContentModule
       array_shift($this->resultArray[$i]['feed']);
 	  
       foreach($this->resultArray[$i]['feed'] as $item) {
-	  var_dump($item);
+	  //var_dump($item);
         $this->body .= "<item>";
         $this->body .= "<author>".$auth."</author>";
         $this->body .= "<title>".$item["title"]."</title>";
@@ -198,70 +198,54 @@ XML;
 
   protected function generateToggler()
   {
-    // $this->body = "<body>";
-    // $i = 0;
-    // while($i < count($this->resultArray)) {
-      // array_shift($this->resultArray[$i]);
-      // foreach($this->resultArray[$i] as $item) {
-        // $this->body .= "<item>";
-        // $this->body .= "<title>".$item["title"]."</title>";
-        // if($item["link"] != "") {
-          // $this->body .= "<link>".$item["link"]."</link>";
-        // }
-        // $this->body .= "<desc>".$item["description"]."</desc>";
-        // if($item["pubDate"] != "") {
-          // $date = explode(' ',$item["pubDate"]);
-          // $translateMonth = array("Jan" => '01',
-                                  // "Feb" => '02',
-                                  // "Mar" => '03',
-                                  // "Apr" => '04',
-                                  // "May" => '05',
-                                  // "Jun" => '06',
-                                  // "Jul" => '07',
-                                  // "Aug" => '08',
-                                  // "Sep" => '09',
-                                  // "Oct" => '10',
-                                  // "Nov" => '11',
-                                  // "Dec" => '12');
+    $this->body = "<body>";
+    $i = 0;
+    while($i < count($this->resultArray)) {
+      array_shift($this->resultArray[$i]);
+      foreach($this->resultArray[$i][feed] as $item) {
+	  //var_dump($this->resultArray);
+	  //var_dump($item);
+        $this->body .= "<item>";
+        $this->body .= "<title>".$item["title"]."</title>";
+        if($item["link"] != "") {
+          $this->body .= "<link>".$item["link"]."</link>";
+        }
+        $this->body .= "<desc>".$item["description"]."</desc>";
+        if($item["pubDate"] != "") {
+          $date = explode(' ',$item["pubDate"]);
+          $translateMonth = array("Jan" => '01',
+                                  "Feb" => '02',
+                                  "Mar" => '03',
+                                  "Apr" => '04',
+                                  "May" => '05',
+                                  "Jun" => '06',
+                                  "Jul" => '07',
+                                  "Aug" => '08',
+                                  "Sep" => '09',
+                                  "Oct" => '10',
+                                  "Nov" => '11',
+                                  "Dec" => '12');
 
-          // $this->body .= "<pubDate>";
-          // $this->body .= $date[3].'-';
-          // $this->body .= $translateMonth[$date[2]].'-';
-          // $this->body .= $date[1];
-          // $this->body .= "</pubDate>";
-        // }
-        // $this->body .= "</item>";
-      // }
-      // $i++;
-    // }
-    // $this->body .= "</body>";
-    // $this->contentXML = <<< XML
-// <toggler>
-  // <multifeed>
-    // $this->name
-    // $this->icon
-    // $this->head
-    // $this->body
-    // $this->foot
-  // </multifeed>
-// </toggler>
-// XML;
-	$this->contentXML = <<< XML
+          $this->body .= "<pubDate>";
+          $this->body .= $date[3].'-';
+          $this->body .= $translateMonth[$date[2]].'-';
+          $this->body .= $date[1];
+          $this->body .= "</pubDate>";
+        }
+        $this->body .= "</item>";
+      }
+      $i++;
+    }
+    $this->body .= "</body>";
+    $this->contentXML = <<< XML
 <toggler>
-	<multifeed>
-		<name>test</name>
-		<icon>gfx/icons/news.png</icon>
-		<head>testing</head>
-		<body>
-			<item>
-				<type>rss</type>
-				<title>whassacommanago</title>
-				<link>http://google.com</link>
-				<desc>Buncha stuff</desc>
-				<updated>20120909</updated>
-			</item>
-		</body>
-	</multifeed>
+  <multifeed>
+    $this->name
+    $this->icon
+    $this->head
+    $this->body
+    $this->foot
+  </multifeed>
 </toggler>
 XML;
   }
