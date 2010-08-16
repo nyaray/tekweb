@@ -85,13 +85,22 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:attribute name="class">hidden</xsl:attribute>
     <ul>
       <xsl:attribute name="class">togglercontentbody</xsl:attribute>
-      <!-- <xsl:value-of select="./body" /> -->
-      <xsl:for-each select="../feed/body/item">
-        <xsl:apply-templates select="." />
-      </xsl:for-each>
+      <!-- <xsl:for-each select="../feed/body/item">
+              <xsl:apply-templates select="." />
+            </xsl:for-each> -->
+      <li><img src="gfx/load.gif" /></li>
     </ul>
   </div>
 </div>
+</xsl:template>
+
+<xsl:template match="ajax/feed">
+<ul>
+  <xsl:attribute name="class">togglercontentbody</xsl:attribute>
+  <xsl:for-each select="../feed/body/item">
+    <xsl:apply-templates select="." />
+  </xsl:for-each>
+</ul>
 </xsl:template>
 
 <xsl:template match="teaser/feed">
