@@ -22,11 +22,7 @@ function StartUUMap()
   var defaultLocation;
   var map;
   UUMapModule();
-  $('.toggler .togglerbutton').click(function() //This click function closes the uumap-JS
-  {
-    alert("stängd");
-    return false;
-  });
+ 
  //This function handles a bug with googlemaps that appear when resizing divs containging map_canvas
 function Resize() 
 {
@@ -607,5 +603,5 @@ function UUMapModule() {
         });
       }); 
     }// );
-
+    
   }
