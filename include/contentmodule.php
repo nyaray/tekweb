@@ -64,10 +64,16 @@ XML;
   {
     switch ($this->mode) {
       case 'teaser':
-        $this->generateTeaser(); break;
+        $this->generateTeaser();
+      break;
 
       case 'toggler':
-        $this->generateToggler(); break;
+        $this->generateToggler();
+      break;
+
+      case 'ajax':
+        $this->generateAjax();
+      break;
 
       default:
         $this->generateDefault();

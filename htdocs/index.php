@@ -2,6 +2,7 @@
 // <PROGRAM_NAME>
 // Copyright (C) 2010 Emilio Nyaray (emny1105@student.uu.se)
 //                    Anders Steinrud (anst7337@student.uu.se)
+//                    Magnus Söderling (magnus.soderling@gmail.com)
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -68,69 +69,20 @@ $rootDoc->load(CONFIG_DIR.'root.xml');
 // = Do some black magic with the page field in the get variable =
 // ===============================================================
 $page = "";
+$ajax = "";
 
-if (isset($_GET['page']))
+if (isset($_REQUEST['ajax']))
 {
-  $page = $_GET['page'];
+  $ajax = $_REQUEST['ajax'];
+  
+  handleInstanceReq($rootDoc, 'ajax', $ajax);
+  
+}
+elseif (isset($_REQUEST['page']))
+{
+  $page = $_REQUEST['page'];
 
-  $xPath = new DOMXPath($rootDoc);
-  $items = $xPath->query("item[settings/name = '$page']");
-  $item = ($items->length > 0)? $items->item(0): false;
-
-  if($item !== false)
-  {
-    if(isset($_GET['ajax']))
-    {
-      echo "ajax!";
-      die(); // we probably don't want to do this... but it works for now.
-    }
-    else
-    {
-      $config = parseItem($item);
-      $module = initModule($config);
-      $module->setMode("default");
-      $moduleXML = '<?xml version="1.0" encoding="utf-8" ?>' . "\n".
-        $module->getXML();
-
-      // echo "---1---\n";
-      // var_dump($config);
-      // echo "---2---\n";
-      // var_dump($module);
-      // echo "---3---\n";
-      // var_dump($moduleXML);
-      // echo "---END---\n";
-
-      $moduleDoc = new DOMDocument();
-      $moduleDoc->loadXML($moduleXML);
-      $moduleElem = $moduleDoc->documentElement;
-
-      $outDoc = new DOMDocument();
-      $outDoc->loadXML('<?xml version="1.0" encoding="utf-8"?><root />');
-
-      $title = $xPath->query("/root/title")->item(0);
-      $titleNode = $outDoc->importNode($title, true);
-      $outDoc->documentElement->appendChild($titleNode);
-
-      $moduleNode = $outDoc->importNode($moduleElem, true);
-      $outDoc->documentElement->appendChild($moduleNode);
-      // echo "---outDoc XML---\n";
-      // echo $outDoc->saveXML()."\n";
-
-      $rootStylesheet = new DOMDocument();
-      $rootStylesheet->load(CONFIG_DIR.'root.xsl');
-      $transformer = new XSLTProcessor();
-      $transformer->importStylesheet($rootStylesheet);
-      echo $transformer->transformToXML($outDoc);
-
-      ob_end_flush();
-      flush();
-      die();
-    }
-  }
-  else
-  {
-    // FIXME: Do something to handle that there was no module with that name
-  }
+  handleInstanceReq($rootDoc, 'page', $page);
 }
 
 // =================

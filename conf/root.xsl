@@ -8,10 +8,29 @@
 <xsl:import href="../module/feed/feed.xsl" />
 <xsl:import href="../module/uumap/uumap.xsl" />
 <xsl:import href="../module/timeedit/timeedit.xsl" />
+<xsl:import href="../module/empsearch/empsearch.xsl" />
 <xsl:import href="../module/multifeed/multifeed.xsl" />
 
+
 <xsl:output method="html" encoding="utf-8" omit-xml-declaration="yes" />
-<xsl:template match="/root">
+<xsl:template match="/">
+  <xsl:choose>
+    <xsl:when test="/root/ajax">
+      <xsl:apply-templates select="root/ajax" />
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:apply-templates select="root" />
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:template>
+
+<xsl:template match="root/title">
+  <xsl:value-of select="." />
+</xsl:template>
+
+<xsl:template match="root">
+  <xsl:apply-imports />
+
   <xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html&gt;
   </xsl:text>
   <html lang="se-SV">
@@ -20,7 +39,7 @@
     <link rel="stylesheet" type="text/css" href="css/reset.css" media="all" />
     <link rel="stylesheet" type="text/css" href="css/layout.css" media="all" />
     <link rel="stylesheet" type="text/css" href="css/style.css" media="all" />
-    
+
     <link rel="stylesheet" type="text/css" href="css/module/uumaps.css" media="all" />
     <link rel="stylesheet" type="text/css" href="css/module/timeedit.css" media="all" />
     <link rel="stylesheet" type="text/css" href="css/module/feed.css" media="all" />
@@ -29,14 +48,13 @@
     <script type="text/javascript"
       src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js">      
       </script>
-            
+      
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
     <script type="text/javascript" src="http://code.google.com/apis/gears/gears_init.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
     <script type="text/javascript" src="js/uumaps.js"></script>
-    <script type="text/javascript" src="js/timeedit.js"></script>
-
-    <meta name="viewport" content="width=device-width" />
+    <script type="text/javascript" src="js/empsearch.js"></script>
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
 
     <title><xsl:apply-templates select="./title" /></title>
   </head>
@@ -53,13 +71,5 @@
   </body>
   </html>
 </xsl:template>
-
-  <xsl:template match="root/title">
-    <xsl:value-of select="." />
-  </xsl:template>
-
-  <xsl:template match="root">
-    <xsl:apply-imports />
-  </xsl:template>
 
 </xsl:stylesheet>

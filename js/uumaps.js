@@ -47,7 +47,7 @@ function Geocoding(success, fail, getAdress,  fieldtext)
     else
     {
       var request = {
-        address:$('#uuMapModule #DirectionsAddress').val(),
+        address:$('#uuMapModule #DirectionsAddress').val()
       };
       myGeocode.geocode(request, function(results, status)
       {         
@@ -280,7 +280,7 @@ $(document).ready(function () {
           else
           {
             alert("fel");
-            
+
             for(x in naMarkers)
             {
               naMarkers[x].setVisible(true);
@@ -351,249 +351,253 @@ $(document).ready(function () {
       uuMarkers['SLU'].setIcon('gfx/module/uumap/markers/slu.png'); //I'm setting the icon manually because there's only one place that is interesting for Teknat Students
       myMarker = createMarker(defaultLocation, "MyPos");
       marker = createMarker(defaultLocation, "");
-      
+
       //This function handles a bug with googlemaps that appear when resizing divs containging map_canvas
       $("#uumap .togglerbutton").click(function () {
         google.maps.event.trigger(map, 'resize');
         map.setCenter(defaultLocation);
       });
-      
+
       //This Function will move the different
       $("#uuMapModule #Locations").change(function () {
         //Reseting all other markers, windows, information and campus maps
+        if($("#uuMapModule #Locations option:selected").val() != $("#uuMapModule #CampusListText").val())
+        {
+          $("#uuMapModule #CampusListText").remove();
+          $("#uuMapModule #DirectionsField").css("display","block");
+          $("#uuMapModule #CampusOverview").css("display","none");        
+          $("#uuMapModule #Information").css("display","none");
 
-        $("#uuMapModule #CampusListText").remove();
-        $("#uuMapModule #CampusOverview").css("display","none");        
-        $("#uuMapModule #Information").css("display","none");
-        infowindow.close();
-        var ID = $("#uuMapModule #Locations option:selected").val();
-        myMarker.setVisible(false);
-        marker.setVisible(true);
-        directionsR.setMap(null);
-        map.setCenter(coordinates[ID]);
-        marker.setPosition(coordinates[ID]);
-        $("#uuMapModule #Information #Address").html("<span class=\"bold\">Besöksadress: </span> " + Address[ID]);
-        $("#uuMapModule #Information > #Description").html("");
-        $("#uuMapModule #Information > #ServiceList").html("");
-        //Show descriptions or services if the selected location have any 
-        if(Description[ID] != null)
-        {
-          if(uuMarkers[ID] == null)
+          infowindow.close();
+          var ID = $("#uuMapModule #Locations option:selected").val();
+          myMarker.setVisible(false);
+          marker.setVisible(true);
+          directionsR.setMap(null);
+          map.setCenter(coordinates[ID]);
+          marker.setPosition(coordinates[ID]);
+          $("#uuMapModule #Information #Address").html("<span class=\"bold\">Besöksadress: </span> " + Address[ID]);
+          $("#uuMapModule #Information > #Description").html("");
+          $("#uuMapModule #Information > #ServiceList").html("");
+          //Show descriptions or services if the selected location have any 
+          if(Description[ID] != null)
           {
-            $("#uuMapModule #Information").animate({opacity:1});
+            if(uuMarkers[ID] == null)
+            {
+              $("#uuMapModule #Information").animate({opacity:1});
+            }
+            $("#uuMapModule #Information > #Description").html("<span class=\"bold\">Beskrivning: </span>" + Description[ID]);
           }
-          $("#uuMapModule #Information > #Description").html("<span class=\"bold\">Beskrivning: </span>" + Description[ID]);
-        }
-        if(service[ID] != null)
-        {
-          $("#uuMapModule #Information #ServiceList").append("<p class=\"bold\">Här finns:</p> ");
-          $("#uuMapModule #Information #ServiceList").append("<div class=\"list\"><ul>");
-          var j = 0;      
-          for(x in service[ID])
+          if(service[ID] != null)
           {
-            $("#uuMapModule #Information #ServiceList .list:last ul").append("<li>" +service[ID][x] +"</li>");
-            j=j+1;
+            $("#uuMapModule #Information #ServiceList").append("<p class=\"bold\">Här finns:</p> ");
+            $("#uuMapModule #Information #ServiceList").append("<div class=\"list\"><ul>");
+            var j = 0;      
+            for(x in service[ID])
+            {
+              $("#uuMapModule #Information #ServiceList .list:last ul").append("<li>" +service[ID][x] +"</li>");
+              j=j+1;
+              if(j%5 == 0)
+              {
+                $("#uuMapModule #Information #ServiceList").append("</ul></div><div class=\"list\"><ul>");
+              }
+
+            }
             if(j%5 == 0)
             {
-              $("#uuMapModule #Information #ServiceList").append("</ul></div><div class=\"list\"><ul>");
+              $("#uuMapModule #Information #ServiceList").append("</div></ul>");
             }
+          }
 
-          }
-          if(j%5 == 0)
+          //Reset show/hide markers
+          if(uuMarkers[ID] != null)
           {
-            $("#uuMapModule #Information #ServiceList").append("</div></ul>");
-          }
-        }
-        
-        //Reset show/hide markers
-        if(uuMarkers[ID] != null)
-        {
-          if($("#uuMapModule #uuMarkers").attr('checked'))
-          {
-            for(x in uuMarkers)
+            if($("#uuMapModule #uuMarkers").attr('checked'))
             {
-              uuMarkers[x].setVisible(true);
-            }
-          }
-          uuMarkers[ID].setVisible(false);
-          if(CampusMaps[ID] != null && CampusMaps[ID] !="")
-          {
-            $("#uuMapModule #CampusOverview").css('display', 'block');
-            $("#uuMapModule #Information").css("display","block");
-            // $("#uuMapModule #CampusOverview div").html("<img src='gfx/module/uumap/cmaps/" + CampusMaps[ID] + "'/>");
-            img = new Image();
-            img.src = "gfx/module/uumap/cmaps/" + CampusMaps[ID];
-            $(img).load(function()
-            {
-              $("#uuMapModule #CampusOverview div").html(this);
-              var target = $("#uumap > div");
-              var height = target.children(":first").height();
-              target.height(height+10);
-            });
-          }
-        }
-        else if(utnMarkers[ID] != null)
-        {
-          if($("#uuMapModule #utnMarkers").attr('checked'))
-          {
-            for(x in utnMarkers)
-            {
-              utnMarkers[x].setVisible(true);
-            }
-          }          utnMarkers[ID].setVisible(false);
-        }
-        else
-        { 
-          if($("#uuMapModule #naMarkers").attr('checked'))
-          {
-            for(x in naMarkers)
-            {
-              naMarkers[x].setVisible(true);
-            }
-          }
-          naMarkers[ID].setVisible(false);
-        }
-        map.setZoom(markerZoom);
-        google.maps.event.trigger(map, 'resize');
-        map.setCenter(marker.getPosition());
-        var target = $("#uumap > div");
-        var height = target.children(":first").height();
-        target.height(height+10);
-      });
-      //This is for the address field, its displayed when the addressfield is empty and unselected 
-      $("#uuMapModule #DirectionsAddress").focus(function()
-      {
-        $("#uuMapModule #DirectionsAddress").val("");
-        $("#uuMapModule #DirectionsAddress").css('color','black');
-      });
-      $("#uuMapModule #DirectionsAddress").blur(function()
-      {
-        if($("#uuMapModule #DirectionsAddress").val()=="")
-        {
-          $("#uuMapModule #DirectionsAddress").val(AddressField);
-          $("#uuMapModule #DirectionsAddress").css('color','#b5b5b5');
-        }
-      });
-
-      //This function will hide and show markers of a specific type
-      $("#uuMapModule .ShowHide").change(function () {
-        infowindow.close();
-        var ID = $(this).attr('id');
-        var checked = $(this).attr('checked');
-        if(ID == "uuMarkers")
-        {
-          for(x in uuMarkers)
-          {
-            if(checked)
-            {
-              if(uuMarkers[x].getPosition() != marker.getPosition())
+              for(x in uuMarkers)
               {
                 uuMarkers[x].setVisible(true);
               }
             }
-            else
+            uuMarkers[ID].setVisible(false);
+            if(CampusMaps[ID] != null && CampusMaps[ID] !="")
             {
-              uuMarkers[x].setVisible(false);
-            }	
-          } 
-        }
-        else if(ID == "busMarkers")
-        {
-          for(x in busMarkers)
-          {
-            if(checked)
-            {
-              busMarkers[x].setVisible(true);
-            }
-            else
-            {
-              busMarkers[x].setVisible(false);
-            }
-          }
-        }
-        else if(ID == "utnMarkers")
-        {
-          for(x in utnMarkers)
-          {
-            if(checked)
-            {
-              utnMarkers[x].setVisible(true);
-            }
-            else
-            {
-              utnMarkers[x].setVisible(false);
-            }
-          }
-        }
-        else{
-          for(x in naMarkers)
-          {
-            if(checked)
-            {
-              if(naMarkers[x].getPosition() != marker.getPosition())
+              $("#uuMapModule #CampusOverview").css('display', 'block');
+              $("#uuMapModule #Information").css("display","block");
+              // $("#uuMapModule #CampusOverview div").html("<img src='gfx/module/uumap/cmaps/" + CampusMaps[ID] + "'/>");
+              img = new Image();
+              img.src = "gfx/module/uumap/cmaps/" + CampusMaps[ID];
+              $(img).load(function()
               {
-                naMarkers[x].setVisible(true);
+                $("#uuMapModule #CampusOverview div").html(this); //this is solving a height-bug we had. this updates height of the containt-div
+                var target = $("#uumap > div");
+                var height = target.children(":first").height();
+                target.height(height+10);
+              });
+            }
+          }
+          else if(utnMarkers[ID] != null)
+          {
+            if($("#uuMapModule #utnMarkers").attr('checked'))
+            {
+              for(x in utnMarkers)
+              {
+                utnMarkers[x].setVisible(true);
+              }
+              }          utnMarkers[ID].setVisible(false);
+            }
+            else
+            { 
+              if($("#uuMapModule #naMarkers").attr('checked'))
+              {
+                for(x in naMarkers)
+                {
+                  naMarkers[x].setVisible(true);
+                }
+              }
+              naMarkers[ID].setVisible(false);
+            }
+            map.setZoom(markerZoom);
+            google.maps.event.trigger(map, 'resize');
+            map.setCenter(marker.getPosition());
+            var target = $("#uumap > div");
+            var height = target.children(":first").height();
+            target.height(height+10);
+          }
+        });
+        //This is for the address field, its displayed when the addressfield is empty and unselected 
+        $("#uuMapModule #DirectionsAddress").focus(function()
+        {
+          $("#uuMapModule #DirectionsAddress").val("");
+          $("#uuMapModule #DirectionsAddress").css('color','black');
+        });
+        $("#uuMapModule #DirectionsAddress").blur(function()
+        {
+          if($("#uuMapModule #DirectionsAddress").val()=="")
+          {
+            $("#uuMapModule #DirectionsAddress").val(AddressField);
+            $("#uuMapModule #DirectionsAddress").css('color','#b5b5b5');
+          }
+        });
+
+        //This function will hide and show markers of a specific type
+        $("#uuMapModule .ShowHide").change(function () {
+          infowindow.close();
+          var ID = $(this).attr('id');
+          var checked = $(this).attr('checked');
+          if(ID == "uuMarkers")
+          {
+            for(x in uuMarkers)
+            {
+              if(checked)
+              {
+                if(uuMarkers[x].getPosition() != marker.getPosition())
+                {
+                  uuMarkers[x].setVisible(true);
+                }
+              }
+              else
+              {
+                uuMarkers[x].setVisible(false);
+              }	
+            } 
+          }
+          else if(ID == "busMarkers")
+          {
+            for(x in busMarkers)
+            {
+              if(checked)
+              {
+                busMarkers[x].setVisible(true);
+              }
+              else
+              {
+                busMarkers[x].setVisible(false);
               }
             }
-            else
-            {
-              naMarkers[x].setVisible(false);
-            }
-
           }
-        }
-
-      });
-      //Click-event for obtaining your location by W3C's GeoLocation 
-      //when pressing Geolocation-button
-      $("#uuMapModule #GetMyGPS").click(function () {
-        infowindow.close();
-        $('#uuMapModule #loadmyGPS').css('opacity', 100);
-        directionsR.setMap(null);
-        marker.setVisible(false);
-        getMyLocation( success, fail);
-      });
-      //This function will update the directions when route-type is changed
-      $("#uuMapModule #RouteType").change(function () 
-      {
-        infowindow.close();
-        if(myMarker.getPosition() != defaultLocation)
-        {
-          GetDirection(myMarker.getPosition());
-        }
-      });
-      //When submitting while the addressfield
-      //this function will call the Geocoding function
-      $("#uuMapModule form").submit(function()
-      {
-        infowindow.close();
-        Geocoding(successDirection, fail, true,  $("#uuMapModule #DirectionsAddress").val());
-        return false;    
-      });
-      //Click event for retrieving directions by W3C's Geolocation
-      //or using the address
-      //It is activated when pressing the AddressDirections button or
-      //the GeolocatorDirections button 
-      $("#uuMapModule .Directions").click(function() 
-      {
-        infowindow.close();
-        if($(this).attr('id')=='DirectionsGeolocater')
-        {
-          Geocoding( successDirection, fail, false);
-        }
-        else
-        {
-          if($("#uuMapModule #DirectionsAddress").val() == AddressField)
+          else if(ID == "utnMarkers")
           {
-            Geocoding( successDirection, fail, true,  "");
+            for(x in utnMarkers)
+            {
+              if(checked)
+              {
+                utnMarkers[x].setVisible(true);
+              }
+              else
+              {
+                utnMarkers[x].setVisible(false);
+              }
+            }
+          }
+          else{
+            for(x in naMarkers)
+            {
+              if(checked)
+              {
+                if(naMarkers[x].getPosition() != marker.getPosition())
+                {
+                  naMarkers[x].setVisible(true);
+                }
+              }
+              else
+              {
+                naMarkers[x].setVisible(false);
+              }
+
+            }
           }
 
+        });
+        //Click-event for obtaining your location by W3C's GeoLocation 
+        //when pressing Geolocation-button
+        $("#uuMapModule #GetMyGPS").click(function () {
+          infowindow.close();
+          $('#uuMapModule #loadmyGPS').css('opacity', 100);
+          directionsR.setMap(null);
+          marker.setVisible(false);
+          getMyLocation( success, fail);
+        });
+        //This function will update the directions when route-type is changed
+        $("#uuMapModule #RouteType").change(function () 
+        {
+          infowindow.close();
+          if(myMarker.getPosition() != defaultLocation)
+          {
+            GetDirection(myMarker.getPosition());
+          }
+        });
+        //When submitting while the addressfield
+        //this function will call the Geocoding function
+        $("#uuMapModule form").submit(function()
+        {
+          infowindow.close();
+          Geocoding(successDirection, fail, true,  $("#uuMapModule #DirectionsAddress").val());
+          return false;    
+        });
+        //Click event for retrieving directions by W3C's Geolocation
+        //or using the address
+        //It is activated when pressing the AddressDirections button or
+        //the GeolocatorDirections button 
+        $("#uuMapModule .Directions").click(function() 
+        {
+          infowindow.close();
+          if($(this).attr('id')=='DirectionsGeolocater')
+          {
+            Geocoding( successDirection, fail, false);
+          }
           else
           {
-            Geocoding( successDirection, fail, true,  $("#uuMapModule #DirectionsAddress").val());
-          }    
-        }
+            if($("#uuMapModule #DirectionsAddress").val() == AddressField)
+            {
+              Geocoding( successDirection, fail, true,  "");
+            }
 
-      });
-    }); 
-  });
+            else
+            {
+              Geocoding( successDirection, fail, true,  $("#uuMapModule #DirectionsAddress").val());
+            }    
+          }
+
+        });
+      }); 
+    });

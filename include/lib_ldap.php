@@ -1,4 +1,5 @@
 <?php
+
 // <PROGRAM_NAME>
 // Copyright (C) 2010 Magnus Söderling (magnus.soderling@gmail.com)
 // 
@@ -22,13 +23,10 @@ class LDAP {
 
     protected $hostUrl;
     protected $hostPort;
-    protected $maxEntriesToGet = 500;
-    //Max entries to get from LDAP-server.
-    protected $baseDN = 'cn=People,dc=uu,dc=se';
-    protected $ldapAttributes = array('givenname', 'sn', 'mail', 'cn',
-        'telephonenumber', 'mobile', 'facsimiletelephonenumber',
-        'registeredaddress;lang-sv', 'department;lang-sv', 'title;lang-sv',
-        'roomnumber');
+    protected $maxEntriesToGet;
+ //Max entries to get from LDAP-server.
+    protected $baseDN;
+    protected $ldapAttributes;
     protected $ldapConnection = null;
     protected $bindResult = null;
     protected $searchResult = null;
@@ -39,30 +37,12 @@ class LDAP {
      * optional {$baseDN, $ldapAttributes, $maxEntriesToGet}
      * in that order depending on num args.
      */
-    function __construct($hostUrl, $hostPort) {
+    function __construct($hostUrl, $hostPort, $baseDn, $ldapAttrib, $maxEntriesToGet) {
         $this->hostUrl = $hostUrl;
-        $this->hostPort = $hostPort;
-
-/*
-        $argv = func_get_args();
-        switch (func_num_args ()) {
-
-            case 3:
-                $this->baseDN = $argv[2];
-                break;
-            case 4:
-                $this->baseDN = $argv[2];
-                $this->ldapAttributes = $argv[3];
-                break;
-            case 5:
-                $this->baseDN = $argv[2];
-                $this->ldapAttributes = $argv[3];
-                $this->maxEntriesToGet = $argv[4];
-                break;
-            default:
-                break; //yeah yeah I know but...
-        }
- */
+        $this->hostPort = (int) $hostPort;
+        $this->baseDN = $baseDn;
+        $this->ldapAttributes = explode(' ', $ldapAttrib);
+        $this->maxEntriesToGet = (int) $maxEntriesToGet;
     }
 
     public function connect() {
@@ -71,11 +51,11 @@ class LDAP {
         return $this->bindResult;
     }
 
-    public function closeConnection() {
+    public function disconnect() {
         if ($ldapConnection) {
-            ldap_unbind($ldapConnection); //Assume success
-            $ldapConnection = null;
+            @ldap_unbind($ldapConnection); //Assume success
         }
+        $ldapConnection = null;
     }
 
     public function doSearch($filter) {
@@ -89,46 +69,12 @@ class LDAP {
         return $this->numEntries;
     }
 
-        public function searchResult() {
+    public function getSearchEntries() {
         if ($this->ldapConnection && $this->searchResult && ($this->maxEntriesToGet >= $this->numEntries)) {
             ldap_sort($this->ldapConnection, $this->searchResult, 'sn');
             return ldap_get_entries($this->ldapConnection, $this->searchResult);
         } else
-            return null;
+            return false;
     }
-
-
-    public function getHostUrl() {
-        return $this->hostUrl;
-    }
-
-    public function getHostPort() {
-        return $this->hostPort;
-    }
-
-    public function getMaxEntriesToGet() {
-        return $this->maxEntriesToGet;
-    }
-
-    public function setMaxEntriesToGet($maxEntriesToGet) {
-        $this->maxEntriesToGet = $maxEntriesToGet;
-    }
-
-    public function getBaseDN() {
-        return $this->baseDN;
-    }
-
-    public function setBaseDN($baseDN) {
-        $this->baseDN = $baseDN;
-    }
-
-    public function getLdapAttributes() {
-        return $this->ldapAttributes;
-    }
-
-    public function setLdapAttributes($ldapAttributes) {
-        $this->ldapAttributes = $ldapAttributes;
-    }
-
 }
 ?>
