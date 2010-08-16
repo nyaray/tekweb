@@ -53,11 +53,13 @@ $(document).ready(function() {
       p.prev().children(':first').addClass('active');
       var left = $(this).parent().position().left;
       p.children(':first').css('margin-left',-left);
-      
+      var height = p.children(':first').height() + 10;
+      p.height(height);
+
       $.get("index.php", {//Framework uses $_get
           ajax : $(this).attr('href').substring(6)
       },
-      function(data){
+      function(data) {
         var content = $(data).html();
         p.children(':first').html(content);
       
