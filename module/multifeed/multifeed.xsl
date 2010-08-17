@@ -48,7 +48,6 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
       <xsl:attribute name="class">author</xsl:attribute>
       <xsl:value-of select="./author" />
     </span>
-    <xsl:text> @ </xsl:text>
     <xsl:if test="pubDate">
       <xsl:value-of select="./pubDate" />
       <xsl:text>: </xsl:text>
@@ -109,13 +108,50 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 </xsl:template>
 
 <xsl:template match="ajax/multifeed">
-<ul>
-  <xsl:attribute name="class">togglercontentbody</xsl:attribute>
- <xsl:for-each select="body/item">
-        <br />
-        <xsl:apply-templates select="." />
- </xsl:for-each>
-</ul>
+	<div>
+		<xsl:attribute name="class">togglercontentbody</xsl:attribute>
+			<xsl:apply-templates select="picker"/>
+			<ul>
+			 <xsl:for-each select="body/item">
+					<br />
+					<xsl:apply-templates select="." />
+			 </xsl:for-each>
+			</ul>
+	</div>
+</xsl:template>
+
+<xsl:template match="picker">
+	<form name="feedform" method="post" action="index.php" id="feedform">
+		<ul>
+			<xsl:for-each select="box">
+				<li>
+					<input type="checkbox">
+						<xsl:attribute name="name">
+							<xsl:value-of select="./name" />
+						</xsl:attribute>
+						<xsl:if test="checked">
+							<xsl:attribute name="checked">
+								<xsl:value-of select="./checked" />
+							</xsl:attribute>
+						</xsl:if>
+					</input>
+						<span> <xsl:value-of select="./name" /> </span>
+				</li>
+			</xsl:for-each>
+		</ul>
+		<xsl:apply-templates select="button" />
+	</form>
+</xsl:template>
+
+<xsl:template match="button">
+		<input name='feedcookie'>
+			<xsl:attribute name="value">
+				<xsl:value-of select="value"/>
+			</xsl:attribute>
+			<xsl:attribute name="type">
+				<xsl:value-of select="type"/>
+			</xsl:attribute>
+		</input>
 </xsl:template>
 
 <xsl:template match="teaser/multifeed">
