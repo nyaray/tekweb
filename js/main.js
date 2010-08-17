@@ -39,15 +39,12 @@ $(document).ready(function() {
     var p = $(this).next();
 
     if(p.hasClass('hidden')) {      // if p is hidden
-      if($(this).parent(':first').attr('id')=="uumap")
-        {
-          StartUUMap();
-        }
       if(active) {                    // if there is an active toggler 
        
         active.addClass('hidden');      // Hide the active toggler
         active.prev().children(':first').removeClass('active');
       }
+      p.children(':first').html("<img src='gfx/load.gif' />");
       p.removeClass('hidden');        // show the clicked toggler
       p.prev().children(':first').addClass('active');
       var left = $(this).parent().position().left;
@@ -55,16 +52,16 @@ $(document).ready(function() {
       var height = p.children(':first').height() + 10;
       p.height(height);
 
-      $.post("index.php", {
-          ajax : $(this).attr('href').substring(6)
-      },
-      function(data) {
-        var content = $(data).html();
-        p.children(':first').html(content);
-      
-        var height = p.children(':first').height() + 10;
-        p.height(height);
-        active = p;                     // set active to the clicked
+      $.ajax({url: "index.php", 
+              data: {ajax: $(this).parent().attr("id")}, 
+              dataType: "html", 
+              success: function(data) {
+                p.children(':first').replaceWith(data);
+                p.children(':first').css('margin-left',-left+8); //8px for the damn border
+                var height = p.children(':first').height() + 10;
+                p.height(height);
+                active = p;                     // set active to the clicked
+              }
       });
     } else {                        // if p is already visible
       p.addClass('hidden');           // hide it
