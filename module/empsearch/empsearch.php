@@ -1,4 +1,5 @@
 <?php
+
 // <PROGRAM_NAME>
 // Copyright (C) 2010 Magnus Söderling (magnus.soderling@gmail.com)
 // 
@@ -175,7 +176,6 @@ FORM;
     }
 
     protected function generateToggler() {
-
         if ($this->nonEmptySearchStr) {
             $this->searchResult = $this->search();
             $this->ldap->disconnect();
@@ -188,5 +188,22 @@ FORM;
                     . $this->head . $this->icon . $this->form . "\n"
                     . '</empsearch></toggler>';
     }
+
+    protected function generateAjax() {
+        if ($this->nonEmptySearchStr) {
+            $this->searchResult = $this->search();
+            $this->ldap->disconnect();
+            $this->contentXML = '<ajax><empsearch>' . $this->name
+                    . $this->head . $this->icon . $this->form . "\n"
+                    . $this->buildEmployeesXML()
+                    . "\n" . '</empsearch></ajax>';
+        } else {
+            $this->contentXML = '<ajax><empsearch>' . $this->name . "\n"
+                    . $this->head . $this->icon . $this->form . "\n"
+                    . '</empsearch></ajax>';
+        }
+    }
+
 }
+
 ?>

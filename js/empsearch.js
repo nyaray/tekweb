@@ -19,29 +19,35 @@
  * This script requires jquery.
  */
 $(function() {
-    var togglerBtn = $('div#empsearch .togglerbutton');
+    //var togglerBtn = $('div#empsearch .togglerbutton');
     var tContentBody = $('div#empsearch div.togglercontentbody');
     var sectionBody = $('div#empsearch.section');
     var toggler = (tContentBody.length > 0);
     
+    //tglBtnRebound = false;
+
     $('#empsearch form').live('submit', function() {
+        var oldHeight = tContentBody.height();
         var searchVal = $('#empsearch form input[name=empsearchstring]').val();
 
-        $.get("index.php", {//Framework uses $_get
+        $.post("index.php", {
             empsearchstring : searchVal,
             page : "empsearch"
         },
         function(data){
             var content = $(data).find('div#empsearch').html();
-            
+       
             if (toggler){
                 tContentBody.html(content);
-                //Resize togglercontent DO NOT chain!
-                togglerBtn.triggerHandler('click');
-                togglerBtn.triggerHandler('click');
-            }
-            else{
+            } else{
                 sectionBody.html(content);
+            }
+            
+            var newHeight = tContentBody.height();
+
+            if(oldHeight != newHeight){
+                // height +10 same as main.js!
+                $('div#empsearch > div:first').height(newHeight + 10);
             }
         });
         return false;

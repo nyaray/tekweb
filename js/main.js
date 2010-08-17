@@ -42,7 +42,6 @@ $(document).ready(function() {
       if($(this).parent(':first').attr('id')=="uumap")
         {
           StartUUMap();
-          // UUMapModule();
         }
       if(active) {                    // if there is an active toggler 
        
@@ -56,7 +55,7 @@ $(document).ready(function() {
       var height = p.children(':first').height() + 10;
       p.height(height);
 
-      $.get("index.php", {//Framework uses $_get
+      $.post("index.php", {
           ajax : $(this).attr('href').substring(6)
       },
       function(data) {

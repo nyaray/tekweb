@@ -150,9 +150,8 @@ background-image: -webkit-gradient(linear, left top, left bottom, from(#ff0000),
   border-radius:10px;
   border:2px solid #b2b2b2;
   text-align:left;  
-  margin:5px;
+  margin:5px auto;
   display:none;
-  
 }
 
 #uuMapModule #Information .list
