@@ -17,7 +17,8 @@
 <xsl:stylesheet version="1.0"
 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:output method="html" encoding="utf-8" omit-xml-declaration="yes" />
-    <xsl:template match="section/empsearch">
+
+   <xsl:template match="section/empsearch">
         <div id="empsearch" class="section">
             <xsl:apply-templates select="form"/>
             <xsl:apply-templates select="message"/>
@@ -57,6 +58,16 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
             </div>
         </div>
     </xsl:template>
+
+    <xsl:template match="ajax/empsearch">
+        <div>
+            <xsl:attribute name="class">togglercontentbody</xsl:attribute>
+            <xsl:apply-templates select="form"/>
+            <xsl:apply-templates select="message"/>
+            <xsl:apply-templates select="employeelist"/>
+        </div>
+    </xsl:template>
+
     <xsl:template match="form">
         <form id="empform">
             <xsl:attribute name="action">
@@ -77,6 +88,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
             <xsl:apply-templates select="page"/>
         </form>
     </xsl:template>
+
     <xsl:template match="button">
         <input>
             <xsl:attribute name="value">
@@ -87,11 +99,13 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
             </xsl:attribute>
         </input>
     </xsl:template>
+
     <xsl:template match="message">
         <div class="message">
             <xsl:value-of select="."/>
         </div>
     </xsl:template>
+
     <xsl:template match="page">
         <input type="hidden" name="page">
             <xsl:attribute name="value">
@@ -188,4 +202,5 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
             </xsl:for-each>
         </ul>
     </xsl:template>
+
 </xsl:stylesheet>

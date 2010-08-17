@@ -55,7 +55,7 @@ $(document).ready(function() {
       var height = p.children(':first').height() + 10;
       p.height(height);
 
-      $.get("index.php", {//Framework uses $_get
+      $.post("index.php", {
           ajax : $(this).attr('href').substring(6)
       },
       function(data) {
