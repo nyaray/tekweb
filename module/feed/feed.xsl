@@ -83,7 +83,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:attribute name="class">hidden</xsl:attribute>
     <div>
       <xsl:attribute name="class">togglercontentbody</xsl:attribute>
-      <img src="gfx/load.gif" />
+      <!-- <img src="gfx/load.gif" /> -->
     </div>
   </div>
 </div>

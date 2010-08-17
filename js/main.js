@@ -44,6 +44,7 @@ $(document).ready(function() {
           active.addClass('hidden');      // Hide the active toggler
           active.prev().children(':first').removeClass('active');
         }
+        p.children(':first').html("<img src='gfx/load.gif' />");
         p.removeClass('hidden');        // show the clicked toggler
         p.prev().children(':first').addClass('active');
         var left = $(this).parent().position().left;
@@ -55,9 +56,8 @@ $(document).ready(function() {
                 data: {ajax: $(this).parent().attr("id")}, 
                 dataType: "html", 
                 success: function(data) {
-                  var content = $(data).html();
-                  p.children(':first').html(content);
-
+                  p.children(':first').replaceWith(data);
+                  p.children(':first').css('margin-left',-left);
                   var height = p.children(':first').height() + 10;
                   p.height(height);
                   active = p;                     // set active to the clicked
@@ -68,6 +68,7 @@ $(document).ready(function() {
           p.prev().children(':first').removeClass('active');
         }
         return false
+
       });
     });
 
