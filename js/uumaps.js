@@ -13,8 +13,11 @@
 // 
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-function StartUUMap()
+
+
+$(function()
 {
+  alert("bajs")
   var marker;
   var myMarker;
   var directionsR;
@@ -593,7 +596,6 @@ function UUMapModule() {
             {
               Geocoding( successDirection, fail, true,  "");
             }
-
             else
             {
               Geocoding( successDirection, fail, true,  $("#uuMapModule #DirectionsAddress").val());
@@ -604,4 +606,4 @@ function UUMapModule() {
       }); 
     }// );
     
-  }
+});

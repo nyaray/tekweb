@@ -46,23 +46,23 @@ class UUMap extends ContentModule
     $config = str_replace(UUMAP_XML_TO_REPLACE, '', $config);
 
     $this->contentXML = <<< XML
-    <section>
-    <uumap>
-      $this->head
-      $this->name
-      $this->icon
-      $config
-    </uumap>
-  </section>
-  XML;
-}
-protected function generateToggler()
+<section>
+  <uumap>
+    $this->head
+    $this->name
+    $this->icon
+    $config
+  </uumap>
+</section>
+XML;
+  }
+  protected function generateToggler()
   {
 
-$config = file_get_contents($this->configPath);
-$config = str_replace(UUMAP_XML_TO_REPLACE, '', $config);
+  $config = file_get_contents($this->configPath);
+  $config = str_replace(UUMAP_XML_TO_REPLACE, '', $config);
 
-$this->contentXML = <<< XML
+  $this->contentXML = <<< XML
 <toggler>
 <uumap>
   $this->head
@@ -73,24 +73,25 @@ $this->contentXML = <<< XML
 </toggler>
 XML;
 // var_dump($this->contentXML);
-}
+  }
 
-protected function generateTeaser()
-{
-  $this->generateToggler();
-}
-protected function generateAjax()
-{
+  protected function generateTeaser()
+  {
+    generateToggler();
+  }
+  protected function generateAjax()
+  {
 
-  $config = file_get_contents($this->configPath);
-  $config = str_replace(UUMAP_XML_TO_REPLACE, '', $config);
+    $config = file_get_contents($this->configPath);
+    $config = str_replace(UUMAP_XML_TO_REPLACE, '', $config);
 
-  $this->contentXML = <<< XML
-<Ajax>
+    $this->contentXML = <<< XML
+<ajax>
   <uumap>
     $config
   </uumap>
-</Ajax>
+</ajax>
 XML;
+  }
 }
 ?>
