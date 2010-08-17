@@ -216,7 +216,7 @@ function GetDirection(myposition) {
 
 // $(document).ready(function () {
 function UUMapModule() {
-  alert("start");
+
     //declearing variables
   var uuMarkers = new Array();
   var naMarkers = new Array();
@@ -238,7 +238,6 @@ function UUMapModule() {
   var markerZoom = 15; //Zoom when a location is choosen
   
   defaultLocation = new google.maps.LatLng(59.858100, 17.644000); //sets Uppsala as default location
-  alert(defaultLocation);
   //Map options
   var defaultOpt = {
     zoom: defaultZoom,
@@ -252,7 +251,6 @@ function UUMapModule() {
 
     //Create Map
     map = new google.maps.Map(document.getElementById("map_canvas"), defaultOpt);
-    alert(map);
     google.maps.event.trigger(map, 'resize');
     map.setCenter(defaultLocation);
     //Create the two objects nessecary for retrieving Directions and a Geocoder for retrieving coord. from adresses
@@ -606,6 +604,9 @@ function UUMapModule() {
           }
 
         });
+        var target = $("#uumap > div");
+        var height = target.children(":first").height();
+        target.height(height+10);
       }); 
     }// );
     
