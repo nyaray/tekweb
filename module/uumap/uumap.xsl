@@ -13,17 +13,9 @@
   </xsl:template>
   
   <xsl:template match="ajax/uumap">
- 
+    <script type="text/javascript" src="js/uumaps.js"></script>
     <div>
-      
       <xsl:attribute name="class">togglercontentbody</xsl:attribute>
-        <script type="text/javascript"><!--//--><![CDATA[//><!--
-            loadScript("http://maps.google.com/maps/api/js?sensor=true");
-            loadScript("http://code.google.com/apis/gears/gears_init.js");
-            loadScript("js/uumaps.js");
-                         //--><!]]></script>
-             
-
       <div>
         <xsl:attribute name="id">uuMapModule</xsl:attribute>
         <div>
@@ -233,7 +225,8 @@
         <xsl:attribute name="class">hidden</xsl:attribute>
         <div>
           <xsl:attribute name="class">togglercontentbody</xsl:attribute>
-          <img src="gfx/load.gif"/>
+          
+          <!-- <img src="gfx/load.gif"/> -->
         </div>
       </div>
     </div>

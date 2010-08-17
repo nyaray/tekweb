@@ -17,7 +17,6 @@
 
 $(function()
 {
-  alert("bajs")
   var marker;
   var myMarker;
   var directionsR;
@@ -217,7 +216,8 @@ function GetDirection(myposition) {
 
 // $(document).ready(function () {
 function UUMapModule() {
-  //declearing variables
+  alert("start");
+    //declearing variables
   var uuMarkers = new Array();
   var naMarkers = new Array();
   var busMarkers = new Array();
@@ -236,8 +236,9 @@ function UUMapModule() {
   var fieldtext;
   var defaultZoom = 12; //Zoom when the map i loaded
   var markerZoom = 15; //Zoom when a location is choosen
-  defaultLocation = new google.maps.LatLng(59.858100, 17.644000); //sets Uppsala as default location
   
+  defaultLocation = new google.maps.LatLng(59.858100, 17.644000); //sets Uppsala as default location
+  alert(defaultLocation);
   //Map options
   var defaultOpt = {
     zoom: defaultZoom,
@@ -251,6 +252,7 @@ function UUMapModule() {
 
     //Create Map
     map = new google.maps.Map(document.getElementById("map_canvas"), defaultOpt);
+    alert(map);
     google.maps.event.trigger(map, 'resize');
     map.setCenter(defaultLocation);
     //Create the two objects nessecary for retrieving Directions and a Geocoder for retrieving coord. from adresses
@@ -266,6 +268,7 @@ function UUMapModule() {
         if (directionsR.getMap() == null) {
           var initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
           map.setCenter(initialLocation);
+          map.setZoom(markerZoom);
           myMarker.setPosition(initialLocation);
           $('#uuMapModule #loadmyGPS').css('opacity', 0);
           myMarker.setVisible(true);
