@@ -8,13 +8,11 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <xsl:attribute name="id"><xsl:value-of select="./name" /></xsl:attribute>
   <xsl:attribute name="class">section</xsl:attribute>
   <div><xsl:apply-templates select="../feed/head" /></div>
-    <!-- <xsl:value-of select="./body" /> -->
     <ul>
       <xsl:for-each select="../feed/body/item">
         <xsl:apply-templates select="." />
       </xsl:for-each>
     </ul>
-  <!-- <p><xsl:value-of select="./foot" /></p> -->
 </div>
 </xsl:template>
 
@@ -83,13 +81,10 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <div>
     <xsl:attribute name="class">togglercontent</xsl:attribute>
     <xsl:attribute name="class">hidden</xsl:attribute>
-    <ul>
+    <div>
       <xsl:attribute name="class">togglercontentbody</xsl:attribute>
-      <!-- <xsl:for-each select="../feed/body/item">
-              <xsl:apply-templates select="." />
-            </xsl:for-each> -->
-      <li><img src="gfx/load.gif" /></li>
-    </ul>
+      <!-- <img src="gfx/load.gif" /> -->
+    </div>
   </div>
 </div>
 </xsl:template>

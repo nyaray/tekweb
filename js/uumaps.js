@@ -13,7 +13,9 @@
 // 
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-function StartUUMap()
+
+
+$(function()
 {
   var marker;
   var myMarker;
@@ -214,7 +216,8 @@ function GetDirection(myposition) {
 
 // $(document).ready(function () {
 function UUMapModule() {
-  //declearing variables
+
+    //declearing variables
   var uuMarkers = new Array();
   var naMarkers = new Array();
   var busMarkers = new Array();
@@ -233,8 +236,8 @@ function UUMapModule() {
   var fieldtext;
   var defaultZoom = 12; //Zoom when the map i loaded
   var markerZoom = 15; //Zoom when a location is choosen
-  defaultLocation = new google.maps.LatLng(59.858100, 17.644000); //sets Uppsala as default location
   
+  defaultLocation = new google.maps.LatLng(59.858100, 17.644000); //sets Uppsala as default location
   //Map options
   var defaultOpt = {
     zoom: defaultZoom,
@@ -263,6 +266,7 @@ function UUMapModule() {
         if (directionsR.getMap() == null) {
           var initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
           map.setCenter(initialLocation);
+          map.setZoom(markerZoom);
           myMarker.setPosition(initialLocation);
           $('#uuMapModule #loadmyGPS').css('opacity', 0);
           myMarker.setVisible(true);
@@ -593,7 +597,6 @@ function UUMapModule() {
             {
               Geocoding( successDirection, fail, true,  "");
             }
-
             else
             {
               Geocoding( successDirection, fail, true,  $("#uuMapModule #DirectionsAddress").val());
@@ -601,7 +604,10 @@ function UUMapModule() {
           }
 
         });
+        var target = $("#uumap > div");
+        var height = target.children(":first").height();
+        target.height(height+10);
       }); 
     }// );
     
-  }
+});
