@@ -57,7 +57,7 @@ $(document).ready(function() {
               dataType: "html", 
               success: function(data) {
                 p.children(':first').replaceWith(data);
-                p.children(':first').css('margin-left',-left+8); //8px for the damn border
+                p.children(':first').css('margin-left',-left);
                 var height = p.children(':first').height() + 10;
                 p.height(height);
                 active = p;                     // set active to the clicked
