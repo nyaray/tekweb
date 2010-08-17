@@ -51,19 +51,18 @@ $(document).ready(function() {
         var height = p.children(':first').height() + 10;
         p.height(height);
 
-        $.get("index.php", {//Framework uses $_get
-          ajax : $(this).attr('href').substring(6)
-        },
-        function(data) {
-          var content = $(data).html();
-          p.children(':first').html(content);
+        $.ajax({url: "index.php", 
+                data: {ajax: $(this).parent().attr("id")}, 
+                dataType: "html", 
+                success: function(data) {
+                  var content = $(data).html();
+                  p.children(':first').html(content);
 
-          var height = p.children(':first').height() + 10;
-          p.height(height);
-          active = p;                     // set active to the clicked
-
-          
-        });
+                  var height = p.children(':first').height() + 10;
+                  p.height(height);
+                  active = p;                     // set active to the clicked
+                }
+          });
         }else {                        // if p is already visible
           p.addClass('hidden');           // hide it
           p.prev().children(':first').removeClass('active');
