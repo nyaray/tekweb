@@ -16,57 +16,68 @@
 
 $(document).ready(function() {
   var currScreenWidth = screen.width;
-  
+
   // Detect whether device supports orientationchange event, otherwise fall back to
   // the resize event.
   var supportsOrientationChange = "onorientationchange" in window,
-      orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
+  orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
 
   window.addEventListener(orientationEvent, function() {
-      if((screen.width != currScreenWidth) && active) {
-        currScreenWidth = screen.width;
-        //alert('HOLY ROTATING SCREENS BATMAN:' + window.orientation + " " + screen.width + "\n"+orientationEvent);
-        active.prev().click(); // closes the active toggler
-        active.prev().click(); // opens it again (recalculating it's position)
-      }
-  }, false);
-  
-  
-  var active;
-
-  //$('.toggler .togglercontent').addClass('hidden');
-  $('.toggler .togglerbutton').click(function() {
-    var p = $(this).next();
-
-    if(p.hasClass('hidden')) {      // if p is hidden
-      if(active) {                    // if there is an active toggler 
-       
-        active.addClass('hidden');      // Hide the active toggler
-        active.prev().children(':first').removeClass('active');
-      }
-      p.children(':first').html("<img src='gfx/load.gif' />");
-      p.removeClass('hidden');        // show the clicked toggler
-      p.prev().children(':first').addClass('active');
-      var left = $(this).parent().position().left;
-      p.children(':first').css('margin-left',-left);
-      var height = p.children(':first').height() + 10;
-      p.height(height);
-
-      $.ajax({url: "index.php", 
-              data: {ajax: $(this).parent().attr("id")}, 
-              dataType: "html", 
-              success: function(data) {
-                p.children(':first').replaceWith(data);
-                p.children(':first').css('margin-left',-left);
-                var height = p.children(':first').height() + 10;
-                p.height(height);
-                active = p;                     // set active to the clicked
-              }
-      });
-    } else {                        // if p is already visible
-      p.addClass('hidden');           // hide it
-      p.prev().children(':first').removeClass('active');
+    if((screen.width != currScreenWidth) && active) {
+      currScreenWidth = screen.width;
+      //alert('HOLY ROTATING SCREENS BATMAN:' + window.orientation + " " + screen.width + "\n"+orientationEvent);
+      active.prev().click(); // closes the active toggler
+      active.prev().click(); // opens it again (recalculating it's position)
     }
-    return false
-  });
-});
+    }, false);
+
+
+    var active;
+
+    //$('.toggler .togglercontent').addClass('hidden');
+    $('.toggler .togglerbutton').click(function() {
+      var p = $(this).next();
+
+      if(p.hasClass('hidden')) {      // if p is hidden
+        if(active) {                    // if there is an active toggler 
+
+          active.addClass('hidden');      // Hide the active toggler
+          active.prev().children(':first').removeClass('active');
+        }
+        p.children(':first').html("<img src='gfx/load.gif' />");
+        p.removeClass('hidden');        // show the clicked toggler
+        p.prev().children(':first').addClass('active');
+        var left = $(this).parent().position().left;
+        p.children(':first').css('margin-left',-left);
+        var height = p.children(':first').height() + 10;
+        p.height(height);
+
+        $.ajax({url: "index.php", 
+                data: {ajax: $(this).parent().attr("id")}, 
+                dataType: "html", 
+                success: function(data) {
+                  p.children(':first').replaceWith(data);
+                  p.children(':first').css('margin-left',-left);
+                  var height = p.children(':first').height() + 10;
+                  p.height(height);
+                  active = p;                     // set active to the clicked
+                }
+          });
+        }else {                        // if p is already visible
+          p.addClass('hidden');           // hide it
+          p.prev().children(':first').removeClass('active');
+        }
+        return false
+
+      });
+    });
+
+function loadScript(url)
+{
+  alert("go");
+  alert(url);
+  var s = document.createElement('script');
+  s.type='text/javascript';
+  s.src= url;
+  document.getElementsByTagName('head')[0].appendChild(s);
+}
