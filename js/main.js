@@ -15,6 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 $(document).ready(function() {
+  var ajaxLoaded = {};
   var currScreenWidth = screen.width;
 
   // Detect whether device supports orientationchange event, otherwise fall back to
@@ -37,14 +38,13 @@ $(document).ready(function() {
     //$('.toggler .togglercontent').addClass('hidden');
     $('.toggler .togglerbutton').click(function() {
       var p = $(this).next();
-
       if(p.hasClass('hidden')) {      // if p is hidden
         if(active) {                    // if there is an active toggler 
 
           active.addClass('hidden');      // Hide the active toggler
           active.prev().children(':first').removeClass('active');
         }
-        p.children(':first').html("<img src='gfx/load.gif' />");
+        //p.children(':first').html("<img src='gfx/load.gif' />");
         p.removeClass('hidden');        // show the clicked toggler
         p.prev().children(':first').addClass('active');
         var left = $(this).parent().position().left;
@@ -52,25 +52,36 @@ $(document).ready(function() {
         var height = p.children(':first').height() + 10;
         p.height(height);
 
-        $.ajax({url: "index.php", 
-                data: {ajax: $(this).parent().attr("id")}, 
-                dataType: "html", 
-                success: function(data) {
-                  p.children(':first').replaceWith(data);
-                  p.children(':first').css('margin-left',-left);
-                  var height = p.children(':first').height() + 10;
-                  p.height(height);
-                  active = p;                     // set active to the clicked
-                }
+        var curr = $(this);
+        if(jQuery.data(ajaxLoaded, curr.parent().attr('id'))) {
+          p.children(':first').css('margin-left',-left);
+          var height = p.children(':first').height() + 10;
+          p.height(height);
+          active = p;
+        } else {
+          p.children(':first').html("<img src='gfx/load.gif' />");
+          $.ajax({url: "index.php", 
+                  data: {ajax: curr.parent().attr("id")}, 
+                  dataType: "html", 
+                  success: function(data) {
+                    p.children(':first').replaceWith(data);
+                    p.children(':first').css('margin-left',-left);
+                    var height = p.children(':first').height() + 10;
+                    p.height(height);
+                    active = p;
+                    
+                    jQuery.data(ajaxLoaded, curr.parent().attr('id'), true);
+                  }
           });
-        }else {                        // if p is already visible
-          p.addClass('hidden');           // hide it
-          p.prev().children(':first').removeClass('active');
-        }
-        return false
-
-      });
+        }                     // set active to the clicked
+        
+      } else {                        // if p is already visible
+        p.addClass('hidden');           // hide it
+        p.prev().children(':first').removeClass('active');
+      }
+      return false
     });
+  });
 
 function loadScript(url)
 {

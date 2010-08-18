@@ -162,6 +162,8 @@ XML;
     }
     $this->body .= "<desc>".$this->feedArray[1]["description"]."</desc>";
     if($this->feedArray[1]["pubDate"] != "") {
+      //this should be done in the lib_files so that all feeds have the
+      //same format.
       $date = explode(' ',$this->feedArray[1]["pubDate"]);
       $translateMonth = array("Jan" => '01',
                               "Feb" => '02',
