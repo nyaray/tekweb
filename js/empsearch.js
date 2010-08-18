@@ -19,13 +19,10 @@
  * This script requires jquery.
  */
 $(function() {
-    //var togglerBtn = $('div#empsearch .togglerbutton');
     var tContentBody = $('div#empsearch div.togglercontentbody');
     var sectionBody = $('div#empsearch.section');
     var toggler = (tContentBody.length > 0);
     
-    //tglBtnRebound = false;
-
     $('#empsearch form').live('submit', function() {
         var oldHeight = tContentBody.height();
         var searchVal = $('#empsearch form input[name=empsearchstring]').val();
