@@ -141,46 +141,12 @@ XML;
 
   protected function generateToggler()
   {
-    array_shift($this->feedArray);
-    $this->body = "<body>";
-    foreach($this->feedArray as $item) {
-      $this->body .= "<item>";
-      $this->body .= "<title>".$item["title"]."</title>";
-      if($item["link"] != "") {
-        $this->body .= "<link>".$item["link"]."</link>";
-      }
-      $this->body .= "<desc>".$item["description"]."</desc>";
-      if($item["pubDate"] != "") {
-        $date = explode(' ',$item["pubDate"]);
-        $translateMonth = array("Jan" => '01',
-                                "Feb" => '02',
-                                "Mar" => '03',
-                                "Apr" => '04',
-                                "May" => '05',
-                                "Jun" => '06',
-                                "Jul" => '07',
-                                "Aug" => '08',
-                                "Sep" => '09',
-                                "Oct" => '10',
-                                "Nov" => '11',
-                                "Dec" => '12');
-        //var_dump($date);
-        $this->body .= "<pubDate>";
-        $this->body .= $date[3].'-';
-        $this->body .= $translateMonth[$date[2]].'-';
-        $this->body .= $date[1];
-        $this->body .= "</pubDate>";
-      }
-      $this->body .= "</item>";
-    }
-    $this->body .= "</body>";
     $this->contentXML = <<< XML
 <toggler>
   <feed>
     $this->name
     $this->icon
     $this->head
-    $this->body
     $this->foot
   </feed>
 </toggler>
