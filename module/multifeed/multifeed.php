@@ -1,7 +1,8 @@
 <?php
 // <PROGRAM_NAME>
 // Copyright (C) 2010 Emilio Nyaray (emny1105@student.uu.se) &
-//                    Anders Steinrud (anst7337@student.uu.se)
+//                    Anders Steinrud (anst7337@student.uu.se) &
+//					  Markus Safstrom (markus.safstrom@gmail.com)
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -372,6 +373,7 @@ FORM;
     $this->contentXML = <<< XML
 <ajax>
   <multifeed>
+	<id>$this->name</id>
 	$form
     $this->body
   </multifeed>

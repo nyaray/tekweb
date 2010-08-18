@@ -110,8 +110,11 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template match="ajax/multifeed">
 	<div>
 		<xsl:attribute name="class">togglercontentbody</xsl:attribute>
+			<a href="link" id="feedconfig">
+				<img src="gfx/icons/pref.png" alt="Prenumerera" id="feedconfig"/>
+			</a>
 			<xsl:apply-templates select="picker"/>
-			<ul>
+			<ul id="feedlist">
 			 <xsl:for-each select="body/item">
 					<br />
 					<xsl:apply-templates select="." />
@@ -121,7 +124,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 </xsl:template>
 
 <xsl:template match="picker">
-	<form name="feedform" method="post" action="index.php" id="feedform">
+	<form name="feedform" method="post" action="index.php" id="feedform" class="hidden">
 		<ul>
 			<xsl:for-each select="box">
 				<li>
