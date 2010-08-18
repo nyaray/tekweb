@@ -19,6 +19,7 @@
  * This script requires jquery.
  */
 $(function() {
+    var togglerBtn = $('.toggler .togglerbutton[href="?page=empsearch"]');
     var tContentBody = $('div#empsearch div.togglercontentbody');
     var sectionBody = $('div#empsearch.section');
     var toggler = (tContentBody.length > 0);
@@ -29,22 +30,17 @@ $(function() {
 
         $.post("index.php", {
             empsearchstring : searchVal,
-            page : "empsearch"
+            ajax : "empsearch"
         },
         function(data){
-            var content = $(data).find('div#empsearch').html();
-       
+            var content = data;
+            
             if (toggler){
-                tContentBody.html(content);
+                $('div#empsearch div.togglercontentbody').replaceWith(content);
+                togglerBtn.trigger('click');
+                togglerBtn.trigger('click');
             } else{
                 sectionBody.html(content);
-            }
-            
-            var newHeight = tContentBody.height();
-
-            if(oldHeight != newHeight){
-                // height +10 same as main.js!
-                $('div#empsearch > div:first').height(newHeight + 10);
             }
         });
         return false;
