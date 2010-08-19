@@ -19,8 +19,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:output method="html" encoding="utf-8" omit-xml-declaration="yes" />
 
     <xsl:template match="section/empsearch">
-<!--        <div id="empsearch" class="section">-->
-            <div class="section">
+            <div class="section empsearchmodule">
             <xsl:attribute name="id">
                 <xsl:value-of select="name" />
             </xsl:attribute>
@@ -35,7 +34,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
             <xsl:attribute name="id">
                 <xsl:value-of select="name" />
             </xsl:attribute>
-            <xsl:attribute name="class">toggler</xsl:attribute>
+            <xsl:attribute name="class">toggler empsearchmodule</xsl:attribute>
             <a class="togglerbutton">
                 <xsl:attribute name="href">
                     <xsl:text>?page=</xsl:text>
@@ -73,7 +72,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     </xsl:template>
 
     <xsl:template match="form">
-        <form id="empform">
+        <form class="empform">
             <xsl:attribute name="action">
                 <xsl:value-of select="action"/>
             </xsl:attribute>

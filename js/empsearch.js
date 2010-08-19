@@ -19,32 +19,25 @@
  * This script requires jquery.
  */
 $(function() {
-    
-    var togglerBtn = $('.toggler .togglerbutton[href="?page=empsearch"]');
-    var tContentBody = $('div#empsearch div.togglercontentbody');
-    var sectionBody = $('div#empsearch.section');
-    var toggler = (tContentBody.length > 0);
-    
-    $('#empsearch form').live('submit', function() {
-        var oldHeight = tContentBody.height();
-        var searchVal = $('#empsearch form input[name=empsearchstring]').val();
-        var instanceName = $(this).html;
-        //alert(instanceName);
-        $.post("index.php", {
-            empsearchstring : searchVal,
-            ajax : "empsearch"
-        },
-        function(data){
-            var content = data;
+    $('.empform').live('submit', function() {
+        var toggler = $(this).parents('.toggler');
+        var togglerBtn = toggler.find('.togglerbutton');
+        var instanceName = toggler.attr('id');
+        var searchVal = toggler.find('input[name=empsearchstring]').val();
+        
+        if (searchVal != ''){
+            $.post("index.php", {
+                empsearchstring : searchVal,
+                ajax : instanceName
+            },
+            function(data){
+                var content = data;
             
-            if (toggler){
-                $('div#empsearch div.togglercontentbody').replaceWith(content);
+                toggler.find('.togglercontentbody').replaceWith(content);
                 togglerBtn.trigger('click');
                 togglerBtn.trigger('click');
-            } else{
-                sectionBody.html(content);
-            }
-        });
+            });
+        }
         return false;
     });
 });
