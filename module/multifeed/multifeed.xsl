@@ -124,7 +124,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 </xsl:template>
 
 <xsl:template match="picker">
-	<form name="feedform" method="post" action="index.php" id="feedform" class="hidden">
+	<form name="feedform" method="post" action="" id="feedform" class="hidden">
 		<ul>
 			<xsl:for-each select="box">
 				<li>

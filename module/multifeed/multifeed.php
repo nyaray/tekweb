@@ -59,20 +59,19 @@ class MultiFeed extends ContentModule
       $settings['feeds']: '';
     // var_dump($this->feeds);
 
-	if(isset($_COOKIE['feeds'])){
-		$cookies = $_COOKIE['feeds'];
-	}
-	
 	// Omnomnomnom
 	if (isset($_REQUEST['feedcookie'])) {
-		setcookie('feeds','',time()-3600);
-		$cookies = '';
-        foreach($_POST as $feed => $val){
+		$this->cookies = '';
+        foreach($_REQUEST as $feed => $val){
 			if($val == 'on')
-				$cookies .= $feed . ',';
+				$this->cookies .= $feed . ',';
 		}
+		setcookie('feeds',$this->cookies,time()+60*60*24*7*4*6);
 	}
-	setcookie('feeds',$cookies,time()+60*60*24*7*4*6);  // Six months expiry time
+	else{
+		$this->cookies = $_COOKIE['feeds'];
+		setcookie('feeds',$this->cookies,time()+60*60*24*7*4*6);  // Six months expiry time
+	}
 	
     $this->getFeeds();
   }
@@ -320,13 +319,11 @@ XML;
 	$this->body = "<body>";
 	$form = "<picker>";
     $i = 0;
-	//($_COOKIE[$this->resultArray[$i][author]] == 'yes')
 	while($i < count($this->resultArray)) {
 	
 	  $form .= "<box>" . '<name>' . $this->resultArray[$i][author] . '</name>'
-	  . (  substr_count($_COOKIE['feeds'],$this->resultArray[$i][author]) ? '<checked></checked>' : '') . "</box>";
-//      array_shift($this->resultArray[$i]);
-		if(substr_count($_COOKIE['feeds'],$this->resultArray[$i][author]))
+	  . (  substr_count($this->cookies,$this->resultArray[$i][author]) ? '<checked></checked>' : '') . "</box>";
+		if(substr_count($this->cookies,$this->resultArray[$i][author]))
 			foreach($this->resultArray[$i][feed] as $item) {
 				$this->body .= "<item>";
 				$this->body .= "<title>".$item["title"]."</title>";
