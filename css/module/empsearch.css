@@ -1,0 +1,24 @@
+fieldset {border: 2px solid #B2B2B2;
+	margin: 5px;          
+	border-radius: 10px;		
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
+}
+
+legend {text-align: left; margin-left: 15px;}
+label {margin: 5px 25px 0px 25px; float:left;}
+input {margin: 3px 25px 5px 25px; float:left; clear:left;}
+.employees {text-align:left;}
+
+ul.employees li {margin:0;}
+
+ul.employees > li {margin:5px; padding:6px 6px 6px 15px; border:solid 2px blue;
+	border-radius: 10px;		
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
+clear:left; 
+}
+
+ul.employees li ul li {padding-left:25px; margin-top: 2px;}
+
+div#empsearch .message{float:left;margin: 3px 25px; color: green;}
