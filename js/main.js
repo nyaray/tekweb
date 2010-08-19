@@ -15,6 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 $(document).ready(function() {
+  var active;
   var ajaxLoaded = {};
   var currScreenWidth = screen.width;
 
@@ -30,58 +31,63 @@ $(document).ready(function() {
       active.prev().click(); // closes the active toggler
       active.prev().click(); // opens it again (recalculating it's position)
     }
-    }, false);
+  }, false);
 
-
-    var active;
-
-    //$('.toggler .togglercontent').addClass('hidden');
-    $('.toggler .togglerbutton').click(function() {
-      var p = $(this).next();
-      if(p.hasClass('hidden')) {      // if p is hidden
-        if(active) {                    // if there is an active toggler 
-
-          active.addClass('hidden');      // Hide the active toggler
-          active.prev().children(':first').removeClass('active');
-        }
-        //p.children(':first').html("<img src='gfx/load.gif' />");
-        p.removeClass('hidden');        // show the clicked toggler
-        p.prev().children(':first').addClass('active');
+  $('.toggler .togglerbutton').click(function() {
+    var p = $(this).next();
+    var id = $(this).parent().attr('id');
+    
+    if(p.hasClass('hidden')) {      // if p is hidden
+      if(active) {                    // if there is an active toggler 
+        active.addClass('hidden');      // Hide the active toggler
+        active.prev().children(':first').removeClass('active');
+      }
+      active = p;
+      p.removeClass('hidden');        // show the clicked toggler
+      p.prev().children(':first').addClass('active');
+      
+      if(jQuery.data(ajaxLoaded, id)) {
         var left = $(this).parent().position().left;
         p.children(':first').css('margin-left',-left);
-        var height = p.children(':first').height() + 10;
-        p.height(height);
-
-        var curr = $(this);
-        if(jQuery.data(ajaxLoaded, curr.parent().attr('id'))) {
-          p.children(':first').css('margin-left',-left);
-          var height = p.children(':first').height() + 10;
-          p.height(height);
-          active = p;
-        } else {
-          p.children(':first').html("<img src='gfx/load.gif' />");
-          $.ajax({url: "index.php", 
-                  data: {ajax: curr.parent().attr("id")}, 
-                  dataType: "html", 
-                  success: function(data) {
-                    p.children(':first').replaceWith(data);
-                    p.children(':first').css('margin-left',-left);
-                    var height = p.children(':first').height() + 10;
-                    p.height(height);
-                    active = p;
-                    
-                    jQuery.data(ajaxLoaded, curr.parent().attr('id'), true);
-                  }
-          });
-        }                     // set active to the clicked
+        var h = p.children(':first').height() +20;
+        p.height(h);
+      } 
+      else {
+        p.children(':first').html("<img src='gfx/load.gif' />");
         
-      } else {                        // if p is already visible
-        p.addClass('hidden');           // hide it
-        p.prev().children(':first').removeClass('active');
-      }
-      return false
-    });
+        var t = $(this);
+        var left = $(this).parent().position().left;
+        p.children(':first').css('margin-left',-left);
+        var h = p.children(':first').height() +20;
+        p.height(h);
+        
+        $.ajax({url: "index.php", 
+        data: {ajax: id}, 
+        dataType: "html", 
+        success: function(data) {
+          p.children(':first').replaceWith(data);
+          
+          left = t.parent().position().left;
+          p.children(':first').css('margin-left',-left);
+          h = p.children(':first').height() +20;
+          p.height(h);
+          left = t.parent().position().left;
+          p.children(':first').css('margin-left',-left);
+          h = p.children(':first').height() +20;
+          p.height(h);
+          
+          jQuery.data(ajaxLoaded, id, true);
+        }
+      });
+      }                     // set active to the clicked
+    } 
+    else {                        // if p is already visible
+      p.addClass('hidden');           // hide it
+      p.prev().children(':first').removeClass('active');
+    }
+    return false
   });
+});
 
 function loadScript(url)
 {
