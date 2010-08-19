@@ -2,16 +2,18 @@
 
 
 $(function(){
-	var togglerBtn = $('div#multifeed .togglerbutton');
-    var tContentBody = $('div#multifeed div.togglercontentbody');
-    
-	$('#feedconfig').live('click', function(){
-		if($('#feedform').hasClass('hidden')){
-			$('#feedform').removeClass('hidden');
-			$('#feedlist').addClass('hidden');
+	$('.feedconfig').live('click', function(){
+		var toggler = $(this).parents('.toggler');
+		var togglerBtn = toggler.find('.togglerbutton');
+        var feedform = toggler.find('.feedform');
+		var feedlist = toggler.find('#feedlist');
+
+		if(feedform.hasClass('hidden')){
+			feedform.removeClass('hidden');
+			feedlist.addClass('hidden');
 		} else {
-			$('#feedlist').removeClass('hidden');
-			$('#feedform').addClass('hidden');
+			feedlist.removeClass('hidden');
+			feedform.addClass('hidden');
 		}
 
 		togglerBtn.triggerHandler('click');
@@ -19,11 +21,17 @@ $(function(){
 		return false;
 	});
 	
-	$('#feedform').live('submit', function(){
-		$data = 'ajax=multifeed&feedcookie=Ok';
+	$('.feedform').live('submit', function(){
+		var toggler = $(this).parents('.toggler');
+		var modid = toggler.attr('id');
+		var feedform = toggler.find('.feedform');
+		var feedlist = toggler.find('#feedlist');
+		var feedconfig = toggler.find('.feedconfig');
+		// var togglerBtn = toggler.find(' .togglerbutton');
 		
-		// print($('#feedform input:checkbox'));
-		$('#feedform input:checked').each(function (){
+		$data = 'ajax=' + modid + '&feedcookie=Ok';
+		
+		feedform.find('input:checked').each(function (){
 				$data += '&' + $(this).attr('name') + '=' + 'on';
 		});
 		
@@ -31,8 +39,8 @@ $(function(){
         function(page){
             $content = $(page).find('#feedlist').html();
 			
-			$('#feedlist').html($content);
-			$('#feedconfig').click();
+			feedlist.html($content);
+			feedconfig.click();
 			
 			// togglerBtn.triggerHandler('click');
             // togglerBtn.triggerHandler('click');
