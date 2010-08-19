@@ -39,22 +39,18 @@
                 <link rel="stylesheet" type="text/css" href="css/reset.css" media="all" />
                 <link rel="stylesheet" type="text/css" href="css/layout.css" media="all" />
                 <link rel="stylesheet" type="text/css" href="css/style.css" media="all" />
-
                 <link rel="stylesheet" type="text/css" href="css/module/uumaps.css" media="all" />
                 <link rel="stylesheet" type="text/css" href="css/module/timeedit.css" media="all" />
                 <link rel="stylesheet" type="text/css" href="css/module/feed.css" media="all" />
                 <link rel="stylesheet" type="text/css" href="css/module/about.css" media="all" />
                 <link rel="stylesheet" type="text/css" href="css/module/empsearch.css" media="all" />
 
-                <script type="text/javascript"
-      src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js">      
-                </script>
-
+                <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
                 <script type="text/javascript" src="js/main.js"></script>
                 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
                 <script type="text/javascript" src="js/empsearch.js"></script>
-                <meta name="viewport" content="width=device-width, user-scalable=no" />
 
+                <meta name="viewport" content="width=device-width, user-scalable=no" />
                 <title>
                     <xsl:apply-templates select="./title" />
                 </title>
