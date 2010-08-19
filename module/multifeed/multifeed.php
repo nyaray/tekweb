@@ -64,7 +64,8 @@ class MultiFeed extends ContentModule
 		$this->cookies = '';
         foreach($_REQUEST as $feed => $val){
 			if($val == 'on')
-				$this->cookies .= $feed . ',';
+				$this->cookies .= str_replace('_',' ',$feed) . ',';
+			// echo($feed . ' => ' . $val .' '	);
 		}
 		setcookie('feeds',$this->cookies,time()+60*60*24*7*4*6);
 	}
@@ -72,7 +73,7 @@ class MultiFeed extends ContentModule
 		$this->cookies = $_COOKIE['feeds'];
 		setcookie('feeds',$this->cookies,time()+60*60*24*7*4*6);  // Six months expiry time
 	}
-	
+		
     $this->getFeeds();
   }
 
@@ -331,11 +332,14 @@ XML;
 		if(substr_count($this->cookies,$this->resultArray[$i][author]))
 			foreach($this->resultArray[$i][feed] as $item) {
 				$this->body .= "<item>";
-				$this->body .= "<title>".$item["title"]."</title>";
+				$title = $item["title"];
 				if($item["link"] != "") {
 				  $this->body .= "<link>".$item["link"]."</link>";
 				}
-				$this->body .= "<desc>".$item["description"]."</desc>";
+				$desc = $item["description"];
+				$this->body .= '<title>'.$title.'</title>' . 
+				($title != $desc ? '<desc>'.$desc.'</desc>' : '<desc></desc>');
+				
 				if($item["pubDate"] != "") {
 				  $date = explode(' ',$item["pubDate"]);
 				  $translateMonth = array("Jan" => '01',

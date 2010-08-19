@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <xsl:stylesheet version="1.0"
 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="html" encoding="utf-8" omit-xml-declaration="yes" />
@@ -111,7 +111,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<div>
 		<xsl:attribute name="class">togglercontentbody</xsl:attribute>
 			<a href="link" class="feedconfig">
-				<img src="gfx/icons/pref.png" alt="Prenumerera" id="feedconfig"/>
+				<img src="gfx/icons/FeedPreffour.png" alt="Prenumerera" id="feedconfig"/>
 			</a>
 			<xsl:apply-templates select="picker"/>
 			<ul id="feedlist">
@@ -125,6 +125,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template match="picker">
 	<form name="feedform" method="post" action="" class="feedform hidden">
+		<span>Prenumerera på dessa flöden</span>
 		<ul>
 			<xsl:for-each select="box">
 				<li>
