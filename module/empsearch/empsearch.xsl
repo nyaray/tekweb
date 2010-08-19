@@ -19,7 +19,11 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:output method="html" encoding="utf-8" omit-xml-declaration="yes" />
 
     <xsl:template match="section/empsearch">
-        <div id="empsearch" class="section">
+<!--        <div id="empsearch" class="section">-->
+            <div class="section">
+            <xsl:attribute name="id">
+                <xsl:value-of select="name" />
+            </xsl:attribute>
             <xsl:apply-templates select="form"/>
             <xsl:apply-templates select="message"/>
             <xsl:apply-templates select="employeelist"/>
@@ -106,9 +110,9 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     </xsl:template>
 
     <xsl:template match="message">
-        <div class="message">
+        <p class="message">
             <xsl:value-of select="."/>
-        </div>
+        </p>
     </xsl:template>
 
     <xsl:template match="page">
@@ -176,7 +180,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
                             </li>
                         </xsl:if>
                         <xsl:if test="mobilenumber">
-                            <li class="mobilenumber">
+                            <li class="phonenumber">
                                 <a>
                                     <xsl:attribute name="href">
                                         <xsl:text>tel:0</xsl:text>

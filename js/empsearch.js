@@ -19,6 +19,7 @@
  * This script requires jquery.
  */
 $(function() {
+    
     var togglerBtn = $('.toggler .togglerbutton[href="?page=empsearch"]');
     var tContentBody = $('div#empsearch div.togglercontentbody');
     var sectionBody = $('div#empsearch.section');
@@ -27,7 +28,8 @@ $(function() {
     $('#empsearch form').live('submit', function() {
         var oldHeight = tContentBody.height();
         var searchVal = $('#empsearch form input[name=empsearchstring]').val();
-
+        var instanceName = $(this).html;
+        //alert(instanceName);
         $.post("index.php", {
             empsearchstring : searchVal,
             ajax : "empsearch"
