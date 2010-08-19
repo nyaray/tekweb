@@ -3,6 +3,7 @@
 
 $(function(){
 	var togglerBtn = $('div#multifeed .togglerbutton');
+    var tContentBody = $('div#multifeed div.togglercontentbody');
     
 	$('#feedconfig').live('click', function(){
 		if($('#feedform').hasClass('hidden')){
@@ -12,9 +13,9 @@ $(function(){
 			$('#feedlist').removeClass('hidden');
 			$('#feedform').addClass('hidden');
 		}
+
 		togglerBtn.triggerHandler('click');
-		togglerBtn.triggerHandler('click');
-		
+		togglerBtn.triggerHandler('click');		
 		return false;
 	});
 	
@@ -33,8 +34,8 @@ $(function(){
 			$('#feedlist').html($content);
 			$('#feedconfig').click();
 			
-			togglerBtn.triggerHandler('click');
-            togglerBtn.triggerHandler('click');
+			// togglerBtn.triggerHandler('click');
+            // togglerBtn.triggerHandler('click');
         });
 	
 		return false;

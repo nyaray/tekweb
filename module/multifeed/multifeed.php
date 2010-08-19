@@ -82,15 +82,17 @@ class MultiFeed extends ContentModule
 		return;
 
 	if(isset($this->feeds["feed"]["author"])) {
+		$author = $this->feeds["feed"]['author'];
 		switch ($this->feeds["feed"]['type']) {
 			case 'atom':
 			  //same lib as rss
 			case 'rss':
 			  $this->reader = new RssAtomReader();
-
+			  
 			  $this->resultArray[$count] = array(
-				  "author" => $this->feeds["feed"]['author'],
-				  "feed" => $this->reader->Universal_Reader($this->feeds["feed"]['src'])
+				  "author" => $author,
+				  "feed" => (substr_count($this->cookies,$author) ? 
+				  $this->reader->Universal_Reader($this->feeds["feed"]['src']) : null)
 				  );
 			   //var_dump($this->resultArray);
 			  break;
@@ -98,8 +100,9 @@ class MultiFeed extends ContentModule
 			  $this->reader = new FacebookFeedReader();
 			  
 			  $this->resultArray[$count] = array(
-				  "author" => $this->feeds["feed"]['author'],
-				  "feed" => $this->reader->Read($this->feeds["feed"]['src'])
+				  "author" => $author,
+				  "feed" => (substr_count($this->cookies,$author) ? 
+				  $this->reader->Read($this->feeds["feed"]['src']) : null)
 				  );
 				  //var_dump($this->resultArray[$count]);
 			  break;
@@ -118,7 +121,8 @@ class MultiFeed extends ContentModule
 
 			  $this->resultArray[$count] = array(
 				  "author" => $src['author'],
-				  "feed" => $this->reader->Universal_Reader($src['src'])
+				  "feed" => (substr_count($this->cookies,$src['author']) ? 
+				  $this->reader->Universal_Reader($src['src']) : null)
 				  );
 			  //var_dump($this->resultArray);
 			  break;
@@ -127,7 +131,8 @@ class MultiFeed extends ContentModule
 			  
 			  $this->resultArray[$count] = array(
 				  "author" => $src['author'],
-				  "feed" => $this->reader->Read($src['src'])
+				  "feed" => (substr_count($this->cookies,$src['author']) ?
+				  $this->reader->Read($src['src']) : null)
 				  );
 				  //var_dump($this->resultArray[$count]);
 			  break;
