@@ -3,7 +3,67 @@
 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="html" encoding="utf-8" omit-xml-declaration="yes" />
 
-<xsl:template match="section/timeedit/view">
+<xsl:template match="section/timeedit">
+<div>
+  <xsl:apply-templates select="./*" mode="section" />
+</div>
+</xsl:template>
+
+<xsl:template match="toggler/timeedit">
+<div>
+  <xsl:attribute name="id"><xsl:value-of select="./name" /></xsl:attribute>
+  <xsl:attribute name="class">toggler</xsl:attribute>
+  toggl0rz?!
+  <a>
+    <xsl:attribute name="class">togglerbutton</xsl:attribute>
+    <xsl:attribute name="href">?page=<xsl:value-of select="./name" /></xsl:attribute>
+    <xsl:element name="img">
+      <xsl:attribute name="class">togglericon</xsl:attribute>
+      <xsl:attribute name="src">
+        <xsl:value-of select="./icon" />
+      </xsl:attribute>
+    </xsl:element>
+    <span class="togglerbuttontext">
+      <xsl:value-of select="./head" />
+    </span>
+  </a>
+  <div>
+    <xsl:attribute name="class">togglercontent</xsl:attribute>
+    <xsl:attribute name="class">hidden</xsl:attribute>
+    <div>
+      <xsl:attribute name="class">togglercontentbody</xsl:attribute>
+    </div>
+  </div>
+</div>
+
+</xsl:template>
+
+<xsl:template match="timeedit/conf">
+  <xsl:copy-of select="*" />
+</xsl:template>
+
+<xsl:template match="ajax/timeedit">
+<div>
+  <!-- Head -->
+  <xsl:if test="head">
+    <h1><xsl:value-of select="head" /></h1>
+  </xsl:if>
+
+  <!-- Events -->
+  <xsl:choose>
+    <xsl:when test="events">
+      <xsl:apply-templates select="events" />
+    </xsl:when>
+
+    <xsl:otherwise>
+      Det finns inget schemalagt inom de närmsta
+      två-tre veckorna för de valda kurserna.
+    </xsl:otherwise>
+  </xsl:choose>
+</div>
+</xsl:template>
+
+<xsl:template match="timeedit/view" mode="section">
 <div>
   <xsl:attribute name="id"><xsl:value-of select="name" /></xsl:attribute>
   <xsl:attribute name="class">section</xsl:attribute>
@@ -13,20 +73,17 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <h1><xsl:value-of select="head" /></h1>
   </xsl:if>
 
-  <!-- Link to the config page -->
-  <xsl:if test="conf">
-    <a>
-      <xsl:attribute name="href">
-        <xsl:value-of select="conf" />
-      </xsl:attribute>
-      Konfigurera schema
-    </a>
-  </xsl:if>
-
   <!-- Events -->
-  <xsl:if test="events">
-    <xsl:apply-templates select="events" />
-  </xsl:if>
+  <xsl:choose>
+    <xsl:when test="events">
+      <xsl:apply-templates select="events" />
+    </xsl:when>
+
+    <xsl:otherwise>
+      Det finns inget schemalagt inom de närmsta
+      två-tre veckorna för de valda kurserna.
+    </xsl:otherwise>
+  </xsl:choose>
 </div>
 </xsl:template>
 
@@ -142,11 +199,10 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   </div>
 </xsl:template>
 
-<xsl:template match="section/timeedit/search">
+<xsl:template match="timeedit/search" mode="section">
 <div>
   <xsl:attribute name="id"><xsl:value-of select="name" /></xsl:attribute>
   <h1><xsl:value-of select="head" /></h1>
-  <h2>Välj kurser</h2>
 
   <!-- <xsl:apply-templates select="form/instructions" /> -->
   <form>
@@ -161,8 +217,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:copy-of select="label[@for = 'save']" />
     <xsl:copy-of select="input[@id = 'save']" />
     <xsl:apply-templates select="form/searchresult" />
-    <!-- <xsl:copy-of select="form/" /> -->
   </form>
+  <!-- <xsl:copy-of select="form/" /> -->
 
 </div>
 </xsl:template>
@@ -183,6 +239,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
         <xsl:copy-of select="input" />
         <xsl:copy-of select="a" />
         <xsl:value-of select="name/long" />
+        (<xsl:value-of select="name/short" />)
       </li>
     </xsl:for-each>
   </ul>
@@ -213,7 +270,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
         <xsl:copy-of select="a" />
         <xsl:value-of select="name/long" />
-        <!--(<xsl:value-of select="name/short" />)-->
+        (<xsl:value-of select="name/short" />)
       </li>
     </xsl:for-each>
   </ul>
