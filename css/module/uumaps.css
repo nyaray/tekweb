@@ -62,24 +62,25 @@ background-image: -webkit-gradient(linear, left top, left bottom, from(#ff0000),
   background-color:#e5e5e5;
 }
 
-#uuMapModule #MyMap #DirectionsGeolocater
+#uuMapModule #DirectionsGeolocater
 {
   margin:0 auto;
 }
 
-#uuMapModule #MyMap #GetMyGPS
+#uuMapModule #GetMyGPS
 {
   margin:5px auto;
   margin-top:10px;
 }
 
 
-#uuMapModule #MyMap #map_canvas
+#uuMapModule #map_canvas
 {
-  width:92%;
+/*  width:92%;*/
   height:250px;
   margin:0 auto;
   border:2px solid #b2b2b2;
+  position:relative;
 }
 #uuMapModule .MarkerWrapper
 {
@@ -104,7 +105,7 @@ background-image: -webkit-gradient(linear, left top, left bottom, from(#ff0000),
 /*  width:75%;*/
 }
 /*------------------DirectionsField------------------*/
-#uuMapModule #DirectionsField #RouteType
+#uuMapModule #RouteType
 {
   font-size:10pt;
 }
@@ -118,16 +119,16 @@ background-image: -webkit-gradient(linear, left top, left bottom, from(#ff0000),
   padding:5px;
   color:#b2b2b2;
 }
-#uuMapModule #DirectionsField #myAddress
+#uuMapModule #myAddress
 {
   margin-top:-2px;
   margin-bottom:5px;
 }
-#uuMapModule #DirectionsField .ButtonContainer
+#uuMapModule .ButtonContainer
 {
   margin:5px auto;
 }
-#uuMapModule #DirectionsField #GeolocatorContainer
+#uuMapModule #GeolocatorContainer
 {
   border-top:1px solid #b2b2b2;
   padding-top:10px;
@@ -139,7 +140,7 @@ background-image: -webkit-gradient(linear, left top, left bottom, from(#ff0000),
   height:12pt;
   margin-bottom:5px;
 }
-#uuMapModule #DirectionsField .AddressWrapper
+#uuMapModule .AddressWrapper
 {
   display:inline-block;
 }
@@ -154,36 +155,36 @@ background-image: -webkit-gradient(linear, left top, left bottom, from(#ff0000),
   display:none;
 }
 
-#uuMapModule #Information .list
+#uuMapModule .list
 {
   display:block-inline;
   float:left;
   margin:0 5px 5px 0px;
 }
 
-#uuMapModule #Information #ServiceList
+#uuMapModule #ServiceList
 {
   margin:0 0 5px 5px;
 }
-#uuMapModule #Information #ServiceList li
+#uuMapModule #ServiceList li
 {
   margin:0; 
   font-size:8pt;
 }
-#uuMapModule #Information #Address
+#uuMapModule #Address
 {
   margin:5px;
   font-size:10pt;
 }
 
-#uuMapModule #Information .bold
+#uuMapModule .bold
 {
   font-weight:bold;
   font-size:11pt;
 }
 
 
-#uuMapModule #Information #Description
+#uuMapModule #Description
 {
   margin:5px;
   font-size:10pt;
@@ -200,6 +201,7 @@ background-image: -webkit-gradient(linear, left top, left bottom, from(#ff0000),
 
 #uuMapModule #CampusOverview img
 {
-  width:95%;
+/*  width:100%;*/
+  position:relative;
   max-height:100%;
 }

@@ -257,6 +257,7 @@ function UUMapModule() {
     map = new google.maps.Map(document.getElementById("map_canvas"), defaultOpt);
     google.maps.event.trigger(map, 'resize');
     map.setCenter(defaultLocation);
+    
     //Create the two objects nessecary for retrieving Directions and a Geocoder for retrieving coord. from adresses
     directionsR = new google.maps.DirectionsRenderer();
     directionsS = new google.maps.DirectionsService();
