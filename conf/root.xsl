@@ -49,6 +49,7 @@
                 <script type="text/javascript" src="js/main.js"></script>
                 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
                 <script type="text/javascript" src="js/empsearch.js"></script>
+				<script type="text/javascript" src="js/multifeed.js"></script>
 
                 <meta name="viewport" content="width=device-width, user-scalable=no" />
                 <title>
