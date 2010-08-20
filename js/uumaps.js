@@ -29,7 +29,11 @@ $(function()
 function Resize() 
 {
   google.maps.event.trigger(map, 'resize');
-  map.setCenter(defaultLocation);
+  if(myMarker.getVisible()==true)
+  {
+    map.setCenter(myMarker.getPosition());
+  }
+  map.setCenter(marker.getPosition());
 }
 //This function will first check if a campus is selected.
 //then it will determine if the user want to have directions
@@ -370,7 +374,11 @@ function UUMapModule() {
       marker = createMarker(defaultLocation, "");
 
       //This function handles a bug with googlemaps that appear when resizing divs containging map_canvas
-      Resize(); 
+      // Resize();
+      $(togglerBtn).click(function () {
+        Resize(); 
+      });
+      
       if (toggler){
           togglerBtn.trigger('click');
           togglerBtn.trigger('click');

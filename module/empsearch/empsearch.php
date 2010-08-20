@@ -30,6 +30,8 @@ class EmpSearch extends ContentModule {
     protected $nonEmptySearchStr = false;
     protected $head = '';
     protected $page = '';
+    protected $exactMatch = false;
+    protected $nonExactMatch = false;
 
     public function __construct($settings) {
         parent::__construct();
@@ -49,7 +51,8 @@ class EmpSearch extends ContentModule {
         }
 
         if (isset($_REQUEST['page'])) {
-            $this->page = '<page><value>' . strip_tags($_REQUEST['page']) . '</value></page>';
+            $this->page = '<page><value>' . strip_tags($_REQUEST['page'])
+                    . '</value></page>';
         }
 
         if (isset($_REQUEST['empsearchstring'])) {
@@ -57,7 +60,8 @@ class EmpSearch extends ContentModule {
             $this->searchString = trim($this->searchString);
             $this->searchString = preg_replace('/\s+/', ' '
                             , $this->searchString);
-            $this->searchString = mb_ereg_replace('/[^a-zA-ZåäöÅÄÖ]/', '', $this->searchString);
+            $this->searchString = mb_ereg_replace('/[^a-zA-ZåäöÅÄÖ]/', ''
+                            , $this->searchString);
         }
 
         $this->nonEmptySearchStr = ($this->searchString != '');
@@ -82,9 +86,37 @@ class EmpSearch extends ContentModule {
 FORM;
     }
 
+    protected function genExactFilter($searchString) {
+        $searchStrings = explode(' ', $searchString);
+        $numStr = count($searchStrings);
+
+        switch ($numStr) {
+            case 0:
+                return '';
+                break;
+            case 1:
+                return '(|(givenname=' . $searchStrings[0] . ')(sn='
+                . $searchStrings[0] . '))';
+                
+                break;
+            case 2:
+                $urke = '(|(&(givenname=' . $searchStrings[0] . ')' . '(sn=' . $searchStrings[1] . ')' . ')' .
+                '(&(givenname=' . $searchStrings[1] . ')' . '(sn=' . $searchStrings[0] . ')' . ')'
+                . ')';
+                //die("URK:". $urke);
+                return $urke;
+                break;
+
+            default:
+                die ("died in case"); //FIXME
+                break;
+        }
+    }
+
     protected function search() {
         $this->numSearchEntries = 0;
-        $filter = '(|(givenname=' . $this->searchString . ')(sn=' . $this->searchString . '))'; //FIXME gen filter
+//        $filter = '(|(givenname=' . $this->searchString . ')(sn=' . $this->searchString . '))'; //FIXME gen filter
+        $filter = $this->genExactFilter($this->searchString);
         $this->numSearchEntries = $this->ldap->doSearch($filter);
 
         return $this->ldap->getSearchEntries();
@@ -103,12 +135,15 @@ FORM;
                 for ($i = 0; $i < $numAttribs; $i++) {
                     $tmpA = str_replace($search, $replace, $tmpArray[$i]);
                     $tmpA = htmlspecialchars($tmpA);
-                    $tmpStr .= '<' . $tag . '>' . $tmpA . '</' . $tag . '>' . "\n";
+                    $tmpStr .= '<' . $tag . '>' . $tmpA;
+                    $tmpStr .= '</' . $tag . '>' . "\n";
                 }
             } else {
                 for ($i = 0; $i < $numAttribs; $i++) {
                     $tmpA = htmlspecialchars($tmpArray[$i]);
-                    $tmpStr .= '<' . $tag . '>' . $tmpA . '</' . $tag . '>' . "\n";
+                    //$tmpStr .= '<' . $tag . '>' . $tmpA . '</' . $tag . '>' . "\n";
+                    $tmpStr .= '<' . $tag . '>' . $tmpA;
+                    $tmpStr .= '</' . $tag . '>' . "\n";
                 }
             }
         }
@@ -156,7 +191,9 @@ FORM;
             }
         } else {
             //FIXME ADD ~ search 
-            $tmpStr = '<message>' . htmlspecialchars('Din sökning gav inga träffar') . '</message>' . "\n";
+            $tmpStr = '<message>';
+            $tmpStr .= htmlspecialchars('Din sökning gav inga träffar');
+            $tmpStr .= '</message>' . "\n";
         }
         return $tmpStr;
     }
