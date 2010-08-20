@@ -19,37 +19,25 @@
  * This script requires jquery.
  */
 $(function() {
-    //var togglerBtn = $('div#empsearch .togglerbutton');
-    var tContentBody = $('div#empsearch div.togglercontentbody');
-    var sectionBody = $('div#empsearch.section');
-    var toggler = (tContentBody.length > 0);
-    
-    //tglBtnRebound = false;
-
-    $('#empsearch form').live('submit', function() {
-        var oldHeight = tContentBody.height();
-        var searchVal = $('#empsearch form input[name=empsearchstring]').val();
-
-        $.post("index.php", {
-            empsearchstring : searchVal,
-            page : "empsearch"
-        },
-        function(data){
-            var content = $(data).find('div#empsearch').html();
-       
-            if (toggler){
-                tContentBody.html(content);
-            } else{
-                sectionBody.html(content);
-            }
+    $('.empform').live('submit', function() {
+        var toggler = $(this).parents('.toggler');
+        var togglerBtn = toggler.find('.togglerbutton');
+        var instanceName = toggler.attr('id');
+        var searchVal = toggler.find('input[name=empsearchstring]').val();
+        
+        if (searchVal != ''){
+            $.post("index.php", {
+                empsearchstring : searchVal,
+                ajax : instanceName
+            },
+            function(data){
+                var content = data;
             
-            var newHeight = tContentBody.height();
-
-            if(oldHeight != newHeight){
-                // height +10 same as main.js!
-                $('div#empsearch > div:first').height(newHeight + 10);
-            }
-        });
+                toggler.find('.togglercontentbody').replaceWith(content);
+                togglerBtn.trigger('click');
+                togglerBtn.trigger('click');
+            });
+        }
         return false;
     });
 });

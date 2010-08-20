@@ -18,8 +18,11 @@
 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:output method="html" encoding="utf-8" omit-xml-declaration="yes" />
 
-   <xsl:template match="section/empsearch">
-        <div id="empsearch" class="section">
+    <xsl:template match="section/empsearch">
+            <div class="section empsearchmodule">
+            <xsl:attribute name="id">
+                <xsl:value-of select="name" />
+            </xsl:attribute>
             <xsl:apply-templates select="form"/>
             <xsl:apply-templates select="message"/>
             <xsl:apply-templates select="employeelist"/>
@@ -31,7 +34,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
             <xsl:attribute name="id">
                 <xsl:value-of select="name" />
             </xsl:attribute>
-            <xsl:attribute name="class">toggler</xsl:attribute>
+            <xsl:attribute name="class">toggler empsearchmodule</xsl:attribute>
             <a class="togglerbutton">
                 <xsl:attribute name="href">
                     <xsl:text>?page=</xsl:text>
@@ -69,23 +72,28 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     </xsl:template>
 
     <xsl:template match="form">
-        <form id="empform">
+        <form class="empform">
             <xsl:attribute name="action">
                 <xsl:value-of select="action"/>
             </xsl:attribute>
             <xsl:attribute name="method">
                 <xsl:value-of select="method"/>
             </xsl:attribute>
-            <input type="text">
-                <xsl:attribute name="name">
-                    <xsl:value-of select="name"/>
-                </xsl:attribute>
-                <xsl:attribute name="value">
-                    <xsl:value-of select="value"/>
-                </xsl:attribute>
-            </input>
-            <xsl:apply-templates select="button"/>
-            <xsl:apply-templates select="page"/>
+            <fieldset>
+                <legend>Sök personal</legend>
+                <label for="searchstring">Förnamn Efternamn</label>
+                <br />
+                <input id="searchstring" type="text">
+                    <xsl:attribute name="name">
+                        <xsl:value-of select="name"/>
+                    </xsl:attribute>
+                    <xsl:attribute name="value">
+                        <xsl:value-of select="value"/>
+                    </xsl:attribute>
+                </input>
+                <xsl:apply-templates select="button"/>
+                <xsl:apply-templates select="page"/>
+            </fieldset>
         </form>
     </xsl:template>
 
@@ -101,9 +109,9 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     </xsl:template>
 
     <xsl:template match="message">
-        <div class="message">
+        <p class="message">
             <xsl:value-of select="."/>
-        </div>
+        </p>
     </xsl:template>
 
     <xsl:template match="page">
@@ -121,9 +129,9 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
                 <xsl:sort select="surname" lang="sv"/>
                 <xsl:sort select="givenname" lang="sv"/>
                 <li>
-                    <xsl:value-of select="givenname"/>
-                    <xsl:text>&#160;</xsl:text>
-                    <xsl:value-of select="surname"/>
+                    <b><xsl:value-of select="givenname"/>
+                        <xsl:text>&#160;</xsl:text>
+                        <xsl:value-of select="surname"/></b>
                     <ul>
                         <xsl:if test="titleatdep">
                             <li class="titleatdep">
@@ -160,7 +168,6 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
                                     <xsl:attribute name="href">
                                         <xsl:text>tel:0</xsl:text>
                                         <xsl:value-of select="substring(phonenumber, 4)"/>
-<!--                                        <xsl:value-of select="phonenumber"/>-->
                                     </xsl:attribute>
                                     <xsl:text>TEL: 0</xsl:text>
                                     <xsl:value-of select="substring(phonenumber, 4, 2)"/>
@@ -172,7 +179,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
                             </li>
                         </xsl:if>
                         <xsl:if test="mobilenumber">
-                            <li class="mobilenumber">
+                            <li class="phonenumber">
                                 <a>
                                     <xsl:attribute name="href">
                                         <xsl:text>tel:0</xsl:text>
@@ -202,5 +209,4 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
             </xsl:for-each>
         </ul>
     </xsl:template>
-
 </xsl:stylesheet>

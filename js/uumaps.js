@@ -236,6 +236,10 @@ function UUMapModule() {
   var fieldtext;
   var defaultZoom = 12; //Zoom when the map i loaded
   var markerZoom = 15; //Zoom when a location is choosen
+  var tContentBody = $('div#uumap div.togglercontentbody');
+  var togglerBtn = $('.toggler .togglerbutton[href="?page=uumap"]');
+  var toggler = (tContentBody.length > 0);
+  
   
   defaultLocation = new google.maps.LatLng(59.858100, 17.644000); //sets Uppsala as default location
   //Map options
@@ -366,7 +370,10 @@ function UUMapModule() {
 
       //This function handles a bug with googlemaps that appear when resizing divs containging map_canvas
       Resize(); 
-
+      if (toggler){
+          togglerBtn.trigger('click');
+          togglerBtn.trigger('click');
+      }
       //This Function will move the different
       $("#uuMapModule #Locations").change(function () {
         //Reseting all other markers, windows, information and campus maps
@@ -434,9 +441,13 @@ function UUMapModule() {
               $(img).load(function()
               {
                 $("#uuMapModule #CampusOverview div").html(this); //this is solving a height-bug we had. this updates height of the containt-div
-                var target = $("#uumap > div");
-                var height = target.children(":first").height();
-                target.height(height+10);
+                if (toggler){
+                    togglerBtn.trigger('click');
+                    togglerBtn.trigger('click');
+                }
+                // var target = $("#uumap > div");
+                // var height = target.children(":first").height();
+                // target.height(height+10);
               });
             }
           }
@@ -465,9 +476,13 @@ function UUMapModule() {
           map.setZoom(markerZoom);
           google.maps.event.trigger(map, 'resize');
           map.setCenter(marker.getPosition());
-          var target = $("#uumap > div");
-          var height = target.children(":first").height();
-          target.height(height+10);
+          if (toggler){
+              togglerBtn.trigger('click');
+              togglerBtn.trigger('click');
+          }
+          // var target = $("#uumap > div");
+          // var height = target.children(":first").height();
+          // target.height(height+10);
         }
       });
         //This is for the address field, its displayed when the addressfield is empty and unselected 
@@ -604,10 +619,10 @@ function UUMapModule() {
           }
 
         });
-        var target = $("#uumap > div");
-        var height = target.children(":first").height();
-        target.height(height+10);
+        // var target = $("#uumap > div");
+        // var height = target.children(":first").height();
+        // target.height(height+10);
       }); 
     }// );
-    
+ 
 });
