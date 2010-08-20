@@ -65,7 +65,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
         <xsl:value-of select="./title" />
       </xsl:otherwise>
     </xsl:choose>
-    <xsl:if test="desc">
+    <xsl:if test="desc != ''">
       <p>
         <xsl:value-of select="./desc" />
       </p>
