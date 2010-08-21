@@ -1,20 +1,3 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<xsl:stylesheet version="1.0"
-xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-<xsl:output type="none" />
-
-<xsl:template match="node()|@*">
-  <xsl:copy-of select="@*|node()" />
-</xsl:template>
-
-<xsl:template match="/">
-<section>
-  <timeedit>
-    <xsl:apply-templates select="calendar/*" />
-  </timeedit>
-</section>
-</xsl:template>
-
 <!-- a link to the configuration page -->
 <xsl:template match="calendar/conf">
 <conf>
@@ -26,7 +9,6 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template match="calendar/view">
 <view>
   <head><xsl:value-of select="head" /></head>
-  <name><xsl:value-of select="name" /></name>
   <xsl:apply-templates select="events" />
   <xsl:copy-of select="course" />
 </view>
@@ -50,10 +32,3 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 </xsl:template>
 
 
-<!-- Viewing the search form -->
-<xsl:template match="calendar/search">
-<search>
-  <xsl:copy-of select="@*|node()" />
-</search>
-</xsl:template>
-</xsl:stylesheet>
