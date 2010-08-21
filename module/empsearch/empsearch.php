@@ -32,6 +32,7 @@ class EmpSearch extends ContentModule {
     protected $page = '';
     protected $exactMatch = false;
     protected $nonExactMatch = false;
+    protected $alwdChars = 'a-zà-öù-ÿ\s';
 
     public function __construct($settings) {
         parent::__construct();
@@ -60,8 +61,10 @@ class EmpSearch extends ContentModule {
             $this->searchString = trim($this->searchString);
             $this->searchString = preg_replace('/\s+/', ' '
                             , $this->searchString);
-            $this->searchString = mb_ereg_replace('/[^a-zA-ZåäöÅÄÖ]/', ''
-                            , $this->searchString);
+            mb_internal_encoding("UTF-8");
+            mb_regex_encoding("UTF-8");
+            $this->searchString = mb_strtolower($this->searchString);
+            $this->searchString = mb_ereg_replace('[^' . $this->alwdChars . ']', '', $this->searchString);
         }
 
         $this->nonEmptySearchStr = ($this->searchString != '');
@@ -101,17 +104,10 @@ FORM;
                 . str_replace('*', '', $searchStrings[0]) . '*))';
                 break;
 
-                        case 2:
+            case 2:
                 return '(&(cn=*' . str_replace('*', '', $searchStrings[0]) . '*)'
                 . '(cn=*' . str_replace('*', '', $searchStrings[1]) . '*))';
                 break;
-
-//            case 2:
-//                return '(|(&(givenname=' . $searchStrings[0] . ')'
-//                . '(sn=' . $searchStrings[1] . ')' . ')' . '(&(givenname='
-//                . $searchStrings[1] . ')' . '(sn=' . $searchStrings[0] . ')'
-//                . '))';
-//                break;
 
             default:
                 $tmpA = '(&';
