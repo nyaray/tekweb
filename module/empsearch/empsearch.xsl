@@ -19,7 +19,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:output method="html" encoding="utf-8" omit-xml-declaration="yes" />
 
     <xsl:template match="section/empsearch">
-            <div class="section empsearchmodule">
+        <div class="section empsearchmodule">
             <xsl:attribute name="id">
                 <xsl:value-of select="name" />
             </xsl:attribute>
@@ -81,8 +81,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
             </xsl:attribute>
             <fieldset>
                 <legend>Sök personal</legend>
-                <label for="searchstring">Förnamn Efternamn</label>
-                <br />
+                <label for="searchstring">Namn</label>
+<!--                <br />-->
                 <input id="searchstring" type="text">
                     <xsl:attribute name="name">
                         <xsl:value-of select="name"/>
@@ -125,13 +125,15 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:template match="employeelist">
         <ul class="employees">
             <xsl:for-each select="employee">
-            <!-- "sorted"(ÄÅÖ) same as uu.se-->
+            <!-- "unsorted"(ÄÅÖ) same as uu.se-->
                 <xsl:sort select="surname" lang="sv"/>
                 <xsl:sort select="givenname" lang="sv"/>
                 <li>
-                    <b><xsl:value-of select="givenname"/>
+                    <b>
+                        <xsl:value-of select="givenname"/>
                         <xsl:text>&#160;</xsl:text>
-                        <xsl:value-of select="surname"/></b>
+                        <xsl:value-of select="surname"/>
+                    </b>
                     <ul>
                         <xsl:if test="titleatdep">
                             <li class="titleatdep">
@@ -140,13 +142,15 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
                         </xsl:if>
                         <xsl:if test="visitingaddress">
                             <li class="visitingaddress">
-                                <xsl:text>Besöksadress: </xsl:text>
+                                <b>
+                                    <xsl:text>Besöksadress: </xsl:text>
+                                </b>
                                 <xsl:value-of select="visitingaddress"/>
                             </li>
                         </xsl:if>
                         <xsl:if test="roomnumber">
                             <li class="roomnumber">
-                                <xsl:text>RUM: </xsl:text>
+                                <b><xsl:text>RUM: </xsl:text></b>
                                 <xsl:value-of select="roomnumber"/>
                             </li>
                         </xsl:if>
@@ -154,10 +158,10 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
                             <li class="mail">
                                 <a>
                                     <xsl:attribute name="href">
-                                        <xsl:text>mailto:</xsl:text>
+                                       <b><xsl:text>mailto:</xsl:text></b>
                                         <xsl:value-of select="mail"/>
                                     </xsl:attribute>
-                                    <xsl:text>E-post: </xsl:text>
+                                    <b><xsl:text>E-post: </xsl:text></b>
                                     <xsl:value-of select="mail"/>
                                 </a>
                             </li>
@@ -169,7 +173,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
                                         <xsl:text>tel:0</xsl:text>
                                         <xsl:value-of select="substring(phonenumber, 4)"/>
                                     </xsl:attribute>
-                                    <xsl:text>TEL: 0</xsl:text>
+                                    <b><xsl:text>TEL: </xsl:text></b>
+                                    <xsl:text>0</xsl:text>
                                     <xsl:value-of select="substring(phonenumber, 4, 2)"/>
                                     <xsl:text>&#160;</xsl:text>
                                     <xsl:value-of select="substring(phonenumber, 6, 3)"/>
@@ -185,7 +190,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
                                         <xsl:text>tel:0</xsl:text>
                                         <xsl:value-of select="substring(mobilenumber, 4)"/>
                                     </xsl:attribute>
-                                    <xsl:text>TEL: 0</xsl:text>
+                                    <b><xsl:text>TEL: </xsl:text></b>
+                                    <xsl:text>0</xsl:text>
                                     <xsl:value-of select="substring(mobilenumber, 4, 2)"/>
                                     <xsl:text>&#160;</xsl:text>
                                     <xsl:value-of select="substring(mobilenumber, 6, 3)"/>
@@ -196,7 +202,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
                         </xsl:if>
                         <xsl:if test="faxnumber">
                             <li class="faxnumber">
-                                <xsl:text>FAX: 0</xsl:text>
+                                <b><xsl:text>FAX: </xsl:text></b>
+                                <xsl:text>0</xsl:text>
                                 <xsl:value-of select="substring(faxnumber, 4, 2)"/>
                                 <xsl:text>&#160;</xsl:text>
                                 <xsl:value-of select="substring(faxnumber, 6, 3)"/>

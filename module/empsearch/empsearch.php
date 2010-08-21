@@ -32,7 +32,7 @@ class EmpSearch extends ContentModule {
     protected $page = '';
     protected $exactMatch = false;
     protected $nonExactMatch = false;
-    protected $alwdChars = 'a-zà-öù-ÿ\s';
+    protected $alwdChars = 'a-zà-öù-ÿ\s\-';
 
     public function __construct($settings) {
         parent::__construct();
