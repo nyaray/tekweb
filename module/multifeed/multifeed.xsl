@@ -116,7 +116,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<xsl:apply-templates select="picker"/>
 			<ul id="feedlist">
 			 <xsl:for-each select="body/item">
-					<br />
+<!--					<br />-->
 					<xsl:apply-templates select="." />
 			 </xsl:for-each>
 			</ul>
