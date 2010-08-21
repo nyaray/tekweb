@@ -34,10 +34,27 @@ $(function() {
                 var content = data;
             
                 toggler.find('.togglercontentbody').replaceWith(content);
+                var employees = $('.empsearchmodule ul.employees li ul');
+                if(employees.size() > 9)
+                    employees.find('li:nth-child(n+2)').addClass('hidden');
                 togglerBtn.trigger('click');
                 togglerBtn.trigger('click');
+        
+            //$('.empsearchmodule ul.employees li ul li:first-child').removeClass('hidden');
             });
         }
         return false;
     });
+    $('.empsearchmodule ul.employees li').live('click', function(){
+        var items = $(this).find('li');
+
+        if (items.hasClass('hidden')){
+            items.removeClass('hidden');
+        } else {
+            items.slice(1).addClass('hidden');
+            $(this).css('color', 'black');
+        }
+    });
+
+
 });

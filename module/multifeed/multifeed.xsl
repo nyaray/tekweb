@@ -1,4 +1,4 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 <xsl:stylesheet version="1.0"
 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="html" encoding="utf-8" omit-xml-declaration="yes" />
@@ -101,7 +101,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
         <br />
         <xsl:apply-templates select="." />
       </xsl:for-each> -->
-	  <li><img src="gfx/load.gif" /></li>
+<!--	  <li><img src="gfx/load.gif" /></li>-->
     </div>
   </div>
 </div>
