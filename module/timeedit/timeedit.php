@@ -102,7 +102,7 @@ XML;
 
   protected function generateToggler()
   {
-    $contentXML = <<< XML
+    $this->contentXML = <<< XML
 <toggler>
   <timeedit>
     $this->name
@@ -141,10 +141,10 @@ XML;
     $this->contentXML =
       str_replace('<?xml version="1.0"?'.'>', '', $this->contentXML);
 
-    //echo "<!--\n";
-    //echo "---contentXML---\n";
-    //var_dump($this->contentXML);
-    //echo "-->\n";
+    echo "<!--\n";
+    echo "---contentXML---\n";
+    var_dump($this->contentXML);
+    echo "-->\n";
 
   }
 

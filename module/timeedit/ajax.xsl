@@ -1,3 +1,17 @@
+<?xml version="1.0"?>
+<xsl:stylesheet version="1.0"
+xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:output method="html" encoding="utf-8" omit-xml-declaration="yes" />
+
+
+<xsl:template match="/">
+<ajax>
+  <timeedit>
+    <xsl:apply-templates select="calendar/*" />
+  </timeedit>
+</ajax>
+</xsl:template>
+
 <!-- a link to the configuration page -->
 <xsl:template match="calendar/conf">
 <conf>
@@ -30,5 +44,4 @@
     <xsl:copy-of select="*" />
   </event>
 </xsl:template>
-
-
+</xsl:stylesheet>

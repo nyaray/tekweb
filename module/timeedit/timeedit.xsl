@@ -13,7 +13,6 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <div>
   <xsl:attribute name="id"><xsl:value-of select="./name" /></xsl:attribute>
   <xsl:attribute name="class">toggler</xsl:attribute>
-  toggl0rz?!
   <a>
     <xsl:attribute name="class">togglerbutton</xsl:attribute>
     <xsl:attribute name="href">?page=<xsl:value-of select="./name" /></xsl:attribute>
