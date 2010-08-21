@@ -94,21 +94,32 @@ FORM;
             case 0:
                 return '';
                 break;
+
             case 1:
-                return '(|(givenname=' . $searchStrings[0] . ')(sn='
-                . $searchStrings[0] . '))';
-                
-                break;
-            case 2:
-                $urke = '(|(&(givenname=' . $searchStrings[0] . ')' . '(sn=' . $searchStrings[1] . ')' . ')' .
-                '(&(givenname=' . $searchStrings[1] . ')' . '(sn=' . $searchStrings[0] . ')' . ')'
-                . ')';
-                //die("URK:". $urke);
-                return $urke;
+                return '(|(givenname=*'
+                . str_replace('*', '', $searchStrings[0]) . '*)(sn=*'
+                . str_replace('*', '', $searchStrings[0]) . '*))';
                 break;
 
+                        case 2:
+                return '(&(cn=*' . str_replace('*', '', $searchStrings[0]) . '*)'
+                . '(cn=*' . str_replace('*', '', $searchStrings[1]) . '*))';
+                break;
+
+//            case 2:
+//                return '(|(&(givenname=' . $searchStrings[0] . ')'
+//                . '(sn=' . $searchStrings[1] . ')' . ')' . '(&(givenname='
+//                . $searchStrings[1] . ')' . '(sn=' . $searchStrings[0] . ')'
+//                . '))';
+//                break;
+
             default:
-                die ("died in case"); //FIXME
+                $tmpA = '(&';
+                for ($i = 0; $i < $numStr; $i++) {
+                    $tmpA .= '(cn=*' . str_replace('*', '', $searchStrings[$i]) . '*)';
+                }
+                $tmpA .= ')';
+                return $tmpA;
                 break;
         }
     }
