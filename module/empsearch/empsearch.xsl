@@ -20,9 +20,9 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     <xsl:template match="section/empsearch">
         <div class="section empsearchmodule">
-            <xsl:attribute name="id">
+<!--            <xsl:attribute name="id">
                 <xsl:value-of select="name" />
-            </xsl:attribute>
+            </xsl:attribute>-->
             <xsl:apply-templates select="form"/>
             <xsl:apply-templates select="message"/>
             <xsl:apply-templates select="employeelist"/>
@@ -30,11 +30,11 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     </xsl:template>
 
     <xsl:template match="toggler/empsearch">
-        <div>
+        <div class="toggler empsearchmodule">
             <xsl:attribute name="id">
                 <xsl:value-of select="name" />
             </xsl:attribute>
-            <xsl:attribute name="class">toggler empsearchmodule</xsl:attribute>
+<!--            <xsl:attribute name="class">toggler empsearchmodule</xsl:attribute>-->
             <a class="togglerbutton">
                 <xsl:attribute name="href">
                     <xsl:text>?page=</xsl:text>
@@ -81,9 +81,18 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
             </xsl:attribute>
             <fieldset>
                 <legend>Sök personal</legend>
-                <label for="searchstring">Namn</label>
-<!--                <br />-->
+                <label>
+                    <xsl:attribute name="for">
+                        <xsl:text>str</xsl:text>
+                        <xsl:value-of select="name"/>
+                    </xsl:attribute>
+                    <xsl:text>Namn</xsl:text>
+                </label>
                 <input id="searchstring" type="text">
+                    <xsl:attribute name="id">
+                        <xsl:text>str</xsl:text>
+                        <xsl:value-of select="name"/>
+                    </xsl:attribute>
                     <xsl:attribute name="name">
                         <xsl:value-of select="name"/>
                     </xsl:attribute>
@@ -129,13 +138,11 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
                 <xsl:sort select="surname" lang="sv"/>
                 <xsl:sort select="givenname" lang="sv"/>
                 <li>
-                    <a>
-                        <b>
-                            <xsl:value-of select="givenname"/>
-                            <xsl:text>&#160;</xsl:text>
-                            <xsl:value-of select="surname"/>
-                        </b>
-                    </a>
+                    <b>
+                        <xsl:value-of select="givenname"/>
+                        <xsl:text>&#160;</xsl:text>
+                        <xsl:value-of select="surname"/>
+                    </b>
                     <ul>
                         <xsl:if test="titleatdep">
                             <li class="titleatdep">

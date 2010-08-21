@@ -67,6 +67,17 @@ class EmpSearch extends ContentModule {
             $this->searchString = mb_ereg_replace('[^' . $this->alwdChars . ']', '', $this->searchString);
         }
 
+        if (isset($_REQUEST[$settings[name]])) {
+            $this->searchString = strip_tags($_REQUEST[$settings[name]]);
+            $this->searchString = trim($this->searchString);
+            $this->searchString = preg_replace('/\s+/', ' '
+                            , $this->searchString);
+            mb_internal_encoding("UTF-8");
+            mb_regex_encoding("UTF-8");
+            $this->searchString = mb_strtolower($this->searchString);
+            $this->searchString = mb_ereg_replace('[^' . $this->alwdChars . ']', '', $this->searchString);
+        }
+
         $this->nonEmptySearchStr = ($this->searchString != '');
 //Default form.
         if ($this->nonEmptySearchStr)
@@ -76,7 +87,7 @@ class EmpSearch extends ContentModule {
 
         $this->form = <<< FORM
 <form>
-  <name>empsearchstring</name>
+  <name>$settings[name]</name>
   <action></action>
   <method>get</method>
   $formValue
