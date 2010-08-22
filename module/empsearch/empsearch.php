@@ -259,7 +259,7 @@ FORM;
                 else
                     $tmpStr .= ' gissning' . '</message>' . "\n";
             }
-            
+
 //determine how many employes to return
             if ($this->numSearchEntries <= $this->numToShow)
                 $numEmps = $this->numSearchEntries;
@@ -325,7 +325,7 @@ FORM;
                     . "\n" . '</empsearch></toggler>';
         } else
             $this->contentXML = '<toggler><empsearch>' . $this->name . "\n"
-                    . $this->head . $this->icon /* . $this->form */ . "\n"
+                    . $this->head . $this->icon . "\n"
                     . '</empsearch></toggler>';
     }
 
