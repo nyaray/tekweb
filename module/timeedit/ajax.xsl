@@ -14,9 +14,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <!-- a link to the configuration page -->
 <xsl:template match="calendar/conf">
-<conf>
-  <xsl:copy-of select="*" />
-</conf>
+<xsl:copy-of select="." />
 </xsl:template>
 
 <!-- Viewing the calendar -->

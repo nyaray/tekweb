@@ -48,10 +48,13 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <h1><xsl:value-of select="head" /></h1>
   </xsl:if>
 
+  <!-- Config link -->
+  <div><xsl:copy-of select="conf/*" /></div>
+
   <!-- Events -->
   <xsl:choose>
-    <xsl:when test="events">
-      <xsl:apply-templates select="events" />
+    <xsl:when test="view/events">
+      <xsl:apply-templates select="view/events" />
     </xsl:when>
 
     <xsl:otherwise>
@@ -211,11 +214,15 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:attribute name="name">timeeditform</xsl:attribute>
 
     <xsl:copy-of select="input[@name = 'view' or @name = 'page']" />
-    <xsl:apply-templates select="form/basket" />
-    <xsl:apply-templates select="form/details" />
-    <xsl:copy-of select="label[@for = 'save']" />
-    <xsl:copy-of select="input[@id = 'save']" />
-    <xsl:apply-templates select="form/searchresult" />
+    <fieldset>
+      <legend>Sökning och val</legend>
+      <xsl:apply-templates select="form/basket" />
+      <xsl:apply-templates select="form/details" />
+    </fieldset>
+    <fieldset>
+      <legend>Sökresultat</legend>
+      <xsl:apply-templates select="form/searchresult" />
+    </fieldset>
   </form>
   <!-- <xsl:copy-of select="form/" /> -->
 
@@ -237,8 +244,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
         <xsl:copy-of select="input" />
         <xsl:copy-of select="a" />
-        <xsl:value-of select="name/long" />
-        (<xsl:value-of select="name/short" />)
+        <xsl:value-of select="name/long" /> <small>
+          (<xsl:value-of select="name/short" />)</small>
       </li>
     </xsl:for-each>
   </ul>
@@ -264,12 +271,12 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <xsl:if test="results/result">
   <ul>
     <xsl:for-each select="results/result">
-      <li style="text-align: left">
-        <xsl:attribute name="class">timeeditbasketitem</xsl:attribute>
+      <li>
+        <xsl:attribute name="class">timeeditresultitem</xsl:attribute>
 
         <xsl:copy-of select="a" />
-        <xsl:value-of select="name/long" />
-        (<xsl:value-of select="name/short" />)
+        <xsl:value-of select="name/long" /> <small>
+          (<xsl:value-of select="name/short" />)</small>
       </li>
     </xsl:for-each>
   </ul>
