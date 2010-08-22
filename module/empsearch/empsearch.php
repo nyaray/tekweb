@@ -67,8 +67,8 @@ class EmpSearch extends ContentModule {
             $this->searchString = mb_ereg_replace('[^' . $this->alwdChars . ']', '', $this->searchString);
         }
 
-        if (isset($_REQUEST[$settings[name]])) {
-            $this->searchString = strip_tags($_REQUEST[$settings[name]]);
+        if (isset($_REQUEST[$settings['name']])) {
+            $this->searchString = strip_tags($_REQUEST[$settings['name']]);
             $this->searchString = trim($this->searchString);
             $this->searchString = preg_replace('/\s+/', ' '
                             , $this->searchString);
