@@ -329,7 +329,7 @@ FORM;
                     . '</empsearch></toggler>';
     }
 
-    protected function generateAjax() {
+     protected function generateAjax() {
         if ($this->nonEmptySearchStr) {
             $this->searchResult = $this->search();
             $this->ldap->disconnect();

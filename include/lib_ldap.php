@@ -24,7 +24,7 @@ class LDAP {
     protected $hostUrl;
     protected $hostPort;
     protected $maxEntriesToGet;
- //Max entries to get from LDAP-server.
+    //Max entries to get from LDAP-server.
     protected $baseDN;
     protected $ldapAttributes;
     protected $ldapConnection = null;
@@ -64,8 +64,9 @@ class LDAP {
         if (!$this->bindResult) {
             $this->connect();
         }
-        $this->searchResult = ldap_search($this->ldapConnection, $this->baseDN, $filter, $this->ldapAttributes);
-        $this->numEntries = ldap_count_entries($this->ldapConnection, $this->searchResult);
+        @$this->searchResult = ldap_search($this->ldapConnection, $this->baseDN, $filter, $this->ldapAttributes);
+        @$this->numEntries = ldap_count_entries($this->ldapConnection, $this->searchResult);
+
         return $this->numEntries;
     }
 
@@ -76,5 +77,7 @@ class LDAP {
         } else
             return false;
     }
+
 }
+
 ?>

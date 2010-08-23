@@ -46,14 +46,16 @@ $(function() {
     });
     $('.empsearchmodule ul.employees > li > a').live('click', function(){
         var items = $(this).parent('li').find('li');
+        var togglBtn = $(this).parents('.toggler').find('.togglerbutton');
 
         if (items.hasClass('hidden')){
             items.removeClass('hidden');
         } else {
             items.slice(1).addClass('hidden');
         }
+        togglBtn.trigger('click');
+        togglBtn.trigger('click');
         return false;
     });
-
 
 });
