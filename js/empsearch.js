@@ -23,7 +23,7 @@ $(function() {
         var toggler = $(this).parents('.toggler');
         var togglerBtn = toggler.find('.togglerbutton');
         var instanceName = toggler.attr('id');
-        var searchVal = toggler.find('input[name=empsearchstring]').val();
+        var searchVal = toggler.find('form.empform input[type=text]').val();
         
         if (searchVal != ''){
             $.post("index.php", {
@@ -34,10 +34,26 @@ $(function() {
                 var content = data;
             
                 toggler.find('.togglercontentbody').replaceWith(content);
+                var employees = $('.empsearchmodule ul.employees li ul');
+                if(employees.size() > 10)
+                    employees.find('li:nth-child(n+2)').addClass('hidden');
+                $('.empsearchmodule ul.employees > li > b').wrap('<a href=""/>');
                 togglerBtn.trigger('click');
                 togglerBtn.trigger('click');
             });
         }
         return false;
     });
+    $('.empsearchmodule ul.employees > li > a').live('click', function(){
+        var items = $(this).parent('li').find('li');
+
+        if (items.hasClass('hidden')){
+            items.removeClass('hidden');
+        } else {
+            items.slice(1).addClass('hidden');
+        }
+        return false;
+    });
+
+
 });

@@ -13,7 +13,7 @@
 
 ul.employees li {margin:0;}
 
-ul.employees > li {margin:5px; padding:6px 6px 6px 15px; border:solid 2px blue;
+ul.employees > li {margin:5px; padding:6px 6px 6px 15px; border:solid 2px #7F7F7F;
                    border-radius: 10px;
                    -moz-border-radius: 10px;
                    -webkit-border-radius: 10px;

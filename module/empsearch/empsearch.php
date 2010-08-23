@@ -32,6 +32,7 @@ class EmpSearch extends ContentModule {
     protected $page = '';
     protected $exactMatch = false;
     protected $nonExactMatch = false;
+    protected $alwdChars = 'a-zà-öù-ÿ\s\-';
 
     public function __construct($settings) {
         parent::__construct();
@@ -60,8 +61,21 @@ class EmpSearch extends ContentModule {
             $this->searchString = trim($this->searchString);
             $this->searchString = preg_replace('/\s+/', ' '
                             , $this->searchString);
-            $this->searchString = mb_ereg_replace('/[^a-zA-ZåäöÅÄÖ]/', ''
+            mb_internal_encoding("UTF-8");
+            mb_regex_encoding("UTF-8");
+            $this->searchString = mb_strtolower($this->searchString);
+            $this->searchString = mb_ereg_replace('[^' . $this->alwdChars . ']', '', $this->searchString);
+        }
+
+        if (isset($_REQUEST[$settings[name]])) {
+            $this->searchString = strip_tags($_REQUEST[$settings[name]]);
+            $this->searchString = trim($this->searchString);
+            $this->searchString = preg_replace('/\s+/', ' '
                             , $this->searchString);
+            mb_internal_encoding("UTF-8");
+            mb_regex_encoding("UTF-8");
+            $this->searchString = mb_strtolower($this->searchString);
+            $this->searchString = mb_ereg_replace('[^' . $this->alwdChars . ']', '', $this->searchString);
         }
 
         $this->nonEmptySearchStr = ($this->searchString != '');
@@ -73,7 +87,7 @@ class EmpSearch extends ContentModule {
 
         $this->form = <<< FORM
 <form>
-  <name>empsearchstring</name>
+  <name>$settings[name]</name>
   <action></action>
   <method>get</method>
   $formValue
@@ -94,21 +108,25 @@ FORM;
             case 0:
                 return '';
                 break;
+
             case 1:
-                return '(|(givenname=' . $searchStrings[0] . ')(sn='
-                . $searchStrings[0] . '))';
-                
+                return '(|(givenname=*'
+                . str_replace('*', '', $searchStrings[0]) . '*)(sn=*'
+                . str_replace('*', '', $searchStrings[0]) . '*))';
                 break;
+
             case 2:
-                $urke = '(|(&(givenname=' . $searchStrings[0] . ')' . '(sn=' . $searchStrings[1] . ')' . ')' .
-                '(&(givenname=' . $searchStrings[1] . ')' . '(sn=' . $searchStrings[0] . ')' . ')'
-                . ')';
-                //die("URK:". $urke);
-                return $urke;
+                return '(&(cn=*' . str_replace('*', '', $searchStrings[0]) . '*)'
+                . '(cn=*' . str_replace('*', '', $searchStrings[1]) . '*))';
                 break;
 
             default:
-                die ("died in case"); //FIXME
+                $tmpA = '(&';
+                for ($i = 0; $i < $numStr; $i++) {
+                    $tmpA .= '(cn=*' . str_replace('*', '', $searchStrings[$i]) . '*)';
+                }
+                $tmpA .= ')';
+                return $tmpA;
                 break;
         }
     }
