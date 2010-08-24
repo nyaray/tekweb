@@ -3,3 +3,7 @@
   font-size:12pt;
   font-weight: bold;
 }
+
+.feed .item {
+  margin-bottom: 15px;
+}

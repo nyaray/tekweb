@@ -201,13 +201,11 @@ class RssAtomReader {
   	return $page."\n";
   }
 
-
   /**
    *  Get the data out of a feed 
    *  - Input: the URL of the feed
    *  - Output: a two-dimensional array holding the data  
    */
-
   function Universal_Reader($url)
   {
     // global $Universal_FeedArray;
@@ -223,8 +221,8 @@ class RssAtomReader {
   	$this->Universal_FeedArray = array();
 
   	$this->Universal_Doc  = new DOMDocument("1.0");
-  	$test = getRemoteFile($url);
-    //var_dump($test);
+  	  $test = getRemoteFile($url);
+    
   	$this->Universal_Doc->loadXML($test);
     //var_dump($this->Universal_Doc);
   	$this->Universal_Content = array();
@@ -241,18 +239,28 @@ class RssAtomReader {
     else
     {
       $channel = $this->extractChannel("channel");
+      
+      if($channel == null) {
+        $a = array();
+        $a[0]['title'] = "Error";
+        $a[0]['description'] = "Server unreachable";
+        $a[1]['title'] = "Error";
+        $a[1]['description'] = "Server unreachable";
+        
+        return $a;
+      }
+      
       $channelArray = $this->getTags($channel, $this->Universal_RssChannelTags, 0);
       $items = $this->extractItems($channel, "item");
       $tagSchema = $this->Universal_RssItemTags;
     }
-  
+
     array_push($this->Universal_FeedArray, $channelArray);
-  
+
     foreach($items as $item)
     {
       array_push($this->Universal_FeedArray, $this->getTags($item, $tagSchema, 1));
-    }  
-    
+    }
     //var_dump($this->Universal_FeedArray);
    	return $this->Universal_FeedArray;
 	

@@ -60,7 +60,7 @@ class Feed extends ContentModule
     $this->type = ($settings['type'] != '')?
       "$settings[type]": '';
       
-    $this->getFeed();
+    @$this->getFeed();
   }
 
   protected function getFeed() {
@@ -205,11 +205,11 @@ XML;
     foreach($this->feedArray as $item) {
       $this->body .= "<item>";
       $this->body .= "<title>".$item["title"]."</title>";
-      if($item["link"] != "") {
+      if(isset($item["link"]) && $item["link"] != "") {
         $this->body .= "<link>".$item["link"]."</link>";
       }
       $this->body .= "<desc>".$item["description"]."</desc>";
-      if($item["pubDate"] != "") {
+      if(isset($item["pubDate"]) && $item["pubDate"] != "") {
         $date = explode(' ',$item["pubDate"]);
         $translateMonth = array("Jan" => '01',
                                 "Feb" => '02',
