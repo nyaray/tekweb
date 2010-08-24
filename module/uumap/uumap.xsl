@@ -188,12 +188,22 @@
             <p>
               <xsl:attribute name="id">Description</xsl:attribute>
             </p>
+            <div>
+              <xsl:attribute name="id">InstitutionList</xsl:attribute>
+               <xsl:attribute name="class">infolist</xsl:attribute>
+            </div>
+            <div>
+              <xsl:attribute name="id">StudentadminList</xsl:attribute>
+              <xsl:attribute name="class">infolist</xsl:attribute>
+            </div>
             <p>
               <xsl:attribute name="id">Service</xsl:attribute>
             </p>
             <div>
               <xsl:attribute name="id">ServiceList</xsl:attribute>
+              <xsl:attribute name="class">infolist</xsl:attribute>
             </div>
+            
           </fieldset>
           <fieldset>
             <xsl:attribute name="id">CampusOverview</xsl:attribute>
