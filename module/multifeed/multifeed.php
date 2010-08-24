@@ -70,7 +70,8 @@ class MultiFeed extends ContentModule
 		setcookie('feeds',$this->cookies,time()+60*60*24*7*4*6);
 	}
 	else{
-		$this->cookies = $_COOKIE['feeds'];
+		if(isset($_COOKIE['feeds']))
+			$this->cookies = $_COOKIE['feeds'];
 		setcookie('feeds',$this->cookies,time()+60*60*24*7*4*6);  // Six months expiry time
 	}
 		
