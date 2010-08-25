@@ -35,23 +35,43 @@ $(function() {
             
                 toggler.find('.togglercontentbody').replaceWith(content);
                 var employees = $('.empsearchmodule ul.employees li ul');
-                if(employees.size() > 10)
+
+                $('.empsearchmodule ul.employees > li > b')
+                .wrap('<a href="" />');
+                
+
+                if(employees.size() > 10){
                     employees.find('li:nth-child(n+2)').addClass('hidden');
-                $('.empsearchmodule ul.employees > li > b').wrap('<a href=""/>');
+                    $('.empsearchmodule ul.employees > li > a')
+                    .append('<span class="openclose"></span>')
+                    .find('.openclose')
+                    .css("background-image"
+                        ,"url(gfx/module/empsearch/plus-8.png)");
+                } else {
+                    $('.empsearchmodule ul.employees > li > a')
+                    .append('<span class="openclose"></span>')
+                    .find('.openclose')
+                    .css("background-image"
+                        ,"url(gfx/module/empsearch/minus-8.png)");
+                }
                 togglerBtn.trigger('click');
                 togglerBtn.trigger('click');
             });
         }
         return false;
     });
+
     $('.empsearchmodule ul.employees > li > a').live('click', function(){
         var items = $(this).parent('li').find('li');
         var togglBtn = $(this).parents('.toggler').find('.togglerbutton');
-
+        var trg = $(this).find('span.openclose');
         if (items.hasClass('hidden')){
             items.removeClass('hidden');
+            trg.css("background-image","url(gfx/module/empsearch/minus-8.png)");
+
         } else {
             items.slice(1).addClass('hidden');
+            trg.css("background-image","url(gfx/module/empsearch/plus-8.png)");
         }
         togglBtn.trigger('click');
         togglBtn.trigger('click');
