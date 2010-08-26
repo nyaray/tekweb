@@ -1,28 +1,19 @@
-#uuMapModule
+#uuMapModule #StaticMapList
 {
   font-size:12pt;
 /*  width:100%;*/
+ text-align:left;
+ margin:5px;
 }
 
-#uuMapModule .button{
-background: #af1e2d;
-display: inline-block;
-padding: 5px 10px 6px;
-color: #fff;
-text-decoration: none;
-font-weight: bold;
-line-height: 1;
--moz-border-radius: 10px;
--webkit-border-radius: 10px;
--moz-box-shadow: 0 1px 3px #999;
--webkit-box-shadow: 0 1px 3px #999;
-text-shadow: 0 1px 4px #222;
-border-bottom: 1px solid #222;
-position: relative;
-cursor: pointer;
-font-size:10pt;
-background-image: -webkit-gradient(linear, left top, left bottom, from(#ff0000), to(#af1e2d),color-stop(0.1, #ff0000));
+#uuMapModule #staticmap
+{
+ margin:5px;
+  width:100%;
 }
+
+
+
 
 #uuMapModule .button:hover
 { 
@@ -100,10 +91,14 @@ background-image: -webkit-gradient(linear, left top, left bottom, from(#ff0000),
 {
   display:inline;
   text-align:center;
+  width:100%;
 }
+
 
 #uuMapModule #SelectField #Locations
 {
+  font-size:8pt;
+  
 /*  width:75%;*/
 }
 /*------------------DirectionsField------------------*/

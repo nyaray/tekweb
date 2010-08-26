@@ -42,8 +42,14 @@ class UUMap extends ContentModule
 
   protected function generateDefault()
   {
-    $config = file_get_contents($this->configPath);
+    try
+    {
+      if(!@$config = file_get_contents($this->configPath))
+      {
+        throw new Exception("Unable to read uumap-configfile");
+      }
     $config = str_replace(UUMAP_XML_TO_REPLACE, '', $config);
+    } catch(Exception $e){ print $e->getMessage();}
 
     $this->contentXML = <<< XML
 <section>
@@ -59,8 +65,14 @@ XML;
   protected function generateToggler()
   {
 
-  $config = file_get_contents($this->configPath);
-  $config = str_replace(UUMAP_XML_TO_REPLACE, '', $config);
+    try
+    {
+      if(!@$config = file_get_contents($this->configPath))
+      {
+        throw new Exception("Unable to read uumap-configfile");
+      }
+    $config = str_replace(UUMAP_XML_TO_REPLACE, '', $config);
+    } catch(Exception $e){ print $e->getMessage();}
 
   $this->contentXML = <<< XML
 <toggler>
@@ -81,10 +93,14 @@ XML;
   }
   protected function generateAjax()
   {
-
-    $config = file_get_contents($this->configPath);
+    try
+    {
+      if(!@$config = file_get_contents($this->configPath))
+      {
+        throw new Exception("Unable to read uumap-configfile");
+      }
     $config = str_replace(UUMAP_XML_TO_REPLACE, '', $config);
-
+    } catch(Exception $e){ print $e->getMessage();}
     $this->contentXML = <<< XML
 <ajax>
   <uumap>

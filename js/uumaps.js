@@ -396,11 +396,10 @@ $(function()
           // Resize();
           $(togglerBtn).click(function () {
             // alert($(tContentBody).css("padding-top"));
-            // var newSize = screen.width-$(this.parent()).css("padding");
-            // var newSize = screen.width-parseFloat(tContentBody.css("padding-left"))*2-parseFloat($("#MyMap").css("padding-left"))*4;    
-            // // var newSize = screen.width - size*2;
-            // var size = newSize + "px";
-            //  $("#uuMapModule").css("width",size);
+            // var Size = screen.width-$(this.parent()).css("padding");
+            var newSize = screen.width-parseFloat(tContentBody.css("padding-left"))*2-4;    
+            var size = newSize + "px";
+            $("#uuMapModule").css("width",size);
             Resize();
 
           });
@@ -431,15 +430,20 @@ $(function()
               $("#uuMapModule #Information > #ServiceList").html("");
               $("#uuMapModule #Information > #StudentadminList").html("");
               $("#uuMapModule #Information > #InstitutionList").html("");
-
+              $("#uuMapModule #Information > #ServiceList").css("display","none");
+              $("#uuMapModule #Information > #StudentadminList").css("display","none");
+              $("#uuMapModule #Information > #InstitutionList").css("display","none");
+              
               //Show descriptions or services if the selected location have any 
               if(Description[ID] != null)
               {
                 $("#uuMapModule #Information").css("display","block");
+
                 $("#uuMapModule #Information > #Description").html("<span class=\"bold\">Beskrivning: </span>" + Description[ID]);
               }
-              if(service[ID] != null)
+              if(service[ID][0] != null)
               {
+                $("#uuMapModule #Information > #ServiceList").css("display","block");
                 $("#uuMapModule #Information #ServiceList").append("<p class=\"bold\">Här finns även:</p> ");
                 $("#uuMapModule #Information #ServiceList").append("<div class=\"list\"><ul>");
                 var j = 0;      
@@ -458,8 +462,9 @@ $(function()
                   $("#uuMapModule #Information #ServiceList").append("</div></ul>");
                 }
               }
-              if(Studentadmin[ID] != null)
+              if(Studentadmin[ID][0] != null)
               {
+                $("#uuMapModule #Information > #StudentadminList").css("display","block");
                 $("#uuMapModule #Information #StudentadminList").append("<p class=\"bold\">Studiekontakter:</p> ");
                 $("#uuMapModule #Information #StudentadminList").append("<div class=\"list\"><ul>");
                 var j = 0;      
@@ -478,10 +483,11 @@ $(function()
                   $("#uuMapModule #Information #StudentadminList").append("</div></ul>");
                 }
               }
-              if(Institution[ID] != null)
+              if(Institution[ID][0] != null)
               {
                 $("#uuMapModule #Information #InstitutionList").append("<p class=\"bold\">Institutioner:</p> ");
                 $("#uuMapModule #Information #InstitutionList").append("<div class=\"list\"><ul>");
+                $("#uuMapModule #Information > #InstitutionList").css("display","block");
                 var j = 0;      
                 for(x in Institution[ID])
                 {

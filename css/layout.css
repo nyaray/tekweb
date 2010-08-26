@@ -7,7 +7,25 @@
   font-family:verdana, sans-serif;
   position: relative;
 }
-
+.button{
+background: #af1e2d;
+display: inline-block;
+padding: 5px 10px 6px;
+color: #fff;
+text-decoration: none;
+font-weight: bold;
+line-height: 1;
+-moz-border-radius: 10px;
+-webkit-border-radius: 10px;
+-moz-box-shadow: 0 1px 3px #999;
+-webkit-box-shadow: 0 1px 3px #999;
+text-shadow: 0 1px 4px #222;
+border-bottom: 1px solid #222;
+position: relative;
+cursor: pointer;
+font-size:10pt;
+background-image: -webkit-gradient(linear, left top, left bottom, from(#ff0000), to(#af1e2d),color-stop(0.1, #ff0000));
+}
 #logo {
 /*  width:100%;*/
   height:50pt;
