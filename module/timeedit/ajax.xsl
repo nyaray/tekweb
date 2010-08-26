@@ -1,32 +1,26 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0"?>
 <xsl:stylesheet version="1.0"
 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-<xsl:output type="none" />
+<xsl:output method="html" encoding="utf-8" omit-xml-declaration="yes" />
 
-<xsl:template match="node()|@*">
-  <xsl:copy-of select="@*|node()" />
-</xsl:template>
 
 <xsl:template match="/">
-<section>
+<ajax>
   <timeedit>
     <xsl:apply-templates select="calendar/*" />
   </timeedit>
-</section>
+</ajax>
 </xsl:template>
 
 <!-- a link to the configuration page -->
 <xsl:template match="calendar/conf">
-<conf>
-  <xsl:copy-of select="*" />
-</conf>
+<xsl:copy-of select="." />
 </xsl:template>
 
 <!-- Viewing the calendar -->
 <xsl:template match="calendar/view">
 <view>
   <head><xsl:value-of select="head" /></head>
-  <name><xsl:value-of select="name" /></name>
   <xsl:apply-templates select="events" />
   <xsl:copy-of select="course" />
 </view>
@@ -47,13 +41,5 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <event>
     <xsl:copy-of select="*" />
   </event>
-</xsl:template>
-
-
-<!-- Viewing the search form -->
-<xsl:template match="calendar/search">
-<search>
-  <xsl:copy-of select="@*|node()" />
-</search>
 </xsl:template>
 </xsl:stylesheet>

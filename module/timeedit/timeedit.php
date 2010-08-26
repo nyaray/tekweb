@@ -15,29 +15,23 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-//require_once INCLUDE_DIR.'core.php';
-
 /**
 * 
 */
 class TimeEdit extends ContentModule
 {
-  protected $view;
+  protected $view, $name, $icon, $head, $foot;
 
   function __construct($settings)
   {
     parent::__construct();
     $this->settings = $settings;
 
-    // FIXME: failout when name is not set
-    if(isset($settings['name']) && $settings['name'] != '')
-    {
-      $name = $settings['name'];
-
-      $this->name = "<name>$name</name>";
-    }
-
-    // FIXME: failout or default value if head is omitted?
+    // FIXME: failout when a setting is not set
+    $this->name = (isset($settings['name']) && $settings['name'] != '')?
+      "<name>$settings[name]</name>": '';
+    $this->icon = (isset($settings['icon']) && $settings['icon'] != '')?
+      "<icon>$settings[icon]</icon>": '';
     $this->head = (isset($settings['head']) && $settings['head'] != '')?
       "<head>$settings[head]</head>": '';
 
@@ -46,6 +40,7 @@ class TimeEdit extends ContentModule
   <timeedit>
     <view>
       $this->name
+      $this->icon
       $this->head
     </view>
   </timeedit>
@@ -58,15 +53,37 @@ XML;
     $doc = new DOMDocument();
 
     if(isset($_GET['view']) &&
-       $_GET['view'] == 'config' &&
-       $this->mode == 'default')
+       $_GET['view'] == 'config')
     {
+      //echo "<!-- timeedit in search -->\n";
       $this->generateSearchDoc($doc);
+    }
+    elseif(LibTimeEdit::hasObjects())
+    {
+      //echo "<!-- timeedit in view -->\n";
+      $this->generateViewDoc($doc);
     }
     else
     {
-      $this->generateViewDoc($doc);
+      $doc->loadXML('<calendar></calendar>');
     }
+
+    if(!isset($_GET['view']) ||
+       $_GET['view'] != 'config')
+    {
+      $name = (isset($this->settings['name']))? $this->settings['name']: 'noname';
+      $href = "?page=$name&view=config";
+      $confLink = $doc->createElement('a', 'Välj kurser');
+      $confLink->setAttribute('href', $href);
+      $confElem = $doc->createElement('conf');
+      $confElem->appendChild($confLink);
+      $doc->documentElement->appendChild($confElem);
+    }
+
+    //echo "<!--\n";
+    //echo "---doc XML---\n";
+    //var_dump($doc->saveXML());
+    //echo "-->";
 
     $modXSL = new DOMDocument();
     $modXSL->load(MODULE_DIR."timeedit/default.xsl");
@@ -77,18 +94,58 @@ XML;
       str_replace('<?xml version="1.0"?'.'>', '', $this->contentXML);
 
     // print contentXML to see what's going on
+    //echo "<!--\n";
     //echo "---contentXML---\n";
     //var_dump($this->contentXML);
+    //echo "-->\n";
   }
 
   protected function generateToggler()
   {
-    $this->generateDefault();
+    $this->contentXML = <<< XML
+<toggler>
+  <timeedit>
+    $this->name
+    $this->icon
+    $this->head
+  </timeedit>
+</toggler>
+XML;
+  }
 
-    /*
+  protected function generateAjax()
+  {
     $doc = new DOMDocument();
-    ...
-     */
+
+    if(LibTimeEdit::hasObjects())
+    {
+      $this->generateViewDoc($doc);
+    }
+    else
+    {
+      $doc->loadXML('<calendar></calendar>');
+    }
+
+    $name = (isset($this->settings['name']))? $this->settings['name']: 'noname';
+    $href = "?page=$name&view=config";
+    $confLink = $doc->createElement('a', 'Välj kurser');
+    $confLink->setAttribute('href', $href);
+    $confElem = $doc->createElement('conf');
+    $confElem->appendChild($confLink);
+    $doc->documentElement->appendChild($confElem);
+
+    $modXSL = new DOMDocument();
+    $modXSL->load(MODULE_DIR."timeedit/ajax.xsl");
+    $proc = new XSLTProcessor();
+    $proc->importStyleSheet($modXSL);
+    $this->contentXML = $proc->transformToXML($doc);
+    $this->contentXML =
+      str_replace('<?xml version="1.0"?'.'>', '', $this->contentXML);
+
+    //echo "<!--\n";
+    //echo "---contentXML---\n";
+    //var_dump($this->contentXML);
+    //echo "-->\n";
   }
 
   protected function generateTeaser()
@@ -103,9 +160,11 @@ XML;
     $doc->loadXML($docXML);
   }
 
-  protected function generateViewDoc($doc)
+  protected function generateViewDoc(&$doc)
   {
-    $docXML = LibTimeEdit::generateView();
+    echo "<!-- generating view doc -->\n";
+    $docXML = LibTimeEdit::generateView(
+      $this->settings['name'], $this->settings['head']);
     $doc->loadXML($docXML);
   }
 }
