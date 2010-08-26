@@ -13,14 +13,14 @@
 
 ul.employees li {margin:0;}
 
-ul.employees > li {margin:5px; padding:6px 6px 6px 15px; border:solid 2px #7F7F7F;
+ul.employees > li {margin:5px; padding:6px 6px 6px 9px; border:solid 2px #7F7F7F;
                    border-radius: 10px;
                    -moz-border-radius: 10px;
                    -webkit-border-radius: 10px;
                    clear:left;
 }
 
-ul.employees li ul li {padding-left:25px; margin-top: 2px;}
+ul.employees li ul li {padding-left:12px; margin-top: 2px;}
 
 .empsearchmodule .message{text-align:left; margin: 3px 25px; color: green;}
 
