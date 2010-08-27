@@ -21,7 +21,7 @@
 $(function() {
 
     $('.empform .button').live('click', function() {
-       $(this).parents('form').trigger('submit');
+        $(this).parents('form').trigger('submit');
     });
 
     $('.empform').live('submit', function() {
@@ -31,7 +31,7 @@ $(function() {
         var searchVal = toggler.find('form.empform input[type=text]').val();
         var togglCBody = toggler.find('.togglercontentbody');
 
-        if (searchVal != ''){
+        if ((searchVal != '') && (togglCBody.size()==1)){
             var inputBtn = $(this).parent();
             inputBtn.html("<img src='gfx/load.gif' />");
             
@@ -80,7 +80,9 @@ $(function() {
                 togglerBtn.trigger('click');
                 togglerBtn.trigger('click');
             });
-        }
+        }else {
+            return true //When run from a "page"
+            }
         return false;
     });
 
