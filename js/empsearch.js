@@ -19,6 +19,11 @@
  * This script requires jquery.
  */
 $(function() {
+
+    $('.empform .button').live('click', function() {
+       $(this).parents('form').trigger('submit');
+    });
+
     $('.empform').live('submit', function() {
         var toggler = $(this).parents('.toggler');
         var togglerBtn = toggler.find('.togglerbutton');
@@ -38,6 +43,8 @@ $(function() {
                 var content = data;
                 togglCBody.replaceWith(content);
                 var employees = $('.empsearchmodule ul.employees li ul');
+
+                
 
                 $('.empsearchmodule ul.employees > li > b')
                 .wrap('<a href="" />');
