@@ -156,6 +156,7 @@
 {
   display:inline-block;
   margin:0px 5px 5px 0px;
+  vertical-align:top;
 }
 
 #uuMapModule #ServiceList, #uuMapModule #InstitutionList, #uuMapModule #StudentadminList
