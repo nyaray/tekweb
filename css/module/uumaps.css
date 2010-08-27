@@ -8,7 +8,6 @@
 #uuMapModule #StaticMapList
 {
   font-size:12pt;
-/*  width:100%;*/
  text-align:left;
  margin:5px;
 }
@@ -163,13 +162,15 @@
 {
   display:inline-block;
   margin:0px 5px 5px 0px;
+  vertical-align:top;
 }
 
 #uuMapModule #ServiceList, #uuMapModule #InstitutionList, #uuMapModule #StudentadminList
 {
   margin:0 0 5px 5px; 
   list-style:square inside;
-  position:upper-right;
+  
+/*  text-align:left;*/
 }
 
 #uuMapModule ul
