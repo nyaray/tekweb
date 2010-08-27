@@ -29,9 +29,7 @@ $(document).ready(function() {
       currScreenWidth = screen.width;
       //alert('HOLY ROTATING SCREENS BATMAN:' + window.orientation + " " + screen.width + "\n"+orientationEvent);
       active.prev().click(); // closes the active toggler
-      alert("nu ska den ha gömts");
       active.prev().click(); // opens it again (recalculating it's position)
-      alert("nu ska den visas igen");
     }
   }, false);
 
@@ -86,7 +84,6 @@ $(document).ready(function() {
     else {                        // if p is already visible
       p.addClass('hidden');           // hide it
       p.prev().children(':first').removeClass('active');
-      active = false;
     }
     return false
   });

@@ -182,17 +182,14 @@ FORM;
             case 0:
                 return '';
                 break;
-
             case 1:
                 return '(|(givenname~=' . $searchStrings[0] . ')(sn~='
                 . $searchStrings[0] . '))';
                 break;
-
             case 2:
                 return '(|(&(givenname~=' . $searchStrings[0] . ')'
                 . '(sn~=' . $searchStrings[1] . '))' . '(&(givenname~='
                 . $searchStrings[1] . ')' . '(sn~=' . $searchStrings[0] . ')))';
-
             default:
                 $tmpA = '(&';
                 for ($i = 0; $i < $numStr; $i++) {
