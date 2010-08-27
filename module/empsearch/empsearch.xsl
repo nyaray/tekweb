@@ -66,9 +66,47 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
         <div>
             <xsl:attribute name="class">togglercontentbody</xsl:attribute>
             <xsl:apply-templates select="form"/>
+            <xsl:apply-templates select="ajaxform"/>
             <xsl:apply-templates select="message"/>
             <xsl:apply-templates select="employeelist"/>
         </div>
+    </xsl:template>
+
+    <xsl:template match="ajaxform">
+        <form class="empform">
+            <xsl:attribute name="action">
+                <xsl:value-of select="action"/>
+            </xsl:attribute>
+            <xsl:attribute name="method">
+                <xsl:value-of select="method"/>
+            </xsl:attribute>
+            <fieldset>
+                <legend>Sök personal</legend>
+                <label>
+                    <xsl:attribute name="for">
+                        <xsl:text>str</xsl:text>
+                        <xsl:value-of select="name"/>
+                    </xsl:attribute>
+                    <xsl:text>Namn</xsl:text>
+                </label>
+                <input id="searchstring" type="text">
+                    <xsl:attribute name="id">
+                        <xsl:text>str</xsl:text>
+                        <xsl:value-of select="name"/>
+                    </xsl:attribute>
+                    <xsl:attribute name="name">
+                        <xsl:value-of select="name"/>
+                    </xsl:attribute>
+                    <xsl:attribute name="value">
+                        <xsl:value-of select="value"/>
+                    </xsl:attribute>
+                </input>
+                <xsl:apply-templates select="ajaxempbutton"/>
+<!--                <div class="button">
+                    <a>BTN</a>
+                </div>-->
+            </fieldset>
+        </form>
     </xsl:template>
 
     <xsl:template match="form">
@@ -100,13 +138,13 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
                         <xsl:value-of select="value"/>
                     </xsl:attribute>
                 </input>
-                <xsl:apply-templates select="button"/>
+                <xsl:apply-templates select="empbutton"/>
                 <xsl:apply-templates select="page"/>
             </fieldset>
         </form>
     </xsl:template>
 
-    <xsl:template match="button">
+    <xsl:template match="empbutton">
         <input>
             <xsl:attribute name="value">
                 <xsl:value-of select="value"/>
@@ -115,6 +153,14 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
                 <xsl:value-of select="type"/>
             </xsl:attribute>
         </input>
+    </xsl:template>
+
+    <xsl:template match="ajaxempbutton">
+        <div class="button">
+            <a>
+                <xsl:value-of select="value"/>
+            </a>
+        </div>
     </xsl:template>
 
     <xsl:template match="message">

@@ -1,3 +1,10 @@
+
+#uuMapModule #hiddenimage img
+{
+  visibility:hidden;
+  width:100%;
+  max-height:100%;
+}
 #uuMapModule #StaticMapList
 {
   font-size:12pt;
@@ -154,7 +161,7 @@
 
 #uuMapModule .list
 {
-  display:inline-block;
+  display:block;
   margin:0px 5px 5px 0px;
   vertical-align:top;
 }
@@ -162,10 +169,17 @@
 #uuMapModule #ServiceList, #uuMapModule #InstitutionList, #uuMapModule #StudentadminList
 {
   margin:0 0 5px 5px; 
+  list-style:square inside;
+  position:upper-right;
+}
+
+#uuMapModule ul
+{
+  list-style:square inside;
 }
 #uuMapModule #Information li
 {
-  margin:0; 
+  margin:3px; 
   font-size:8pt;
 }
 #uuMapModule #Address
@@ -199,6 +213,5 @@
 #uuMapModule #CampusOverview img
 {
   width:100%;
-  position:static;
   max-height:100%;
 }

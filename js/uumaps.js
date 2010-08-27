@@ -395,13 +395,7 @@ $(function()
           //This function handles a bug with googlemaps that appear when resizing divs containging map_canvas
           // Resize();
           $(togglerBtn).click(function () {
-            // alert($(tContentBody).css("padding-top"));
-            // var Size = screen.width-$(this.parent()).css("padding");
-            var newSize = screen.width-parseFloat(tContentBody.css("padding-left"))*2-4;    
-            var size = newSize + "px";
-            $("#uuMapModule").css("width",size);
-            Resize();
-
+              Resize();
           });
 
           if (toggler){
@@ -413,6 +407,7 @@ $(function()
             //Reseting all other markers, windows, information and campus maps
             if($("#uuMapModule #Locations option:selected").val() != $("#uuMapModule #CampusListText").val())
             {
+              
               $("#uuMapModule #CampusListText").remove();
               $("#uuMapModule #DirectionsField").css("display","block");
               $("#uuMapModule #CampusOverview").css("display","none");        
@@ -443,6 +438,7 @@ $(function()
               }
               if(service[ID][0] != null)
               {
+                service[ID].sort();
                 $("#uuMapModule #Information > #ServiceList").css("display","block");
                 $("#uuMapModule #Information #ServiceList").append("<p class=\"bold\">Här finns även:</p> ");
                 $("#uuMapModule #Information #ServiceList").append("<div class=\"list\"><ul>");
@@ -464,8 +460,9 @@ $(function()
               }
               if(Studentadmin[ID][0] != null)
               {
+                Studentadmin[ID].sort();
                 $("#uuMapModule #Information > #StudentadminList").css("display","block");
-                $("#uuMapModule #Information #StudentadminList").append("<p class=\"bold\">Studiekontakter:</p> ");
+                $("#uuMapModule #Information #StudentadminList").append("<p class=\"bold\">Studieadministration:</p> ");
                 $("#uuMapModule #Information #StudentadminList").append("<div class=\"list\"><ul>");
                 var j = 0;      
                 for(x in Studentadmin[ID])
@@ -485,7 +482,8 @@ $(function()
               }
               if(Institution[ID][0] != null)
               {
-                $("#uuMapModule #Information #InstitutionList").append("<p class=\"bold\">Institutioner:</p> ");
+                Institution[ID].sort();
+                $("#uuMapModule #Information #InstitutionList").append("<p class=\"bold\">Institutionen för:</p> ");
                 $("#uuMapModule #Information #InstitutionList").append("<div class=\"list\"><ul>");
                 $("#uuMapModule #Information > #InstitutionList").css("display","block");
                 var j = 0;      
@@ -528,9 +526,6 @@ $(function()
                       togglerBtn.trigger('click');
                       togglerBtn.trigger('click');
                     }
-                    // var target = $("#uumap > div");
-                    // var height = target.children(":first").height();
-                    // target.height(height+10);
                   });
                 }
               }
@@ -563,9 +558,6 @@ $(function()
                 togglerBtn.trigger('click');
                 togglerBtn.trigger('click');
               }
-              // var target = $("#uumap > div");
-              // var height = target.children(":first").height();
-              // target.height(height+10);
             }
           });
           //This is for the address field, its displayed when the addressfield is empty and unselected 
@@ -702,10 +694,7 @@ $(function()
             }
 
           });
-          // var target = $("#uumap > div");
-          // var height = target.children(":first").height();
-          // target.height(height+10);
-        }); 
-        }// );
+        });
+        }
 
       });

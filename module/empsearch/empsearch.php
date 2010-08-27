@@ -93,11 +93,24 @@ class EmpSearch extends ContentModule {
   <method>get</method>
   $formValue
   $this->page
-  <button>
+  <empbutton>
     <type>submit</type>
     <value>Sök</value>
-  </button>
+  </empbutton>
 </form>
+FORM;
+        $this->ajaxForm = <<< FORM
+<ajaxform>
+  <name>$settings[name]</name>
+  <action></action>
+  <method>get</method>
+  $formValue
+  $this->page
+  <ajaxempbutton>
+    <type>submit</type>
+    <value>Sök</value>
+  </ajaxempbutton>
+</ajaxform>
 FORM;
     }
 
@@ -169,17 +182,14 @@ FORM;
             case 0:
                 return '';
                 break;
-
             case 1:
                 return '(|(givenname~=' . $searchStrings[0] . ')(sn~='
                 . $searchStrings[0] . '))';
                 break;
-
             case 2:
                 return '(|(&(givenname~=' . $searchStrings[0] . ')'
                 . '(sn~=' . $searchStrings[1] . '))' . '(&(givenname~='
                 . $searchStrings[1] . ')' . '(sn~=' . $searchStrings[0] . ')))';
-
             default:
                 $tmpA = '(&';
                 for ($i = 0; $i < $numStr; $i++) {
@@ -329,17 +339,17 @@ FORM;
                     . '</empsearch></toggler>';
     }
 
-     protected function generateAjax() {
+    protected function generateAjax() {
         if ($this->nonEmptySearchStr) {
             $this->searchResult = $this->search();
             $this->ldap->disconnect();
             $this->contentXML = '<ajax><empsearch>' . $this->name
-                    . $this->head . $this->icon . $this->form . "\n"
+                    . $this->head . $this->icon . $this->ajaxForm . "\n"
                     . $this->buildEmployeesXML()
                     . "\n" . '</empsearch></ajax>';
         } else {
             $this->contentXML = '<ajax><empsearch>' . $this->name . "\n"
-                    . $this->head . $this->icon . $this->form . "\n"
+                    . $this->head . $this->icon . $this->ajaxForm . "\n"
                     . '</empsearch></ajax>';
         }
     }

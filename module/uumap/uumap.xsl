@@ -34,6 +34,11 @@
           <div>
             <xsl:attribute name="id">MyMap</xsl:attribute>
             <div>
+              <xsl:attribute name="id">hiddenimage</xsl:attribute>
+              <img src="gfx/module/uumap/hidden.png"/>
+            </div>
+            
+            <div>
               <xsl:attribute name="class">MarkerWrapper</xsl:attribute>
               <label>
                 <xsl:attribute name="class">MarkerCheckBox</xsl:attribute>
