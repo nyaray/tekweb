@@ -65,14 +65,14 @@ XML;
   protected function generateToggler()
   {
 
-    try
-    {
-      if(!@$config = file_get_contents($this->configPath))
-      {
-        throw new Exception("Unable to read uumap-configfile");
-      }
-    $config = str_replace(UUMAP_XML_TO_REPLACE, '', $config);
-    } catch(Exception $e){ print $e->getMessage();}
+//    try
+//    {
+//      if(!@$config = file_get_contents($this->configPath))
+//      {
+//        throw new Exception("Unable to read uumap-configfile");
+//      }
+//    $config = str_replace(UUMAP_XML_TO_REPLACE, '', $config);
+//    } catch(Exception $e){ print $e->getMessage();}
 
   $this->contentXML = <<< XML
 <toggler>
