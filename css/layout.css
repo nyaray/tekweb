@@ -27,7 +27,7 @@
     background: -webkit-gradient(linear, left top, left bottom, from(#ff0000), to(#af1e2d),color-stop(0.1, #ff0000));
 }
 
-.button:active
+.button:hover
 {
     top:1px;
     -webkit-border-radius: 10px;
