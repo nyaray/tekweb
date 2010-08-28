@@ -20,12 +20,11 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     <xsl:template match="section/empsearch">
         <div class="section empsearchmodule">
-<!--            <xsl:attribute name="id">
-                <xsl:value-of select="name" />
-            </xsl:attribute>-->
             <xsl:apply-templates select="form"/>
             <xsl:apply-templates select="message"/>
-            <xsl:apply-templates select="employeelist"/>
+            <xsl:apply-templates select="employeelist[1]"/>
+            <xsl:apply-templates select="nonexactmessage"/>
+            <xsl:apply-templates select="employeelist[2]"/>
         </div>
     </xsl:template>
 

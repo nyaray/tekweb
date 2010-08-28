@@ -272,18 +272,18 @@ FORM;
                     . ' resulat' . '</message>' . "\n";
         }
 
-//determine how many employes to return
-        if ($this->nExactSEntries <= $this->numToShow)
-            $numEmps = $this->nExactSEntries;
-        else {
-            $numEmps = $this->numToShow;
-            $tmpSt .= '<message>Visar de ' . $numEmps . ' första resultaten';
-            $tmpSt .= '</message>';
-        }
-
-        if ($this->nExactSEntries > 0) {
+        if (($this->nExactSEntries > 0) &&
+                ($this->nExactSEntries <= $this->settings['maxetoget'])) {
             $tmpSt .= '<employeelist>' . "\n";
             $searchRst = $this->searchResult['exact'];
+            //determine how many employes to return
+            if ($this->nExactSEntries <= $this->numToShow)
+                $numEmps = $this->nExactSEntries;
+            else {
+                $numEmps = $this->numToShow;
+                $tmpSt .= '<message>Visar de ' . $numEmps . ' första resultaten';
+                $tmpSt .= '</message>';
+            }
             for ($i = 0; $i < $numEmps; $i++) {
                 $employee = $searchRst[$i];
                 $tmpSt .= '<employee>' . "\n";
@@ -299,10 +299,15 @@ FORM;
                 $tmpSt .= '</employee>' . "\n";
             }
             $tmpSt .= '</employeelist>';
-        } else
+        } else {
+            if ($this->nExactSEntries >= $this->settings['maxetoget'])
+                $tmpSt .= '<message>Försök vara mer specifik</message>';
+            
             $tmpSt .= '<employeelist></employeelist>' . "\n";
+        }
 
-        if ($this->nNonExactSEntries > 0) {
+        if ($this->nNonExactSEntries > 0 &&
+                ($this->nExactSEntries <= $this->settings['maxetoget'])) {
             $tmpSt .= '<nonexactmessage>Liknande namn</nonexactmessage>';
             if ($this->nNonExactSEntries <= $this->numToShow)
                 $numEmps = $this->nNonExactSEntries;
@@ -311,16 +316,10 @@ FORM;
                 //$tmpSt .= '<nonexactmessage>Visar de ' . $numEmps . ' första liknande resultaten';
                 //$tmpSt .= '</nonexactmessage>';
             }
-
-
             $tmpSt .= '<employeelist>' . "\n";
-
-
             $searchRst = $this->searchResult['soundslike'];
-
             for ($i = 0; $i < $numEmps; $i++) {
                 $employee = $searchRst[$i];
-
                 $tmpSt .= '<employee>' . "\n";
                 $tmpSt .= $this->getEmpXML($employee, 'givenname', 'givenname');
                 $tmpSt .= $this->getEmpXML($employee, 'sn', 'surname');
@@ -340,7 +339,6 @@ FORM;
                 $tmpSt .= '</nonexactmessage>';
             }
         }
-
         return $tmpSt;
     }
 
