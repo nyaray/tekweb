@@ -64,7 +64,9 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
             <xsl:apply-templates select="form"/>
             <xsl:apply-templates select="ajaxform"/>
             <xsl:apply-templates select="message"/>
-            <xsl:apply-templates select="employeelist"/>
+            <xsl:apply-templates select="employeelist[1]"/>
+            <xsl:apply-templates select="nonexactmessage"/>
+            <xsl:apply-templates select="employeelist[2]"/>
         </div>
     </xsl:template>
 
@@ -165,6 +167,12 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
         </p>
     </xsl:template>
 
+    <xsl:template match="nonexactmessage">
+        <p class="message">
+            <xsl:value-of select="."/>
+        </p>
+    </xsl:template>
+    
     <xsl:template match="page">
         <input type="hidden" name="page">
             <xsl:attribute name="value">

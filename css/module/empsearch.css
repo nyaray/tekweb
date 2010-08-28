@@ -23,7 +23,8 @@ ul.employees > li {margin:5px; padding:6px 6px 6px 9px; border:solid 2px #7F7F7F
 
 ul.employees li ul li {padding-left:12px; margin-top: 2px;}
 
-.empsearchmodule .message{text-align:left; margin: 3px 25px; color: green;}
+.empsearchmodule .message{text-align:left; margin: 3px 25px; color: green;
+                          font-weight: bold;}
 
 div.empsearchmodule span.openclose
 {display: inline-block; width: 10px; height: 10px;
