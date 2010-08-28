@@ -34,7 +34,6 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
             <xsl:attribute name="id">
                 <xsl:value-of select="name" />
             </xsl:attribute>
-<!--            <xsl:attribute name="class">toggler empsearchmodule</xsl:attribute>-->
             <a class="togglerbutton">
                 <xsl:attribute name="href">
                     <xsl:text>?page=</xsl:text>
@@ -54,9 +53,6 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
                 <xsl:attribute name="class">hidden</xsl:attribute>
                 <div>
                     <xsl:attribute name="class">togglercontentbody</xsl:attribute>
-                    <xsl:apply-templates select="form"/>
-                    <xsl:apply-templates select="message"/>
-                    <xsl:apply-templates select="employeelist"/>
                 </div>
             </div>
         </div>

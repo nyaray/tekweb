@@ -202,7 +202,7 @@ FORM;
         }
     }
 
-    protected function search() {
+    protected function doSearch() {
         $searchStrings = explode(' ', $this->searchString);
         $this->numSearchEntries = 0;
         $filter = $this->genExactFilter($searchStrings);
@@ -222,7 +222,9 @@ FORM;
             $filter = $this->genNonExactFilter($searchStrings);
             $this->numSearchEntries = $this->ldap->doSearch($filter);
         }
-        return $this->ldap->getSearchEntries();
+        $result['exact'] = $this->ldap->getSearchEntries();
+
+        return $result;
     }
 
     private function getEmployeeXML($employee, $attribute, $tag) {
@@ -313,7 +315,7 @@ FORM;
 
     protected function generateDefault() {
         if ($this->nonEmptySearchStr) {
-            $this->searchResult = $this->search();
+            $this->searchResult = $this->doSearch();
             $this->ldap->disconnect();
             $this->contentXML = '<section><empsearch>' . $this->name
                     . $this->head . $this->icon . $this->form . "\n"
@@ -325,23 +327,24 @@ FORM;
                     . '</empsearch></section>';
     }
 
-    protected function generateToggler() {
-        if ($this->nonEmptySearchStr) {
-            $this->searchResult = $this->search();
-            $this->ldap->disconnect();
-            $this->contentXML = '<toggler><empsearch>' . $this->name
-                    . $this->head . $this->icon . $this->form . "\n"
-                    . $this->buildEmployeesXML()
-                    . "\n" . '</empsearch></toggler>';
-        } else
-            $this->contentXML = '<toggler><empsearch>' . $this->name . "\n"
-                    . $this->head . $this->icon . "\n"
-                    . '</empsearch></toggler>';
-    }
+      protected function generateToggler()
+  {
+    $this->contentXML = <<< XML
+<toggler>
+  <empsearch>
+    $this->name
+    $this->icon
+    $this->head
+  </empsearch>
+</toggler>
+XML;
+  }
+
 
     protected function generateAjax() {
         if ($this->nonEmptySearchStr) {
-            $this->searchResult = $this->search();
+            $searchResults = $this->doSearch();
+            $this->searchResult = $searchResults['exact'];
             $this->ldap->disconnect();
             $this->contentXML = '<ajax><empsearch>' . $this->name
                     . $this->head . $this->icon . $this->ajaxForm . "\n"
