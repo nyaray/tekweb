@@ -53,8 +53,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
             <xsl:if test="pubDate">
                 <span class="timestamp">
                     <xsl:value-of select="./pubDate" />
+                    <xsl:text>: </xsl:text>
                 </span>
-                <xsl:text>: </xsl:text>
             </xsl:if>
             <xsl:choose>
                 <xsl:when test="link">
@@ -66,7 +66,9 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
                     </a>
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:value-of select="./title" />
+                    <span class="title">
+                        <xsl:value-of select="./title" />
+                    </span>
                 </xsl:otherwise>
             </xsl:choose>
             <xsl:if test="desc != ''">
@@ -85,7 +87,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
             <xsl:attribute name="class">toggler</xsl:attribute>
             <a>
                 <xsl:attribute name="class">togglerbutton</xsl:attribute>
-                <xsl:attribute name="href">?page=
+                <xsl:attribute name="href">
+                    <xsl:text>?page=</xsl:text>
                     <xsl:value-of select="./name" />
                 </xsl:attribute>
                 <xsl:element name="img">
