@@ -26,6 +26,7 @@ class UUMap extends ContentModule
 {
 
   private $configPath;
+  private $config;
   private $mapData;
   private $head;
 
@@ -80,7 +81,6 @@ XML;
   $this->head
   $this->name
   $this->icon
-  $config
 </uumap>
 </toggler>
 XML;
