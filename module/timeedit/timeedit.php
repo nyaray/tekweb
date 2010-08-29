@@ -52,6 +52,19 @@ XML;
   {
     $doc = new DOMDocument();
 
+    $confElem = false;
+
+    if(!isset($_GET['view']) ||
+       $_GET['view'] != 'config')
+    {
+      $name = (isset($this->settings['name']))? $this->settings['name']: 'noname';
+      $href = "?page=$name&view=config";
+      $confLink = $doc->createElement('a', 'Välj program/kurser');
+      $confLink->setAttribute('href', $href);
+      $confElem = $doc->createElement('conf');
+      $confElem->appendChild($confLink);
+    }
+
     if(isset($_GET['view']) &&
        $_GET['view'] == 'config')
     {
@@ -62,28 +75,28 @@ XML;
     {
       //echo "<!-- timeedit in view -->\n";
       $this->generateViewDoc($doc);
+      if($confElem !== false)
+      {
+        $viewElem = $doc->getElementsByTagName('view')->item(0);
+        $confElem = $doc->importNode($confElem, true);
+        $viewElem->appendChild($confElem);
+      }
     }
     else
     {
       $doc->loadXML('<calendar></calendar>');
+      if($confElem !== false)
+      {
+        $confElem = $doc->importNode($confElem, true);
+        $doc->documentElement->appendChild($confElem);
+      }
     }
 
-    if(!isset($_GET['view']) ||
-       $_GET['view'] != 'config')
-    {
-      $name = (isset($this->settings['name']))? $this->settings['name']: 'noname';
-      $href = "?page=$name&view=config";
-      $confLink = $doc->createElement('a', 'Välj kurser');
-      $confLink->setAttribute('href', $href);
-      $confElem = $doc->createElement('conf');
-      $confElem->appendChild($confLink);
-      $doc->documentElement->appendChild($confElem);
-    }
 
-    //echo "<!--\n";
-    //echo "---doc XML---\n";
-    //var_dump($doc->saveXML());
-    //echo "-->";
+    echo "<!--\n";
+    echo "---doc XML---\n";
+    var_dump($doc->saveXML());
+    echo "-->";
 
     $modXSL = new DOMDocument();
     $modXSL->load(MODULE_DIR."timeedit/default.xsl");
@@ -94,10 +107,10 @@ XML;
       str_replace('<?xml version="1.0"?'.'>', '', $this->contentXML);
 
     // print contentXML to see what's going on
-    //echo "<!--\n";
-    //echo "---contentXML---\n";
-    //var_dump($this->contentXML);
-    //echo "-->\n";
+    echo "<!--\n";
+    echo "---contentXML---\n";
+    var_dump($this->contentXML);
+    echo "-->\n";
   }
 
   protected function generateToggler()
@@ -128,7 +141,7 @@ XML;
 
     $name = (isset($this->settings['name']))? $this->settings['name']: 'noname';
     $href = "?page=$name&view=config";
-    $confLink = $doc->createElement('a', 'Välj kurser');
+    $confLink = $doc->createElement('a', 'Välj program/kurser');
     $confLink->setAttribute('href', $href);
     $confElem = $doc->createElement('conf');
     $confElem->appendChild($confLink);
@@ -162,7 +175,6 @@ XML;
 
   protected function generateViewDoc(&$doc)
   {
-    echo "<!-- generating view doc -->\n";
     $docXML = LibTimeEdit::generateView(
       $this->settings['name'], $this->settings['head']);
     $doc->loadXML($docXML);

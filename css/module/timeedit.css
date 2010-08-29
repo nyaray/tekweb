@@ -10,23 +10,51 @@
   font-weight:bold;
 }
 
-#studcal hr {
-/*  width:140px;*/
+#studcal .italic {
+  font-style:italic;
 }
 
-#studcal li {
-  margin:10px 0;
-}
-
-#studcal form li {
-  margin:10px 5px;
-  padding:5px;
+#studcal .timeeditsearchdesc {
+  text-align:left;
   background-color:#e5e5e5;
 }
 
-#studcal li img {
-  width:20px;
-  height:20px;
+#studcal p {
+  margin:7px 0;
+  padding:5px;
+}
+
+#studcal form li {
+  position:relative;
+  display:block;
+  margin:15px 5px;
+}
+
+#studcal form li a {
+  display:inline-block;
+  width:100%;
+  padding:20px 0;
+  background-color:#e5e5e5;
+}
+
+#studcal form li a p {
+  display:inline-block;
+  margin:0 7px;
+}
+
+#studcal form li a p img {
+  position:absolute;
+  top:4px;
+  left:4px;
+  width:10px;
+  height:10px;
+  opacity:0.65;
+}
+
+#studcal form li a p small {
+  position:absolute;
+  bottom:4px;
+  right:4px;
 }
 
 #studcal fieldset {
@@ -47,6 +75,10 @@
   background-color:#fff;
 }
 
+#studcal #timeeditdetails {
+  margin-bottom:15px;
+}
+
 #studcal .weekyear {
 /*  width:200px;*/
 /*  border-left:10px solid #e5e5e5;*/
@@ -65,7 +97,7 @@
 }
 
 #studcal .event {
-  width:320px;
+  min-width:250px;
   margin:0 auto 10px;
 }
 
