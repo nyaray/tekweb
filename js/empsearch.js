@@ -42,11 +42,9 @@ $(function() {
             function(data){
                 var content = data;
                 togglCBody.replaceWith(content);
-                var employees = $('.empsearchmodule ul.employees li ul');
+                var employees = $('#' +instanceName+ ' ul.employees li ul');
 
-                
-
-                $('.empsearchmodule ul.employees > li > b')
+                $('#' +instanceName+ ' ul.employees > li > b')
                 .wrap('<a href="" />');
                 
                 if(employees.size() > 10){
@@ -54,37 +52,40 @@ $(function() {
                         var toHide = $(this).find('li:nth-child(n+2)');
                         if (toHide.size()>0){
                             toHide.addClass('hidden');
-                            $(this).parent('li').find('a').eq(0)
-                            .append('<span class="openclose"></span>')
-                            .find('.openclose')
-                            .css("background-image"
-                                ,"url(gfx/module/empsearch/plus-8.png)");
-                        }else {
-                            $(this).parent('li').find('a b').unwrap();
-                        }
-                    });
-                } else {
-                    employees.each(function(){
-                        var toHide = $(this).find('li:nth-child(n+2)');
-                        if (toHide.size()>0){
-                            $(this).parent('li').find('a').eq(0)
-                            .append('<span class="openclose"></span>')
-                            .find('.openclose')
-                            .css("background-image"
-                                ,"url(gfx/module/empsearch/minus-8.png)");
-                        } else {
-                            $(this).parent('li').find('a b')/*.eq(0)*/.unwrap();
-                        }
-                    });
-                }
-                togglerBtn.trigger('click');
-                togglerBtn.trigger('click');
-            });
-        }else {
-            return true //When run from a "page"
+                            //console.log($(this).prev('a').html());
+                            //var asdf = $(this).parent('li').find('a').eq(0);
+                          //console.log('ORIG:'+asdf.html());
+                                $(this).prev('a')
+                                .append('<span class="openclose"></span>')
+                                .find('.openclose')
+                                .css("background-image"
+                                    ,"url(gfx/module/empsearch/plus-8.png)");
+                            }else {
+                                $(this).parent('li').find('a b').unwrap();
+                            }
+                        });
+                    } else {
+                        employees.each(function(){
+                            var toHide = $(this).find('li:nth-child(n+2)');
+                            if (toHide.size()>0){
+                                $(this).parent('li').find('a').eq(0)
+                                .append('<span class="openclose"></span>')
+                                .find('.openclose')
+                                .css("background-image"
+                                    ,"url(gfx/module/empsearch/minus-8.png)");
+                            } else {
+                                $(this).parent('li').find('a b')/*.eq(0)*/.unwrap();
+                            }
+                        });
+                    }
+                    togglerBtn.trigger('click');
+                    togglerBtn.trigger('click');
+                });
+            }else {
+                return true //When run from a "page"
             }
-        return false;
-    });
+            return false;
+        });
 
     $('.empsearchmodule ul.employees > li > a').live('click', function(){
         var items = $(this).parent('li').find('li');
@@ -102,4 +103,4 @@ $(function() {
         togglBtn.trigger('click');
         return false;
     });
-});
+    });

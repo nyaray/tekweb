@@ -289,7 +289,9 @@ FORM;
                 $tmpSt .= '<employee>' . "\n";
                 $tmpSt .= $this->getEmpXML($employee, 'givenname', 'givenname');
                 $tmpSt .= $this->getEmpXML($employee, 'sn', 'surname');
-                $tmpSt .= "<titleatdep>" . htmlspecialchars($employee['title;lang-sv'][0] . ' vid ' . $employee["department;lang-sv"][0]) . '</titleatdep>' . "\n";
+                $atDep = '<titleatdep>' . htmlspecialchars($employee['title;lang-sv'][0] . ' vid ' . $employee["department;lang-sv"][0]) . '</titleatdep>';
+                if ($atDep != '<titleatdep> vid </titleatdep>')
+                    $tmpSt .= $atDep;
                 $tmpSt .= $this->getEmpXML($employee, 'registeredaddress;lang-sv', 'visitingaddress', '$', ' ');
                 $tmpSt .= $this->getEmpXML($employee, 'roomnumber', 'roomnumber');
                 $tmpSt .= $this->getEmpXML($employee, 'mail', 'mail');
@@ -302,7 +304,7 @@ FORM;
         } else {
             if ($this->nExactSEntries >= $this->settings['maxetoget'])
                 $tmpSt .= '<message>Försök vara mer specifik</message>';
-            
+
             $tmpSt .= '<employeelist></employeelist>' . "\n";
         }
 
@@ -323,7 +325,9 @@ FORM;
                 $tmpSt .= '<employee>' . "\n";
                 $tmpSt .= $this->getEmpXML($employee, 'givenname', 'givenname');
                 $tmpSt .= $this->getEmpXML($employee, 'sn', 'surname');
-                $tmpSt .= "<titleatdep>" . htmlspecialchars($employee['title;lang-sv'][0] . ' vid ' . $employee["department;lang-sv"][0]) . '</titleatdep>' . "\n";
+                $atDep = '<titleatdep>' . htmlspecialchars($employee['title;lang-sv'][0] . ' vid ' . $employee["department;lang-sv"][0]) . '</titleatdep>';
+                if ($atDep != '<titleatdep> vid </titleatdep>')
+                    $tmpSt .= $atDep;
                 $tmpSt .= $this->getEmpXML($employee, 'registeredaddress;lang-sv', 'visitingaddress', '$', ' ');
                 $tmpSt .= $this->getEmpXML($employee, 'roomnumber', 'roomnumber');
                 $tmpSt .= $this->getEmpXML($employee, 'mail', 'mail');
