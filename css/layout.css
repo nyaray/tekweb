@@ -2,60 +2,89 @@
 }
 
 #content {
-  width:100%;
-  text-align:center;
-  font-family:verdana, sans-serif;
-  position: relative;
+    width:100%;
+    text-align:center;
+    font-family:verdana, sans-serif;
+    position: relative;
+}
+.button{
+    background: #af1e2d;
+    display: inline-block;
+    padding: 5px 10px 6px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    line-height: 1;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-box-shadow: 0 1px 3px #999;
+    -webkit-box-shadow: 0 1px 3px #999;
+    text-shadow: 0 1px 4px #222;
+    border-bottom: 1px solid #222;
+    position: relative;
+    cursor: pointer;
+    font-size:10pt;
+    background: -webkit-gradient(linear, left top, left bottom, from(#ff0000), to(#af1e2d),color-stop(0.1, #ff0000));
+}
+
+.button:hover
+{
+    top:1px;
+    -webkit-border-radius: 10px;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    background-color: #230;
+    background: -webkit-gradient(linear, left top, left bottom, from(#af1e2d), to(#ff0000),color-stop(0.1, #ff0000));
 }
 
 #logo {
-/*  width:100%;*/
-  height:50pt;
-/*  margin-top:5px;*/
-/*  margin-right:85px;*/
+    /*  width:100%;*/
+    height:50pt;
+    /*  margin-top:5px;*/
+    /*  margin-right:85px;*/
 }
 
 h1 {
-  font-size:200%;
-  font-family:georgia, serif;
+    font-size:150%;
+    font-family:georgia, serif;
 }
 
 .divider {
-  width:85%;
-  height:1px;
-  display: block;
-  margin: 3px auto;
+    width:85%;
+    height:1px;
+    display: block;
+    margin: 3px auto;
 }
 
 .toggler + .divider {
-  display: none;
+    display: none;
 }
 
 .hidden {
-  display: none;
+    display: none;
 }
 
 .section, .teaser, .toggler {
-  margin: 10px 0;
-/*  margin-bottom:20px;*/
+    margin: 10px 0;
+    /*  margin-bottom:20px;*/
 }
 
 .teaser {
-  position:relative;
-  padding-bottom: 19px;
+    position:relative;
+    padding-bottom: 19px;
 }
 
 .teaserlinktext {
-  position:absolute;
-  bottom:0px;
-  right:20px;
+    position:absolute;
+    bottom:0px;
+    right:20px;
 }
 
 .toggler {
-  display: inline-block;
-  vertical-align: top;
-  text-align: center;
-  width:70px;
+    display: inline-block;
+    vertical-align: top;
+    text-align: center;
+    width:70px;
 }
 
 .togglerbutton {
@@ -63,31 +92,31 @@ h1 {
 }
 
 .togglerbuttontext {
-  font-size: 60%;
+    font-size: 60%;
 }
 
 .togglercontent {
-  /*height: 200px;*/
+    /*height: 200px;*/
 }
 
 .togglercontentbody {
-  position: absolute;
-  overflow: visible;
-  padding: 10px;
-  border-radius: 10px;
-  border-width: 2px;
-  border-style: solid;
-  border-color: #b2b2b2;
+    position: absolute;
+    overflow: visible;
+    padding: 10px;
+    border-radius: 10px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: #b2b2b2;
 }
 
 .togglericon {
-  border: 3px solid white;
-  border-radius: 5px;
+    border: 3px solid white;
+    border-radius: 5px;
 }
 
 .active {
-  border: 3px solid #AF1E2D;
-  border-radius: 5px;
+    border: 3px solid #AF1E2D;
+    border-radius: 5px;
 }
 /*#about {
   text-align: center;

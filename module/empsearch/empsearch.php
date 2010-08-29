@@ -23,7 +23,8 @@ class EmpSearch extends ContentModule {
     protected $settings = null;
     protected $ldap = null;
     protected $searchString = '';
-    protected $numSearchEntries = 0;
+    protected $nExactSEntries = 0;
+    protected $nNonExactSEntries = 0;
     protected $searchResult = null;
     protected $numToShow = null;
     protected $form = '';
@@ -31,7 +32,6 @@ class EmpSearch extends ContentModule {
     protected $head = '';
     protected $page = '';
     protected $exactMatch = false;
-    protected $nonExactMatch = false;
     protected $alwdChars = 'a-zà-öù-ÿ\s\-';
 
     public function __construct($settings) {
@@ -55,7 +55,7 @@ class EmpSearch extends ContentModule {
             $this->page = '<page><value>' . strip_tags($_REQUEST['page'])
                     . '</value></page>';
         }
-
+        // Used by javascript JS knows instance name for separation
         if (isset($_REQUEST['empsearchstring'])) {
             $this->searchString = strip_tags($_REQUEST['empsearchstring']);
             $this->searchString = trim($this->searchString);
@@ -64,18 +64,20 @@ class EmpSearch extends ContentModule {
             mb_internal_encoding("UTF-8");
             mb_regex_encoding("UTF-8");
             $this->searchString = mb_strtolower($this->searchString);
-            $this->searchString = mb_ereg_replace('[^' . $this->alwdChars . ']', '', $this->searchString);
+            $this->searchString = mb_ereg_replace('[^' . $this->alwdChars . ']'
+                            , '', $this->searchString);
         }
-
-        if (isset($_REQUEST[$settings[name]])) {
-            $this->searchString = strip_tags($_REQUEST[$settings[name]]);
+        //Uses instance name('name') for instance separation when not using js.
+        if (isset($_REQUEST[$settings['name']])) {
+            $this->searchString = strip_tags($_REQUEST[$settings['name']]);
             $this->searchString = trim($this->searchString);
             $this->searchString = preg_replace('/\s+/', ' '
                             , $this->searchString);
             mb_internal_encoding("UTF-8");
             mb_regex_encoding("UTF-8");
             $this->searchString = mb_strtolower($this->searchString);
-            $this->searchString = mb_ereg_replace('[^' . $this->alwdChars . ']', '', $this->searchString);
+            $this->searchString = mb_ereg_replace('[^' . $this->alwdChars . ']'
+                            , '', $this->searchString);
         }
 
         $this->nonEmptySearchStr = ($this->searchString != '');
@@ -92,16 +94,56 @@ class EmpSearch extends ContentModule {
   <method>get</method>
   $formValue
   $this->page
-  <button>
+  <empbutton>
     <type>submit</type>
     <value>Sök</value>
-  </button>
+  </empbutton>
 </form>
+FORM;
+        $this->ajaxForm = <<< FORM
+<ajaxform>
+  <name>$settings[name]</name>
+  <action></action>
+  <method>get</method>
+  $formValue
+  $this->page
+  <ajaxempbutton>
+    <type>submit</type>
+    <value>Sök</value>
+  </ajaxempbutton>
+</ajaxform>
 FORM;
     }
 
-    protected function genExactFilter($searchString) {
-        $searchStrings = explode(' ', $searchString);
+    protected function genExactFilter($searchStrings) {
+        $numStr = count($searchStrings);
+
+        switch ($numStr) {
+            case 0:
+                return '';
+                break;
+            case 1:
+                return '(|(givenname=' . $searchStrings[0] . ')(sn='
+                . $searchStrings[0] . '))';
+                break;
+            case 2:
+                return '(|(&(givenname=' . $searchStrings[0] . ')'
+                . '(sn=' . $searchStrings[1] . '))' . '(&(givenname='
+                . $searchStrings[1] . ')' . '(sn=' . $searchStrings[0] . ')))';
+                break;
+            //Best way I could think of to handle >2 strings in exact
+            default:
+                $tmpA = '(&';
+                for ($i = 0; $i < $numStr; $i++) {
+                    $tmpA .= '(cn=*' . $searchStrings[$i] . '*)';
+                }
+                $tmpA .= ')';
+                return $tmpA;
+                break;
+        }
+    }
+
+    protected function genStarFilter($searchStrings) {
         $numStr = count($searchStrings);
 
         switch ($numStr) {
@@ -110,20 +152,19 @@ FORM;
                 break;
 
             case 1:
-                return '(|(givenname=*'
-                . str_replace('*', '', $searchStrings[0]) . '*)(sn=*'
-                . str_replace('*', '', $searchStrings[0]) . '*))';
+                return '(|(givenname=*' . $searchStrings[0] . '*)(sn=*'
+                . $searchStrings[0] . '*))';
                 break;
 
             case 2:
-                return '(&(cn=*' . str_replace('*', '', $searchStrings[0]) . '*)'
-                . '(cn=*' . str_replace('*', '', $searchStrings[1]) . '*))';
+                return '(&(cn=*' . $searchStrings[0] . '*)'
+                . '(cn=*' . $searchStrings[1] . '*))';
                 break;
 
             default:
                 $tmpA = '(&';
                 for ($i = 0; $i < $numStr; $i++) {
-                    $tmpA .= '(cn=*' . str_replace('*', '', $searchStrings[$i]) . '*)';
+                    $tmpA .= '(cn=*' . $searchStrings[$i] . '*)';
                 }
                 $tmpA .= ')';
                 return $tmpA;
@@ -131,16 +172,73 @@ FORM;
         }
     }
 
-    protected function search() {
-        $this->numSearchEntries = 0;
-//        $filter = '(|(givenname=' . $this->searchString . ')(sn=' . $this->searchString . '))'; //FIXME gen filter
-        $filter = $this->genExactFilter($this->searchString);
-        $this->numSearchEntries = $this->ldap->doSearch($filter);
+    protected function genSndsLikeFilter($searchStrings) {
+        $numStr = count($searchStrings);
 
-        return $this->ldap->getSearchEntries();
+        switch ($numStr) {
+            case 0:
+                return '';
+                break;
+            case 1:
+                return '(&(|(givenname~=' . $searchStrings[0] . ')(sn~='
+                . $searchStrings[0] . '))' .
+                '(!(|(givenname=' . $searchStrings[0] . ')(sn='
+                . $searchStrings[0] . '))))';
+                break;
+            case 2:
+
+                return '(&(|(&(givenname~=' . $searchStrings[0] . ')'
+                . '(sn~=' . $searchStrings[1] . '))'
+                . '(&(givenname~=' . $searchStrings[1] . ')'
+                . '(sn~=' . $searchStrings[0] . ')))'
+                . '(!(|(&(givenname=' . $searchStrings[0] . ')'
+                . '(sn=' . $searchStrings[1] . '))' . '(&(givenname='
+                . $searchStrings[1] . ')' . '(sn=' . $searchStrings[0]
+                . ')))))';
+                break;
+            default:
+                $tmpA = '(&';
+                for ($i = 0; $i < $numStr; $i++) {
+                    $tmpA .= '(|(sn~=' . $searchStrings[$i] . ')'
+                            . '(givenname~=' . $searchStrings[$i] . '))';
+                }
+                $tmpA .= ')';
+
+                $tmpB = '(&';
+                for ($i = 0; $i < $numStr; $i++) {
+                    $tmpB .= '(cn=*' . $searchStrings[$i] . '*)';
+                }
+                $tmpB .= ')';
+                return '(&' . $tmpA . '(!' . $tmpB . '))';
+                break;
+        }
     }
 
-    private function getEmployeeXML($employee, $attribute, $tag) {
+    protected function search() {
+        $searchStrings = explode(' ', $this->searchString);
+        $this->nExactSEntries = 0;
+        $this->nNonExactSEntries = 0;
+
+        $filter = $this->genExactFilter($searchStrings);
+        $this->nExactSEntries = $this->ldap->doSearch($filter);
+
+        if ($this->nExactSEntries == 0) {
+            $filter = $this->genStarFilter($searchStrings);
+            $this->nExactSEntries = $this->ldap->doSearch($filter);
+        }
+        if ($this->nExactSEntries != 0) {
+            $result['exact'] = $this->ldap->getSearchEntries();
+        }
+
+        $filter = $this->genSndsLikeFilter($searchStrings);
+        $this->nNonExactSEntries = $this->ldap->doSearch($filter);
+        if ($this->nNonExactSEntries != 0) {
+            $result['soundslike'] = $this->ldap->getSearchEntries();
+        }
+        return $result;
+    }
+
+    private function getEmpXML($employee, $attribute, $tag) {
         $numAttribs = $employee[$attribute]['count']; //can return null
         $replaceStr = (func_num_args() > 4);
         $tmpStr = '';
@@ -159,7 +257,6 @@ FORM;
             } else {
                 for ($i = 0; $i < $numAttribs; $i++) {
                     $tmpA = htmlspecialchars($tmpArray[$i]);
-                    //$tmpStr .= '<' . $tag . '>' . $tmpA . '</' . $tag . '>' . "\n";
                     $tmpStr .= '<' . $tag . '>' . $tmpA;
                     $tmpStr .= '</' . $tag . '>' . "\n";
                 }
@@ -169,51 +266,84 @@ FORM;
     }
 
     protected function buildEmployeesXML() {
-
-        if ($this->numSearchEntries > 0) {
-            $tmpStr = '<message>' . 'Din sökning gav '
-                    . htmlspecialchars($this->numSearchEntries)
+        if ($this->nExactSEntries > 0) {
+            $tmpSt = '<message>' . 'Din sökning gav '
+                    . $this->nExactSEntries
                     . ' resulat' . '</message>' . "\n";
-//determine how many employes to return
-            if ($this->numSearchEntries <= $this->numToShow)
-                $numEmps = $this->numSearchEntries;
-            else {
-                if ($this->searchResult) {
-                    $tmpStr .= '<message>visar de ' . $this->numToShow
-                            . ' första resulaten</message>' . "\n";
-
-                    $numEmps = $this->numToShow;
-                } else
-                    $tmpStr .= '<message>Gör din sökning mer specifik'
-                            . '</message>' . "\n";
-            }
-
-            if ($this->searchResult) {
-                $tmpStr .= '<employeelist>' . "\n";
-
-                for ($i = 0; $i < $numEmps; $i++) {
-                    $employee = $this->searchResult[$i];
-                    $tmpStr .= '<employee>' . "\n";
-                    $tmpStr .= $this->getEmployeeXML($employee, 'givenname', 'givenname');
-                    $tmpStr .= $this->getEmployeeXML($employee, 'sn', 'surname');
-                    $tmpStr .= "<titleatdep>" . htmlspecialchars($employee['title;lang-sv'][0] . ' vid ' . $employee["department;lang-sv"][0]) . '</titleatdep>' . "\n";
-                    $tmpStr .= $this->getEmployeeXML($employee, 'registeredaddress;lang-sv', 'visitingaddress', '$', ' ');
-                    $tmpStr .= $this->getEmployeeXML($employee, 'roomnumber', 'roomnumber');
-                    $tmpStr .= $this->getEmployeeXML($employee, 'mail', 'mail');
-                    $tmpStr .= $this->getEmployeeXML($employee, 'telephonenumber', 'phonenumber', ' ', '');
-                    $tmpStr .= $this->getEmployeeXML($employee, 'mobile', 'mobilenumber', ' ', '');
-                    $tmpStr .= $this->getEmployeeXML($employee, 'facsimiletelephonenumber', 'faxnumber', ' ', '');
-                    $tmpStr .= '</employee>' . "\n";
-                }
-                $tmpStr .= '</employeelist>';
-            }
-        } else {
-            //FIXME ADD ~ search 
-            $tmpStr = '<message>';
-            $tmpStr .= htmlspecialchars('Din sökning gav inga träffar');
-            $tmpStr .= '</message>' . "\n";
         }
-        return $tmpStr;
+
+        if (($this->nExactSEntries > 0) &&
+                ($this->nExactSEntries <= $this->settings['maxetoget'])) {
+            $tmpSt .= '<employeelist>' . "\n";
+            $searchRst = $this->searchResult['exact'];
+            //determine how many employes to return
+            if ($this->nExactSEntries <= $this->numToShow)
+                $numEmps = $this->nExactSEntries;
+            else {
+                $numEmps = $this->numToShow;
+                $tmpSt .= '<message>Visar de ' . $numEmps . ' första resultaten';
+                $tmpSt .= '</message>';
+            }
+            for ($i = 0; $i < $numEmps; $i++) {
+                $employee = $searchRst[$i];
+                $tmpSt .= '<employee>' . "\n";
+                $tmpSt .= $this->getEmpXML($employee, 'givenname', 'givenname');
+                $tmpSt .= $this->getEmpXML($employee, 'sn', 'surname');
+                $atDep = '<titleatdep>' . htmlspecialchars($employee['title;lang-sv'][0] . ' vid ' . $employee["department;lang-sv"][0]) . '</titleatdep>';
+                if ($atDep != '<titleatdep> vid </titleatdep>')
+                    $tmpSt .= $atDep;
+                $tmpSt .= $this->getEmpXML($employee, 'registeredaddress;lang-sv', 'visitingaddress', '$', ' ');
+                $tmpSt .= $this->getEmpXML($employee, 'roomnumber', 'roomnumber');
+                $tmpSt .= $this->getEmpXML($employee, 'mail', 'mail');
+                $tmpSt .= $this->getEmpXML($employee, 'telephonenumber', 'phonenumber', ' ', '');
+                $tmpSt .= $this->getEmpXML($employee, 'mobile', 'mobilenumber', ' ', '');
+                $tmpSt .= $this->getEmpXML($employee, 'facsimiletelephonenumber', 'faxnumber', ' ', '');
+                $tmpSt .= '</employee>' . "\n";
+            }
+            $tmpSt .= '</employeelist>';
+        } else {
+            if ($this->nExactSEntries >= $this->settings['maxetoget'])
+                $tmpSt .= '<message>Försök vara mer specifik</message>';
+
+            $tmpSt .= '<employeelist></employeelist>' . "\n";
+        }
+
+        if ($this->nNonExactSEntries > 0 &&
+                ($this->nExactSEntries <= $this->settings['maxetoget'])) {
+            $tmpSt .= '<nonexactmessage>Liknande namn</nonexactmessage>';
+            if ($this->nNonExactSEntries <= $this->numToShow)
+                $numEmps = $this->nNonExactSEntries;
+            else {
+                $numEmps = $this->numToShow;
+                //$tmpSt .= '<nonexactmessage>Visar de ' . $numEmps . ' första liknande resultaten';
+                //$tmpSt .= '</nonexactmessage>';
+            }
+            $tmpSt .= '<employeelist>' . "\n";
+            $searchRst = $this->searchResult['soundslike'];
+            for ($i = 0; $i < $numEmps; $i++) {
+                $employee = $searchRst[$i];
+                $tmpSt .= '<employee>' . "\n";
+                $tmpSt .= $this->getEmpXML($employee, 'givenname', 'givenname');
+                $tmpSt .= $this->getEmpXML($employee, 'sn', 'surname');
+                $atDep = '<titleatdep>' . htmlspecialchars($employee['title;lang-sv'][0] . ' vid ' . $employee["department;lang-sv"][0]) . '</titleatdep>';
+                if ($atDep != '<titleatdep> vid </titleatdep>')
+                    $tmpSt .= $atDep;
+                $tmpSt .= $this->getEmpXML($employee, 'registeredaddress;lang-sv', 'visitingaddress', '$', ' ');
+                $tmpSt .= $this->getEmpXML($employee, 'roomnumber', 'roomnumber');
+                $tmpSt .= $this->getEmpXML($employee, 'mail', 'mail');
+                $tmpSt .= $this->getEmpXML($employee, 'telephonenumber', 'phonenumber', ' ', '');
+                $tmpSt .= $this->getEmpXML($employee, 'mobile', 'mobilenumber', ' ', '');
+                $tmpSt .= $this->getEmpXML($employee, 'facsimiletelephonenumber', 'faxnumber', ' ', '');
+                $tmpSt .= '</employee>' . "\n";
+            }
+            $tmpSt .= '</employeelist>';
+        } else {
+            if ($this->nExactSEntries == 0) {
+                $tmpSt .= '<nonexactmessage>Din sökning gav inga resultat';
+                $tmpSt .= '</nonexactmessage>';
+            }
+        }
+        return $tmpSt;
     }
 
     protected function generateDefault() {
@@ -231,17 +361,15 @@ FORM;
     }
 
     protected function generateToggler() {
-        if ($this->nonEmptySearchStr) {
-            $this->searchResult = $this->search();
-            $this->ldap->disconnect();
-            $this->contentXML = '<toggler><empsearch>' . $this->name
-                    . $this->head . $this->icon . $this->form . "\n"
-                    . $this->buildEmployeesXML()
-                    . "\n" . '</empsearch></toggler>';
-        } else
-            $this->contentXML = '<toggler><empsearch>' . $this->name . "\n"
-                    . $this->head . $this->icon . $this->form . "\n"
-                    . '</empsearch></toggler>';
+        $this->contentXML = <<< XML
+<toggler>
+  <empsearch>
+    $this->name
+    $this->icon
+    $this->head
+  </empsearch>
+</toggler>
+XML;
     }
 
     protected function generateAjax() {
@@ -249,12 +377,12 @@ FORM;
             $this->searchResult = $this->search();
             $this->ldap->disconnect();
             $this->contentXML = '<ajax><empsearch>' . $this->name
-                    . $this->head . $this->icon . $this->form . "\n"
+                    . $this->head . $this->icon . $this->ajaxForm . "\n"
                     . $this->buildEmployeesXML()
                     . "\n" . '</empsearch></ajax>';
         } else {
             $this->contentXML = '<ajax><empsearch>' . $this->name . "\n"
-                    . $this->head . $this->icon . $this->form . "\n"
+                    . $this->head . $this->icon . $this->ajaxForm . "\n"
                     . '</empsearch></ajax>';
         }
     }

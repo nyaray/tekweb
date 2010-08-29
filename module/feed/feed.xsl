@@ -91,7 +91,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template match="ajax/feed">
 <ul>
-  <xsl:attribute name="class">togglercontentbody</xsl:attribute>
+  <xsl:attribute name="class">togglercontentbody feed</xsl:attribute>
   <xsl:for-each select="../feed/body/item">
     <xsl:apply-templates select="." />
   </xsl:for-each>

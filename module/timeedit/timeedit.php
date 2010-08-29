@@ -124,14 +124,15 @@ XML;
     else
     {
       $doc->loadXML('<calendar></calendar>');
-      $name = (isset($this->settings['name']))? $this->settings['name']: 'noname';
-      $href = "?page=$name&view=config";
-      $confLink = $doc->createElement('a', 'Välj kurser');
-      $confLink->setAttribute('href', $href);
-      $confElem = $doc->createElement('conf');
-      $confElem->appendChild($confLink);
-      $doc->documentElement->appendChild($confElem);
     }
+
+    $name = (isset($this->settings['name']))? $this->settings['name']: 'noname';
+    $href = "?page=$name&view=config";
+    $confLink = $doc->createElement('a', 'Välj kurser');
+    $confLink->setAttribute('href', $href);
+    $confElem = $doc->createElement('conf');
+    $confElem->appendChild($confLink);
+    $doc->documentElement->appendChild($confElem);
 
     $modXSL = new DOMDocument();
     $modXSL->load(MODULE_DIR."timeedit/ajax.xsl");
@@ -141,11 +142,10 @@ XML;
     $this->contentXML =
       str_replace('<?xml version="1.0"?'.'>', '', $this->contentXML);
 
-    echo "<!--\n";
-    echo "---contentXML---\n";
-    var_dump($this->contentXML);
-    echo "-->\n";
-
+    //echo "<!--\n";
+    //echo "---contentXML---\n";
+    //var_dump($this->contentXML);
+    //echo "-->\n";
   }
 
   protected function generateTeaser()
@@ -162,6 +162,7 @@ XML;
 
   protected function generateViewDoc(&$doc)
   {
+    echo "<!-- generating view doc -->\n";
     $docXML = LibTimeEdit::generateView(
       $this->settings['name'], $this->settings['head']);
     $doc->loadXML($docXML);

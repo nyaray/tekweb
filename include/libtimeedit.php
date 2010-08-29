@@ -25,17 +25,9 @@ class LibTimeEdit
   {
     echo "<!--\n";
 
-    if(isset($_COOKIE['timeeditobjects']))
-    {
-      echo "---cookie data---\n";
-      var_dump($_COOKIE['timeeditobjects']);
-    }
-
     // get the timeedit arguments
     $wvArgs = self::filterGETParams();
     $wvObjects = self::manageObjects($wvArgs);
-    echo "---wvObjects---\n";
-    var_dump($wvObjects);
 
     $i = 1;
     foreach($wvObjects as $objectID)
@@ -46,7 +38,7 @@ class LibTimeEdit
 
     $wvStr = http_build_query($wvArgs, '', '&');
     $url = "http://schema.angstrom.uu.se/4DACTION/WebShowSearch/2/1?$wvStr";
-    echo "\n--- $url ---\n";
+    echo "---$url---\n";
     $timeeditHTML = getRemoteFile($url);
 
     $searchXML = self::transform($timeeditHTML, MODULE_DIR.'timeedit/search.xsl');
@@ -68,7 +60,7 @@ class LibTimeEdit
   // generate XML for displaying the calendar
   public static function generateView($name, $head)
   {
-    //echo "<!--\n";
+    echo "<!--\n";
     $objects =
       (isset($_COOKIE['timeeditobjects']) && $_COOKIE['timeeditobjects'] != '')?
       explode(',', $_COOKIE['timeeditobjects']): array();
@@ -83,7 +75,7 @@ class LibTimeEdit
 
     $url = "http://schema.angstrom.uu.se/4DACTION/WebShowSearchPrint/2/1?".
       "wv_text=text&$objStr";
-
+    echo "---$url---\n";
     $timeeditHTML = getRemoteFile($url);
     $calXML = self::transform($timeeditHTML, MODULE_DIR.'timeedit/calendar.xsl');
     $calDoc = new DOMDocument();
@@ -95,7 +87,7 @@ class LibTimeEdit
     $viewXML = $calDoc->saveXML();
     $viewXML = str_replace('<?xml version="1.0"?'.'>', '', $viewXML);
 
-    //echo "-->\n";
+    echo "-->\n";
     return $viewXML;
   }
 

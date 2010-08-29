@@ -9,7 +9,19 @@
       <xsl:attribute name="class">section</xsl:attribute>
       <h1><xsl:value-of select="./head" /></h1>
       <p><xsl:value-of select="./body" /></p>
+      <p>Aktivera javascript och ladda om m.teknat.uu.se för att kunna använda kartmodulens funktioner</p> 
+      <div>
+        <xsl:attribute name="id">uuMapModule</xsl:attribute>
+      <img id="staticmap" src="http://maps.google.com/maps/api/staticmap?center=59.858100, 17.644000+&amp;zoom=12&amp;size=400x400&amp;markers=color:red|label:1|59.842088,17.637026&amp;markers=color:red|label:2|59.840869,17.649397&amp;markers=color:red|label:3|59.839247,17.647106&amp;markers=color:red|label:4|59.85015,17.626222&amp;markers=color:red|label:5|59.84849,17.629208&amp;sensor=false"/>
+    <ul id="StaticMapList">
+      <li>1: BMC, Biomedicinskt centrum</li>
+      <li>2: ITC (Polacks), Informationsteknologiskt centrum</li>
+      <li>3: Ångström, Ångströmslaboratoriet</li>
+      <li>4: EBC, Evolutionsbiologiskt centrum</li>
+      <li>5: GEO, Geocentrum</li>
+    </ul>
     </div>
+  </div>
   </xsl:template>
   
   <xsl:template match="ajax/uumap">
@@ -21,6 +33,11 @@
         <div>
           <div>
             <xsl:attribute name="id">MyMap</xsl:attribute>
+            <div>
+              <xsl:attribute name="id">hiddenimage</xsl:attribute>
+              <img src="gfx/module/uumap/hidden.png"/>
+            </div>
+            
             <div>
               <xsl:attribute name="class">MarkerWrapper</xsl:attribute>
               <label>
@@ -188,12 +205,22 @@
             <p>
               <xsl:attribute name="id">Description</xsl:attribute>
             </p>
+            <div>
+              <xsl:attribute name="id">InstitutionList</xsl:attribute>
+               <xsl:attribute name="class">infolist</xsl:attribute>
+            </div>
+            <div>
+              <xsl:attribute name="id">StudentadminList</xsl:attribute>
+              <xsl:attribute name="class">infolist</xsl:attribute>
+            </div>
             <p>
               <xsl:attribute name="id">Service</xsl:attribute>
             </p>
             <div>
               <xsl:attribute name="id">ServiceList</xsl:attribute>
+              <xsl:attribute name="class">infolist</xsl:attribute>
             </div>
+            
           </fieldset>
           <fieldset>
             <xsl:attribute name="id">CampusOverview</xsl:attribute>
@@ -225,7 +252,6 @@
         <xsl:attribute name="class">hidden</xsl:attribute>
         <div>
           <xsl:attribute name="class">togglercontentbody</xsl:attribute>
-          
           <!-- <img src="gfx/load.gif"/> -->
         </div>
       </div>

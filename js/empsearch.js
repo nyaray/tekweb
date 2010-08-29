@@ -19,41 +19,88 @@
  * This script requires jquery.
  */
 $(function() {
+
+    $('.empform .button').live('click', function() {
+        $(this).parents('form').trigger('submit');
+    });
+
     $('.empform').live('submit', function() {
         var toggler = $(this).parents('.toggler');
         var togglerBtn = toggler.find('.togglerbutton');
         var instanceName = toggler.attr('id');
         var searchVal = toggler.find('form.empform input[type=text]').val();
-        
-        if (searchVal != ''){
+        var togglCBody = toggler.find('.togglercontentbody');
+
+        if ((searchVal != '') && (togglCBody.size()==1)){
+            var inputBtn = $(this).parent();
+            inputBtn.html("<img src='gfx/load.gif' />");
+            
             $.post("index.php", {
                 empsearchstring : searchVal,
                 ajax : instanceName
             },
             function(data){
                 var content = data;
-            
-                toggler.find('.togglercontentbody').replaceWith(content);
-                var employees = $('.empsearchmodule ul.employees li ul');
-                if(employees.size() > 10)
-                    employees.find('li:nth-child(n+2)').addClass('hidden');
-                $('.empsearchmodule ul.employees > li > b').wrap('<a href=""/>');
-                togglerBtn.trigger('click');
-                togglerBtn.trigger('click');
-            });
-        }
-        return false;
-    });
+                togglCBody.replaceWith(content);
+                var employees = $('#' +instanceName+ ' ul.employees li ul');
+
+                $('#' +instanceName+ ' ul.employees > li > b')
+                .wrap('<a href="" />');
+                
+                if(employees.size() > 10){
+                    employees.each(function(){
+                        var toHide = $(this).find('li:nth-child(n+2)');
+                        if (toHide.size()>0){
+                            toHide.addClass('hidden');
+                            //console.log($(this).prev('a').html());
+                            //var asdf = $(this).parent('li').find('a').eq(0);
+                          //console.log('ORIG:'+asdf.html());
+                                $(this).prev('a')
+                                .append('<span class="openclose"></span>')
+                                .find('.openclose')
+                                .css("background-image"
+                                    ,"url(gfx/module/empsearch/plus-8.png)");
+                            }else {
+                                $(this).parent('li').find('a b').unwrap();
+                            }
+                        });
+                    } else {
+                        employees.each(function(){
+                            var toHide = $(this).find('li:nth-child(n+2)');
+                            if (toHide.size()>0){
+                                $(this).parent('li').find('a').eq(0)
+                                .append('<span class="openclose"></span>')
+                                .find('.openclose')
+                                .css("background-image"
+                                    ,"url(gfx/module/empsearch/minus-8.png)");
+                            } else {
+                                $(this).parent('li').find('a b')/*.eq(0)*/.unwrap();
+                            }
+                        });
+                    }
+                    togglerBtn.trigger('click');
+                    togglerBtn.trigger('click');
+                });
+            }else {
+                return true //When run from a "page"
+            }
+            return false;
+        });
+
     $('.empsearchmodule ul.employees > li > a').live('click', function(){
         var items = $(this).parent('li').find('li');
-
-        if (items.hasClass('hidden')){
+        var togglBtn = $(this).parents('.toggler').find('.togglerbutton');
+        var trg = $(this).find('span.openclose');
+        if (items.hasClass('hidden')){            
             items.removeClass('hidden');
+            trg.css("background-image","url(gfx/module/empsearch/minus-8.png)");
+
         } else {
             items.slice(1).addClass('hidden');
+            trg.css("background-image","url(gfx/module/empsearch/plus-8.png)");
         }
+        togglBtn.trigger('click');
+        togglBtn.trigger('click');
         return false;
     });
-
-
-});
+    });
