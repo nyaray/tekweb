@@ -2,9 +2,21 @@
 {
   font-size:12pt;
   font-weight: bold;
+  margin-right:5px;
 }
 
 .feed .item {
   margin-bottom: 15px;
   text-align: left;
+}
+.feedform{
+  margin:5px 0;
+}
+.feedform ul{
+  text-align:left;
+}
+
+.feedform li{
+  margin:10px 0;
+  font-size:90%;
 }
