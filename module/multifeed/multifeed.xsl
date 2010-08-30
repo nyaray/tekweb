@@ -152,6 +152,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
             <span>Prenumerera på dessa flöden</span>
             <ul>
                 <xsl:for-each select="box">
+                  <xsl:sort select="./name"/>
+                  
                     <li>
                         <input type="checkbox">
                             <xsl:attribute name="name">
