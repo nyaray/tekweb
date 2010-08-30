@@ -42,9 +42,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
         </p>
     </xsl:template>
 
-    <xsl:template match="multifeed/body/channel/item">
-        <li>
-            <xsl:attribute name="class">item hidden</xsl:attribute>
+    <xsl:template match="multifeed/body/channel/item">		
             <span>
                 <xsl:attribute name="class">author</xsl:attribute>
                 <xsl:value-of select="./author" />
@@ -75,7 +73,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
                     <xsl:value-of select="./desc" />
                 </p>
             </xsl:if>
-        </li>
+        
     </xsl:template>
 
     <xsl:template match="toggler/multifeed">
@@ -124,11 +122,20 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<div id="feedlist">
 				<xsl:for-each select="body/channel">
 					<ul>
-						<li class="feedhead"><xsl:value-of select="@name"/></li>
 						<xsl:for-each select="item">
-		<!--					<br />-->
+							<li>
+								<xsl:choose>
+									<xsl:when test="position() &lt; '4'">				
+										<xsl:attribute name="class">item new</xsl:attribute>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:attribute name="class">item hidden</xsl:attribute>
+									</xsl:otherwise>
+								</xsl:choose>							
 							<xsl:apply-templates select="." />
+							</li>
 						</xsl:for-each>
+						<li class="feedfoot"><a class="button">Visa/dölj</a></li>
 					</ul>
 				</xsl:for-each>
 			</div>
