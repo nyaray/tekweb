@@ -78,7 +78,9 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
                 <xsl:value-of select="method"/>
             </xsl:attribute>
             <fieldset>
-                <legend>Sök personal</legend>
+                <legend>
+                <xsl:value-of select="../head"/>
+                </legend>
                 <label>
                     <xsl:attribute name="for">
                         <xsl:text>str</xsl:text>
