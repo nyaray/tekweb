@@ -114,7 +114,10 @@ h1 {
     border: 3px solid white;
     border-radius: 5px;
 }
-
+.item
+{
+  margin-top:10px;
+}
 .active {
     border: 3px solid #AF1E2D;
     border-radius: 5px;

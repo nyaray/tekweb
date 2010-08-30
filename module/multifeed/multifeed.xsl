@@ -14,7 +14,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
                     <xsl:apply-templates select="." />
                 </xsl:for-each>
             </div>
-            <div>
+            <ul class="feedform">
     <!-- <xsl:value-of select="./body" /> -->
                 <xsl:for-each select="../multifeed/body/item">
                     <xsl:sort select="substring(./pubDate,1,4)" data-type="number" order="descending" />
@@ -24,7 +24,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
                     <br />
                     <xsl:apply-templates select="." />
                 </xsl:for-each>
-            </div>
+            </ul>
   <!-- <p><xsl:value-of select="./foot" /></p> -->
         </div>
     </xsl:template>
