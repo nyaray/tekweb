@@ -20,7 +20,7 @@ $(function(){
 		togglerBtn.triggerHandler('click');		
 		return false;
 	});
-	
+	$('.feedhead').live('click', function(){		$('.feedhead').siblings().toggleClass('hidden');		var togglerBtn = $(this).parents('.toggler').find('.togglerbutton');		togglerBtn.triggerHandler('click');		togglerBtn.triggerHandler('click');			});
 	$('.feedform').live('submit', function(){
 		var toggler = $(this).parents('.toggler');
 		var modid = toggler.attr('id');

@@ -139,66 +139,64 @@ class MultiFeed extends ContentModule {
                 $count++;
             }
         }
-        //var_dump($this->resultArray);
+        // var_dump($this->resultArray);
     }
 
     protected function generateDefault() {
-        $this->head = "<head>";
-        $i = 0;
-        while ($i < count($this->resultArray)) {
-            $this->head .= "<item>";
-            $this->head .= "<title>" . $this->resultArray[$i]['feed'][0]["title"] . "</title>";
-            if ($this->resultArray[$i]['feed'][0]["link"] != "") {
-                $this->head .= "<link>" . $this->resultArray[$i]['feed'][0]["link"] . "</link>";
-            }
-            $this->head .= "<desc>" . $this->resultArray[$i]['feed'][0]["description"] . "</desc>";
-            $this->head .= "</item>";
-            $i++;
-        }
+        $this->head = "<head>" . $this->head;
+        // $i = 0;
+        // while ($i < count($this->resultArray)) {
+            // $this->head .= "<item>";
+            // $this->head .= "<title>" . $this->resultArray[$i]['feed'][0]["title"] . "</title>";
+            // if ($this->resultArray[$i]['feed'][0]["link"] != "") {
+                // $this->head .= "<link>" . $this->resultArray[$i]['feed'][0]["link"] . "</link>";
+            // }
+            // $this->head .= "<desc>" . $this->resultArray[$i]['feed'][0]["description"] . "</desc>";
+            // $this->head .= "</item>";
+            // $i++;
+        // }
         $this->head .= "</head>";
 
         $this->body = "<body>";
-        $i = 0;
-        while ($i < count($this->resultArray)) {
-            $auth = $this->resultArray[$i]['author'];
-            array_shift($this->resultArray[$i]['feed']);
+        // $i = 0;
+        // while ($i < count($this->resultArray)) {
+            // $auth = $this->resultArray[$i]['author'];
+            // array_shift($this->resultArray[$i]['feed']);
 
-            foreach ($this->resultArray[$i]['feed'] as $item) {
-                //var_dump($item);
-                $this->body .= "<item>";
-                $this->body .= "<author>" . $auth . "</author>";
-                $this->body .= "<title>" . $item["title"] . "</title>";
-                if ($item["link"] != "") {
-                    $this->body .= "<link>" . $item["link"] . "</link>";
-                }
-                if ($item["description"] != "") {
-                    $this->body .= "<desc>" . $item["description"] . "</desc>";
-                }
-                if ($item["pubDate"] != "") {
-                    $date = explode(' ', $item["pubDate"]);
-                    $translateMonth = array("Jan" => '01',
-                        "Feb" => '02',
-                        "Mar" => '03',
-                        "Apr" => '04',
-                        "May" => '05',
-                        "Jun" => '06',
-                        "Jul" => '07',
-                        "Aug" => '08',
-                        "Sep" => '09',
-                        "Oct" => '10',
-                        "Nov" => '11',
-                        "Dec" => '12');
-                    //var_dump($date);
-                    $this->body .= "<pubDate>";
-                    $this->body .= $date[3] . '-';
-                    $this->body .= $translateMonth[$date[2]] . '-';
-                    $this->body .= $date[1];
-                    $this->body .= "</pubDate>";
-                }
-                $this->body .= "</item>";
-            }
-            $i++;
-        }
+            // foreach ($this->resultArray[$i]['feed'] as $item) {
+                // $this->body .= "<item>";
+                // $this->body .= "<author>" . $auth . "</author>";
+                // $this->body .= "<title>" . $item["title"] . "</title>";
+                // if ($item["link"] != "") {
+                    // $this->body .= "<link>" . $item["link"] . "</link>";
+                // }
+                // if ($item["description"] != "") {
+                    // $this->body .= "<desc>" . $item["description"] . "</desc>";
+                // }
+                // if ($item["pubDate"] != "") {
+                    // $date = explode(' ', $item["pubDate"]);
+                    // $translateMonth = array("Jan" => '01',
+                        // "Feb" => '02',
+                        // "Mar" => '03',
+                        // "Apr" => '04',
+                        // "May" => '05',
+                        // "Jun" => '06',
+                        // "Jul" => '07',
+                        // "Aug" => '08',
+                        // "Sep" => '09',
+                        // "Oct" => '10',
+                        // "Nov" => '11',
+                        // "Dec" => '12');
+                    // $this->body .= "<pubDate>";
+                    // $this->body .= $date[3] . '-';
+                    // $this->body .= $translateMonth[$date[2]] . '-';
+                    // $this->body .= $date[1];
+                    // $this->body .= "</pubDate>";
+                // }
+                // $this->body .= "</item>";
+            // }
+            // $i++;
+        // }
         $this->body .= "</body>";
         $this->contentXML = <<< XML
 <section>
@@ -319,6 +317,8 @@ XML;
             $form .= "<box>" . '<name>' . $this->resultArray[$i]['author'] . '</name>'
                     . ( substr_count($this->cookies, $this->resultArray[$i]['author']) ? '<checked></checked>' : '') . "</box>";
             if (substr_count($this->cookies, $this->resultArray[$i]['author']))
+			{
+				$this->body .= '<channel name="' . $this->resultArray[$i]['author'] . '">';
                 foreach ($this->resultArray[$i]['feed'] as $item) {
                     $this->body .= "<item>";
                     $title = $item["title"];
@@ -354,6 +354,8 @@ XML;
                     }
                     $this->body .= "</item>";
                 }
+				$this->body .= '</channel>';
+			}
             $i++;
         }
 
