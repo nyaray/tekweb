@@ -360,7 +360,7 @@ XML;
         $form .= <<< FORM
   <button>
     <type>submit</type>
-    <value>Ok</value>
+    <value>Spara</value>
   </button>
   <action></action>
   <method>get</method>

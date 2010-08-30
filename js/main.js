@@ -15,86 +15,97 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 $(document).ready(function() {
-  var active;
-  var ajaxLoaded = {};
-  var currScreenWidth = screen.width;
+    var active;
+    var ajaxLoaded = {};
+    var currScreenWidth = screen.width;
 
-  // Detect whether device supports orientationchange event, otherwise fall back to
-  // the resize event.
-  var supportsOrientationChange = "onorientationchange" in window,
-  orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
+    // Detect whether device supports orientationchange event, otherwise fall back to
+    // the resize event.
+    var supportsOrientationChange = "onorientationchange" in window,
+    orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
 
-  window.addEventListener(orientationEvent, function() {
-    if((screen.width != currScreenWidth) && active) {
-      currScreenWidth = screen.width;
-      //alert('HOLY ROTATING SCREENS BATMAN:' + window.orientation + " " + screen.width + "\n"+orientationEvent);
-      active.prev().click(); // closes the active toggler
-      active.prev().click(); // opens it again (recalculating it's position)
-    }
-  }, false);
-
-  $('.toggler .togglerbutton').click(function() {
-    var p = $(this).next();
-    var id = $(this).parent().attr('id');
-    
-    if(p.hasClass('hidden')) {      // if p is hidden
-      if(active) {                    // if there is an active toggler 
-        active.addClass('hidden');      // Hide the active toggler
-        active.prev().children(':first').removeClass('active');
-      }
-      active = p;
-      p.removeClass('hidden');        // show the clicked toggler
-      p.prev().children(':first').addClass('active');
-      
-      if(jQuery.data(ajaxLoaded, id)) {
-        var left = $(this).parent().position().left;
-        p.children(':first').css('margin-left',-left);
-        var h = p.children(':first').height() +20;
-        p.height(h);
-      } 
-      else {
-        p.children(':first').html("<img src='gfx/load.gif' />");
-        
-        var t = $(this);
-        var left = $(this).parent().position().left;
-        p.children(':first').css('margin-left',-left);
-        var h = p.children(':first').height() +20;
-        p.height(h);
-        
-        $.ajax({url: "index.php", 
-        data: {ajax: id}, 
-        dataType: "html", 
-        success: function(data) {
-          p.children(':first').replaceWith(data);
-          
-          left = t.parent().position().left;
-          p.children(':first').css('margin-left',-left);
-          h = p.children(':first').height() +20;
-          p.height(h);
-          left = t.parent().position().left;
-          p.children(':first').css('margin-left',-left);
-          h = p.children(':first').height() +20;
-          p.height(h);
-          
-          jQuery.data(ajaxLoaded, id, true);
+    window.addEventListener(orientationEvent, function() {
+        if((screen.width != currScreenWidth) && active) {
+            currScreenWidth = screen.width;
+            //alert('HOLY ROTATING SCREENS BATMAN:' + window.orientation + " " + screen.width + "\n"+orientationEvent);
+            active.prev().click(); // closes the active toggler
+            active.prev().click(); // opens it again (recalculating it's position)
         }
-      });
-      }                     // set active to the clicked
-    } 
-    else {                        // if p is already visible
-      p.addClass('hidden');           // hide it
-      p.prev().children(':first').removeClass('active');
-    }
-    return false
-  });
+    }, false);
+
+    $('.toggler .togglerbutton').click(function() {
+        var p = $(this).next();
+        var id = $(this).parent().attr('id');
+    
+        if(p.hasClass('hidden')) {      // if p is hidden
+            if(active) {                    // if there is an active toggler
+                active.addClass('hidden');      // Hide the active toggler
+                active.prev().children(':first').removeClass('active');
+            }
+            active = p;
+            p.removeClass('hidden');        // show the clicked toggler
+            p.prev().children(':first').addClass('active');
+      
+            if(jQuery.data(ajaxLoaded, id)) {
+                var left = $(this).parent().position().left;
+                p.children(':first').css('margin-left',-left);
+                var h = p.children(':first').height() +20;
+                p.height(h);
+            }
+            else {
+                p.children(':first').html("<img src='gfx/load.gif' />");
+        
+                var t = $(this);
+                var left = $(this).parent().position().left;
+                p.children(':first').css('margin-left',-left);
+                var h = p.children(':first').height() +20;
+                p.height(h);
+                
+                //For statistics, make sure there is a file named like the
+                //module is named in root.xml in root of webpage.
+                $.get(id+".html");
+                
+                //For testing statistics, will not work in opera!
+                //$.get(id+".html", function(data) {console.log(data);});
+
+                //Loading the content of a module
+                $.ajax({
+                    url: "index.php",
+                    data: {
+                        ajax: id
+                    },
+                    dataType: "html",
+                    success: function(data) {
+                        p.children(':first').replaceWith(data);
+          
+                        left = t.parent().position().left;
+                        p.children(':first').css('margin-left',-left);
+                        h = p.children(':first').height() +20;
+                        p.height(h);
+                        left = t.parent().position().left;
+                        p.children(':first').css('margin-left',-left);
+                        h = p.children(':first').height() +20;
+                        p.height(h);
+          
+                        jQuery.data(ajaxLoaded, id, true);
+                    }
+                });
+            }                     // set active to the clicked
+        }
+        else {                        // if p is already visible
+            p.addClass('hidden');           // hide it
+            p.prev().children(':first').removeClass('active');
+        }
+        return false
+    });
 });
 
 function loadScript(url)
 {
-  alert("go");
-  alert(url);
-  var s = document.createElement('script');
-  s.type='text/javascript';
-  s.src= url;
-  document.getElementsByTagName('head')[0].appendChild(s);
+    alert("go");
+    alert(url);
+    var s = document.createElement('script');
+    s.type='text/javascript';
+    s.src= url;
+    document.getElementsByTagName('head')[0].appendChild(s);
 }

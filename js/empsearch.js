@@ -30,11 +30,22 @@ $(function() {
         var instanceName = toggler.attr('id');
         var searchVal = toggler.find('form.empform input[type=text]').val();
         var togglCBody = toggler.find('.togglercontentbody');
-
+        
+        // && - Not on a page(no togglCBody on a page)
         if ((searchVal != '') && (togglCBody.size()==1)){
             var inputBtn = $(this).parent();
             inputBtn.html("<img src='gfx/load.gif' />");
-            
+
+            //For statistics, make sure there is a file named like the
+            //module is named in root.xml + "-actualsearch.html"
+            //in root of webpage. (Ignoring request result)
+            $.get(instanceName + "-actualsearch.html");
+
+            //For testing statistics, will not work in opera!
+            //            $.get(instanceName + "-actualsearch.html", function(data) {
+            //                console.log(data);
+            //            });
+
             $.post("index.php", {
                 empsearchstring : searchVal,
                 ajax : instanceName
@@ -52,40 +63,38 @@ $(function() {
                         var toHide = $(this).find('li:nth-child(n+2)');
                         if (toHide.size()>0){
                             toHide.addClass('hidden');
-                            //console.log($(this).prev('a').html());
-                            //var asdf = $(this).parent('li').find('a').eq(0);
-                          //console.log('ORIG:'+asdf.html());
-                                $(this).prev('a')
-                                .append('<span class="openclose"></span>')
-                                .find('.openclose')
-                                .css("background-image"
-                                    ,"url(gfx/module/empsearch/plus-8.png)");
-                            }else {
-                                $(this).parent('li').find('a b').unwrap();
-                            }
-                        });
-                    } else {
-                        employees.each(function(){
-                            var toHide = $(this).find('li:nth-child(n+2)');
-                            if (toHide.size()>0){
-                                $(this).parent('li').find('a').eq(0)
-                                .append('<span class="openclose"></span>')
-                                .find('.openclose')
-                                .css("background-image"
-                                    ,"url(gfx/module/empsearch/minus-8.png)");
-                            } else {
-                                $(this).parent('li').find('a b')/*.eq(0)*/.unwrap();
-                            }
-                        });
-                    }
-                    togglerBtn.trigger('click');
-                    togglerBtn.trigger('click');
-                });
-            }else {
-                return true //When run from a "page"
-            }
-            return false;
-        });
+
+                            $(this).prev('a')
+                            .append('<span class="openclose"></span>')
+                            .find('.openclose')
+                            .css("background-image"
+                                ,"url(gfx/module/empsearch/plus-8.png)");
+                        }else {
+                            $(this).parent('li').find('a b').unwrap();
+                        }
+                    });
+                } else {
+                    employees.each(function(){
+                        var toHide = $(this).find('li:nth-child(n+2)');
+                        if (toHide.size()>0){
+                            $(this).parent('li').find('a').eq(0)
+                            .append('<span class="openclose"></span>')
+                            .find('.openclose')
+                            .css("background-image"
+                                ,"url(gfx/module/empsearch/minus-8.png)");
+                        } else {
+                            $(this).parent('li').find('a b')/*.eq(0)*/.unwrap();
+                        }
+                    });
+                }
+                togglerBtn.trigger('click');
+                togglerBtn.trigger('click');
+            });
+        }else {
+            return true //When run from a "page" with js on.
+        }
+        return false;
+    });
 
     $('.empsearchmodule ul.employees > li > a').live('click', function(){
         var items = $(this).parent('li').find('li');
@@ -103,4 +112,4 @@ $(function() {
         togglBtn.trigger('click');
         return false;
     });
-    });
+});

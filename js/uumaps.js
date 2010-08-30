@@ -398,10 +398,7 @@ $(function()
               Resize();
           });
 
-          if (toggler){
-            togglerBtn.trigger('click');
-            togglerBtn.trigger('click');
-          }
+
           //This Function will move the different
           $("#uuMapModule #Locations").change(function () {
             //Reseting all other markers, windows, information and campus maps
@@ -560,6 +557,10 @@ $(function()
               }
             }
           });
+          if (toggler){
+            togglerBtn.trigger('click');
+            togglerBtn.trigger('click');
+          }
           //This is for the address field, its displayed when the addressfield is empty and unselected 
           $("#uuMapModule #DirectionsAddress").focus(function()
           {

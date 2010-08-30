@@ -71,12 +71,12 @@ h1 {
 
 .teaser {
     position:relative;
-    padding-bottom: 19px;
+    padding-bottom: 23px;
 }
 
 .teaserlinktext {
     position:absolute;
-    bottom:0px;
+    bottom:-5px;
     right:20px;
 }
 
@@ -107,13 +107,17 @@ h1 {
     border-width: 2px;
     border-style: solid;
     border-color: #b2b2b2;
+    margin-top:5px;
 }
 
 .togglericon {
     border: 3px solid white;
     border-radius: 5px;
 }
-
+.item
+{
+  margin-top:10px;
+}
 .active {
     border: 3px solid #AF1E2D;
     border-radius: 5px;

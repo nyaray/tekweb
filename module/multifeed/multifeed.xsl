@@ -14,7 +14,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
                     <xsl:apply-templates select="." />
                 </xsl:for-each>
             </div>
-            <div>
+            <ul class="feedform">
     <!-- <xsl:value-of select="./body" /> -->
                 <xsl:for-each select="../multifeed/body/item">
                     <xsl:sort select="substring(./pubDate,1,4)" data-type="number" order="descending" />
@@ -24,7 +24,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
                     <br />
                     <xsl:apply-templates select="." />
                 </xsl:for-each>
-            </div>
+            </ul>
   <!-- <p><xsl:value-of select="./foot" /></p> -->
         </div>
     </xsl:template>
@@ -121,16 +121,18 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:template match="ajax/multifeed">
         <div>
             <xsl:attribute name="class">feed togglercontentbody</xsl:attribute>
-            <a href="link" class="feedconfig">
-                <img src="gfx/icons/FeedPreffour.png" alt="Prenumerera" id="feedconfig"/>
-            </a>
-            <xsl:apply-templates select="picker"/>
+ 
             <ul id="feedlist">
                 <xsl:for-each select="body/item">
 <!--					<br />-->
                     <xsl:apply-templates select="." />
                 </xsl:for-each>
             </ul>
+            <a href="link" class="feedconfig">
+                 <img src="gfx/icons/FeedPref.png" alt="Prenumerera" id="feedconfig"/>
+                 <span class="togglerbuttontext">Val av nyhetsflöden</span>
+             </a>
+             <xsl:apply-templates select="picker"/>
         </div>
     </xsl:template>
 
@@ -144,15 +146,25 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
                             <xsl:attribute name="name">
                                 <xsl:value-of select="./name" />
                             </xsl:attribute>
+                             <xsl:attribute name="id">
+                                  <xsl:value-of select="./name" />
+                              </xsl:attribute>
                             <xsl:if test="checked">
                                 <xsl:attribute name="checked">
                                     <xsl:value-of select="./checked" />
                                 </xsl:attribute>
                             </xsl:if>
                         </input>
-                        <span>
-                            <xsl:value-of select="./name" />
-                        </span>
+                        <!-- <span>
+                                                  <xsl:value-of select="./name" />
+                                              </span> -->
+                      <label>
+                        <xsl:attribute name="for">
+                          <xsl:value-of select="./name" />
+                        </xsl:attribute>
+                        
+                        <xsl:value-of select="./name" />
+                      </label>
                     </li>
                 </xsl:for-each>
             </ul>
