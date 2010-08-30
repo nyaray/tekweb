@@ -27,6 +27,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <view>
   <head><xsl:value-of select="head" /></head>
   <name><xsl:value-of select="name" /></name>
+  <xsl:copy-of select="conf" />
   <xsl:apply-templates select="events" />
   <xsl:copy-of select="course" />
 </view>
