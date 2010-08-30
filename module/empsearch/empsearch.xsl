@@ -101,9 +101,6 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
                     </xsl:attribute>
                 </input>
                 <xsl:apply-templates select="ajaxempbutton"/>
-<!--                <div class="button">
-                    <a>BTN</a>
-                </div>-->
             </fieldset>
         </form>
     </xsl:template>
@@ -156,7 +153,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     <xsl:template match="ajaxempbutton">
         <div class="button">
-            <a>
+            <a href="">
                 <xsl:value-of select="value"/>
             </a>
         </div>
