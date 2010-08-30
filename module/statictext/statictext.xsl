@@ -8,7 +8,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <xsl:attribute name="id"><xsl:value-of select="./name" /></xsl:attribute>
   <xsl:attribute name="class">section</xsl:attribute>
   <h1><xsl:value-of select="./head" /></h1>
-  <p><xsl:value-of select="./body" /></p>
+  <!-- <p><xsl:value-of select="./body" /></p> -->
+  <xsl:apply-templates select="text/p"/>
 </div>
 </xsl:template>
 
@@ -31,8 +32,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:attribute name="class">togglercontent</xsl:attribute>
     <xsl:attribute name="class">hidden</xsl:attribute>
     <div>
-      <xsl:attribute name="class">togglercontentbody</xsl:attribute>
-      <xsl:value-of select="./body" />
+      <xsl:attribute name="class">togglercontentbody statictext</xsl:attribute>
+      <xsl:apply-templates select="./body/p"/>
     </div>
   </div>
 </div>
@@ -57,6 +58,25 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:value-of select="./foot" />
   </a>
 </div>
+</xsl:template>
+
+<!-- <xsl:template match="ajax/statictext"> -->
+<xsl:template match="p">
+  <p>
+    <xsl:value-of select="." />
+  </p>
+</xsl:template>
+
+
+
+
+<xsl:template match="ajax/statictext">
+  <div>
+    <xsl:attribute name="class">togglercontentbody statictext</xsl:attribute>
+    <h2><xsl:value-of select="./head" /></h2>
+    <xsl:apply-templates select="./body/p"/>
+    <xsl:apply-templates select="./body/p/mail"/>  
+  </div>
 </xsl:template>
 
 </xsl:stylesheet>
