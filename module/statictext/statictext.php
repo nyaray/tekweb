@@ -24,13 +24,14 @@ class StaticText extends ContentModule
   private $head;
   private $body;
   private $foot;
+  
 
   function __construct($settings)
   {
     parent::__construct();
-
+    
     $this->name = (isset ($settings['name'])) ?
-      "<name>$settings[name]</name>": '';
+      "<name>$settings[name]</name>": '';    
 
     $this->icon = (isset ($settings['icon'])) ?
       "<icon>$settings[icon]</icon>": '';
@@ -43,10 +44,16 @@ class StaticText extends ContentModule
 
     $this->foot = (isset ($settings['foot'])) ?
       "<foot>$settings[foot]</foot>": '';
+      
+    $this->body = str_replace('-bpar-', '<p>', $this->body);
+    $this->body = str_replace('-epar-', '</p>', $this->body);
+
+    
   }
 
   protected function generateDefault()
   {
+
     $this->contentXML = <<< XML
 <section>
   <statictext>
@@ -61,6 +68,7 @@ XML;
 
   protected function generateToggler()
   {
+
     $this->contentXML = <<< XML
 <toggler>
   <statictext>
@@ -76,6 +84,7 @@ XML;
 
   protected function generateTeaser()
   {
+
     $this->contentXML = <<< XML
 <teaser>
   <statictext>
@@ -87,5 +96,17 @@ XML;
 </teaser>
 XML;
   }
+    protected function generateAjax()
+    {
+      
+      $this->contentXML = <<< XML
+<ajax>
+  <statictext>
+    $this->head
+    $this->body  
+  </statictext>
+</ajax>
+XML;
+    }  
 }
 ?>

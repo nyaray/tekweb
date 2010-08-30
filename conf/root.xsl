@@ -37,6 +37,8 @@
             <head>
     <!-- <meta charset="UTF-8" /> -->
                 <link rel="stylesheet" type="text/css" href="css/reset.css" media="all" />
+                <link rel="stylesheet" type="text/css" href="css/module/statictext.css" media="all" />
+                
                 <link rel="stylesheet" type="text/css" href="css/layout.css" media="all" />
                 <link rel="stylesheet" type="text/css" href="css/style.css" media="all" />
                 <link rel="stylesheet" type="text/css" href="css/module/uumaps.css" media="all" />

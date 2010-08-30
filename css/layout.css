@@ -49,6 +49,12 @@ h1 {
     font-family:georgia, serif;
 }
 
+h2 {
+  font-size:125%;
+  font-family:georgia, serif;
+  
+}
+
 .divider {
     width:85%;
     height:1px;
