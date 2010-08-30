@@ -20,7 +20,13 @@ $(function(){
 		togglerBtn.triggerHandler('click');		
 		return false;
 	});
-	$('.feedfoot').live('click', function(){		$(this).siblings(':not(".new")').toggleClass('hidden');		var togglerBtn = $(this).parents('.toggler').find('.togglerbutton');		togglerBtn.triggerHandler('click');		togglerBtn.triggerHandler('click');			});
+	$('.feedfoot').live('click', function(){
+		$(this).siblings(':not(".new")').toggleClass('hidden');
+		var togglerBtn = $(this).parents('.toggler').find('.togglerbutton');
+		togglerBtn.triggerHandler('click');
+		togglerBtn.triggerHandler('click');
+		return false;
+	});
 	$('.feedform').live('submit', function(){
 		var toggler = $(this).parents('.toggler');
 		var modid = toggler.attr('id');
