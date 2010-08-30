@@ -22,7 +22,7 @@ $(function() {
 
     $('.empform .button').live('click', function() {
         $(this).parents('form').trigger('submit');
-    });
+    return false;});
 
     $('.empform').live('submit', function() {
         var toggler = $(this).parents('.toggler');
