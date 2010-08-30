@@ -58,7 +58,9 @@
     <!-- Resource type selector, input field, search button, wv_first and wv_addObj.
          wv_first and wv_addObj are hidden.-->
     <details>
-      <xsl:copy-of select="table[2]/tr[1]/td[1]/table[1]/tr[1]/td[3]/table[1]/tr[1]/td[1]/select" />
+      <xsl:call-template name="stripresourceselector">
+        <xsl:with-param name="selector" select="table[2]/tr[1]/td[1]/table[1]/tr[1]/td[3]/table[1]/tr[1]/td[1]/select" />
+      </xsl:call-template>
       <xsl:copy-of select="table[2]/tr[1]/td[1]/table[1]/tr[3]/td[3]/input[2]" />
       <xsl:copy-of select="table[2]/tr[1]/td[1]/table[1]/tr[3]/td[3]/input[3]" />
       <xsl:copy-of select="table[2]/tr[3]/td[1]/input[1]" />
@@ -102,6 +104,15 @@
       <xsl:attribute name="value">Visa Schema</xsl:attribute>
     </xsl:copy-of>
   </form>
+</xsl:template>
+
+<xsl:template name="stripresourceselector">
+  <xsl:param name="selector" />
+
+  <select>
+    <xsl:copy-of select="exsl:node-set($selector)/@*" />
+    <xsl:copy-of select="exsl:node-set($selector)/option[@value=3 or @value=4]" />
+  </select>
 </xsl:template>
 
 <xsl:template name="parseinstructions">

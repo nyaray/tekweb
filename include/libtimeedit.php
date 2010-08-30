@@ -23,7 +23,7 @@ class LibTimeEdit
   // generate XML for the config/search form
   public static function generateSearch($name, $head)
   {
-    echo "<!--\n";
+    //echo "<!--\n";
 
     // get the timeedit arguments
     $wvArgs = self::filterGETParams();
@@ -38,7 +38,7 @@ class LibTimeEdit
 
     $wvStr = http_build_query($wvArgs, '', '&');
     $url = "http://schema.angstrom.uu.se/4DACTION/WebShowSearch/2/1?$wvStr";
-    echo "---$url---\n";
+    //echo "---$url---\n";
     $timeeditHTML = getRemoteFile($url);
 
     $searchXML = self::transform($timeeditHTML, MODULE_DIR.'timeedit/search.xsl');
@@ -51,7 +51,7 @@ class LibTimeEdit
     $configXML = $searchDoc->saveXML();
     $configXML = str_replace('<?xml version="1.0"?'.'>', '', $configXML);
 
-    echo "-->\n";
+    //echo "-->\n";
     return $configXML;
   }
 
@@ -60,7 +60,7 @@ class LibTimeEdit
   // generate XML for displaying the calendar
   public static function generateView($name, $head)
   {
-    echo "<!--\n";
+    //echo "<!--\n";
     $objects =
       (isset($_COOKIE['timeeditobjects']) && $_COOKIE['timeeditobjects'] != '')?
       explode(',', $_COOKIE['timeeditobjects']): array();
@@ -75,7 +75,7 @@ class LibTimeEdit
 
     $url = "http://schema.angstrom.uu.se/4DACTION/WebShowSearchPrint/2/1?".
       "wv_text=text&$objStr";
-    echo "---$url---\n";
+    //echo "---$url---\n";
     $timeeditHTML = getRemoteFile($url);
     $calXML = self::transform($timeeditHTML, MODULE_DIR.'timeedit/calendar.xsl');
     $calDoc = new DOMDocument();
@@ -87,7 +87,7 @@ class LibTimeEdit
     $viewXML = $calDoc->saveXML();
     $viewXML = str_replace('<?xml version="1.0"?'.'>', '', $viewXML);
 
-    echo "-->\n";
+    //echo "-->\n";
     return $viewXML;
   }
 
@@ -106,6 +106,11 @@ class LibTimeEdit
 
       if(preg_match('/wv_[a-zA-Z0-9]+/', $key))
         $wvArgs[$key] = $val;
+    }
+
+    if(!isset($wvArgs['wv_type']))
+    {
+      $wvArgs['wv_type'] = '3';
     }
 
     return $wvArgs;
@@ -165,12 +170,6 @@ class LibTimeEdit
   {
     $nameElem = $searchDoc->createElement('name', $name);
     $headElem = $searchDoc->createElement('head', $head);
-    //$saveElem = $searchDoc->createElement('input');
-    //$saveElem->setAttribute('type', 'checkbox');
-    //$saveElem->setAttribute('id', 'save');
-    //$saveElem->setAttribute('value', 'true');
-    //$saveLabelElem = $searchDoc->createElement('label', 'Spara valda kurser');
-    //$saveLabelElem->setAttribute('for', 'save');
 
     $docElem = $searchDoc->getElementsByTagName('search')->item(0);
     $docElem->appendChild($nameElem);

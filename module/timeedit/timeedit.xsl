@@ -43,6 +43,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template match="ajax/timeedit">
 <div>
+  <xsl:attribute name="class">togglercontentbody</xsl:attribute>
   <!-- Head -->
   <xsl:if test="head">
     <h1><xsl:value-of select="head" /></h1>
@@ -74,6 +75,9 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <xsl:if test="head">
     <h1><xsl:value-of select="head" /></h1>
   </xsl:if>
+
+  <!-- Config link -->
+  <xsl:copy-of select="conf/*" />
 
   <!-- Events -->
   <xsl:choose>
@@ -218,14 +222,26 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
       <legend>Sökning och val</legend>
       <xsl:apply-templates select="form/basket" />
       <xsl:apply-templates select="form/details" />
+
+      Gå till <a href=".">huvud-sidan</a>, när du är färdig.
+
+      <div class="timeeditsearchdesc">
+      <p>
+        <span class="bold">OBS!</span>
+        Det går i dagsläget inte att lägga till program och kurser på schemat
+        tillsammans.
+      </p>
+      <p>
+        Välj antingen ett antal kurser
+        <span class="bold italic">eller</span> ett antal program.
+      </p>
+      </div>
     </fieldset>
     <fieldset>
       <legend>Sökresultat</legend>
       <xsl:apply-templates select="form/searchresult" />
     </fieldset>
   </form>
-  <!-- <xsl:copy-of select="form/" /> -->
-
 </div>
 </xsl:template>
 
@@ -242,10 +258,18 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
       <li>
         <xsl:attribute name="class">timeeditbasketitem</xsl:attribute>
 
-        <xsl:copy-of select="input" />
-        <xsl:copy-of select="a" />
-        <xsl:value-of select="name/long" /> <small>
-          (<xsl:value-of select="name/short" />)</small>
+        <a>
+          <xsl:attribute name="href">
+            <xsl:value-of select="a/@href" />
+          </xsl:attribute>
+
+          <p>
+            <xsl:copy-of select="input" />
+            <xsl:copy-of select="a/img" />
+            <xsl:value-of select="name/long" /> <small>
+              (<xsl:value-of select="name/short" />)</small>
+          </p>
+        </a>
       </li>
     </xsl:for-each>
   </ul>
@@ -274,9 +298,17 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
       <li>
         <xsl:attribute name="class">timeeditresultitem</xsl:attribute>
 
-        <xsl:copy-of select="a" />
-        <xsl:value-of select="name/long" /> <small>
-          (<xsl:value-of select="name/short" />)</small>
+        <a>
+          <xsl:attribute name="href">
+            <xsl:value-of select="a/@href" />
+          </xsl:attribute>
+
+          <p>
+            <xsl:copy-of select="a/img" />
+            <xsl:value-of select="name/long" /> <small>
+              (<xsl:value-of select="name/short" />)</small>
+          </p>
+        </a>
       </li>
     </xsl:for-each>
   </ul>
