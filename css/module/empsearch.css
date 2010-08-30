@@ -5,6 +5,8 @@
                            -webkit-border-radius: 10px;
 }
 
+form.empform div.button a {color:white;}
+form.empform div.button a:hover {color:#AF1E2D;}
 .empsearchmodule legend {text-align: left; margin-left: 15px;}
 .empsearchmodule label {margin: 5px 25px 0px 25px; float:left;}
 .empsearchmodule input, 
