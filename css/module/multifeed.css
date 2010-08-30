@@ -15,7 +15,7 @@
 }
 
 
-#multifeed .button:visited {color:white; text-decoration: none}
+#multifeed .button {color:white; text-decoration: none}
 #feedlist ul{
 	padding:10px;
 	border-radius: 10px;
