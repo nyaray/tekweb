@@ -75,7 +75,6 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:attribute name="class">togglercontentbody statictext</xsl:attribute>
     <h2><xsl:value-of select="./head" /></h2>
     <xsl:apply-templates select="./body/p"/>
-    <xsl:apply-templates select="./body/p/mail"/>  
   </div>
 </xsl:template>
 
