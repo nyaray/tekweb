@@ -15,7 +15,8 @@
 }
 
 
-#multifeed .button {color:white; text-decoration: none}
+#newsfeeds .button {color:white; text-decoration: none}
+#newsfeeds .button:hover {color:#AF1E2D; text-decoration: none}
 #feedlist ul{
 	padding:10px;
 	border-radius: 10px;

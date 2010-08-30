@@ -20,7 +20,7 @@
  */
 $(function() {
 
-    $('.empform .button').live('click', function() {
+    $('.empform .button a').live('click', function() {
         $(this).parents('form').trigger('submit');
     return false;});
 
@@ -90,10 +90,13 @@ $(function() {
                 togglerBtn.trigger('click');
                 togglerBtn.trigger('click');
             });
-        }else {
-            return true //When run from a "page" with js on.
         }
-        return false;
+
+         if (togglCBody.size()==1){
+            return false
+        }
+        //When run from a "page" with js on.
+        return true;
     });
 
     $('.empsearchmodule ul.employees > li > a').live('click', function(){
