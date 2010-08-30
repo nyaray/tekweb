@@ -135,7 +135,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 							<xsl:apply-templates select="." />
 							</li>
 						</xsl:for-each>
-						<li class="feedfoot"><a class="button">Visa/dölj</a></li>
+						<li class="feedfoot"><a href="" class="button">Visa/dölj</a></li>
 					</ul>
 				</xsl:for-each>
 			</div>
