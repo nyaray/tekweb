@@ -27,8 +27,8 @@
   -webkit-border-radius: 10px;
   -moz-box-shadow: none;
   -webkit-box-shadow: none;
-  background-color: #2300;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#af1e2d), to(#ff0000),color-stop(0.1, #ff0000));
+  background-color: #230;
+  background: -webkit-gradient(linear, left top, left bottom, from(#af1e2d), to(#ff0000),color-stop(0.1, #ff0000));
   
 }
 
