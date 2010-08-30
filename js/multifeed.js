@@ -35,7 +35,7 @@ $(function(){
 		var feedconfig = toggler.find('.feedconfig');
 		// var togglerBtn = toggler.find(' .togglerbutton');
 		var inputBtn = $(this).find('input[type=submit]');
-		inputBtn.replaceWith('<img src="gfx/load.gif" />');
+		inputBtn.replaceWith('<img id="inputbutton" src="gfx/load.gif" />');
 		
 		$data = 'ajax=' + modid + '&feedcookie=Ok';
 		
@@ -47,6 +47,7 @@ $(function(){
         function(page){
             $content = $(page).find('#feedlist').html();
 			
+			feedform.find('#inputbutton').replaceWith('<input type="submit" value="Spara" name="feedcookie">');
 			feedlist.html($content);
 			feedconfig.click();
 			

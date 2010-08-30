@@ -117,7 +117,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     <xsl:template match="ajax/multifeed">
         <div>
-            <xsl:attribute name="class">feed togglercontentbody</xsl:attribute>
+            <xsl:attribute name="class">multifeed togglercontentbody</xsl:attribute>
  
 			<div id="feedlist">
 				<xsl:for-each select="body/channel">
