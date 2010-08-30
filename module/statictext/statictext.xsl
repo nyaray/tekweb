@@ -9,7 +9,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <xsl:attribute name="class">section</xsl:attribute>
   <h1><xsl:value-of select="./head" /></h1>
   <!-- <p><xsl:value-of select="./body" /></p> -->
-  <xsl:apply-templates select="text/p"/>
+  <xsl:apply-templates select="./body/p"/>
 </div>
 </xsl:template>
 
@@ -49,7 +49,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   </h1>
   <div>
     <xsl:attribute name="class">teasertext</xsl:attribute>
-    <xsl:value-of select="./body" />
+    <xsl:value-of select="./body/p" />
   </div>
   <a>
     <xsl:attribute name="class">teaserlinktext</xsl:attribute>
