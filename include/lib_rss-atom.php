@@ -53,6 +53,11 @@ class RssAtomReader {
     }  
     $x = $x->item(0);
     $x = $x->firstChild->textContent;
+    // var_dump($x);
+	// $x = htmlspecialchars($x,ENT_NOQUOTES);
+	// $x = strip_tags($x);
+	$x = str_replace("&nbsp;"," ",$x);
+	// var_dump($x);
     //remove initial spaces
     while(substr($x,0,1) == ' ') {
       $x = substr($x,1);
