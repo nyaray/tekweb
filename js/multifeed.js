@@ -20,7 +20,13 @@ $(function(){
 		togglerBtn.triggerHandler('click');		
 		return false;
 	});
-	$('.feedfoot').live('click', function(){		$(this).siblings(':not(".new")').toggleClass('hidden');		var togglerBtn = $(this).parents('.toggler').find('.togglerbutton');		togglerBtn.triggerHandler('click');		togglerBtn.triggerHandler('click');			});
+	$('.feedfoot').live('click', function(){
+		$(this).siblings(':not(".new")').toggleClass('hidden');
+		var togglerBtn = $(this).parents('.toggler').find('.togglerbutton');
+		togglerBtn.triggerHandler('click');
+		togglerBtn.triggerHandler('click');
+		return false;
+	});
 	$('.feedform').live('submit', function(){
 		var toggler = $(this).parents('.toggler');
 		var modid = toggler.attr('id');
@@ -28,6 +34,8 @@ $(function(){
 		var feedlist = toggler.find('#feedlist');
 		var feedconfig = toggler.find('.feedconfig');
 		// var togglerBtn = toggler.find(' .togglerbutton');
+		var inputBtn = $(this).find('input[type=submit]');
+		inputBtn.replaceWith('<img src="gfx/load.gif" />');
 		
 		$data = 'ajax=' + modid + '&feedcookie=Ok';
 		
