@@ -4,28 +4,27 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:output method="html" encoding="utf-8" omit-xml-declaration="yes" />
 
     <xsl:template match="section/multifeed">
-        <div>
+	    <div>
             <xsl:attribute name="id">
                 <xsl:value-of select="./name" />
             </xsl:attribute>
             <xsl:attribute name="class">section</xsl:attribute>
+			<h1><xsl:value-of select="head"/></h1>
+			<p>Denna sida kräver javascript</p>
             <div>
                 <xsl:for-each select="../multifeed/head/item">
                     <xsl:apply-templates select="." />
                 </xsl:for-each>
             </div>
-            <ul class="feedform">
-    <!-- <xsl:value-of select="./body" /> -->
+            <!--<ul class="feedform">
                 <xsl:for-each select="../multifeed/body/item">
                     <xsl:sort select="substring(./pubDate,1,4)" data-type="number" order="descending" />
                     <xsl:sort select="substring(./pubDate,6,2)" data-type="number" order="descending" />
                     <xsl:sort select="substring(./pubDate,9,2)" data-type="number" order="descending" />
-      <!-- <xsl:sort select="substring(./title,1,5)" /> -->
                     <br />
                     <xsl:apply-templates select="." />
                 </xsl:for-each>
-            </ul>
-  <!-- <p><xsl:value-of select="./foot" /></p> -->
+            </ul>-->
         </div>
     </xsl:template>
 
@@ -43,9 +42,9 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
         </p>
     </xsl:template>
 
-    <xsl:template match="multifeed/body/item">
+    <xsl:template match="multifeed/body/channel/item">
         <li>
-            <xsl:attribute name="class">item</xsl:attribute>
+            <xsl:attribute name="class">item hidden</xsl:attribute>
             <span>
                 <xsl:attribute name="class">author</xsl:attribute>
                 <xsl:value-of select="./author" />
@@ -122,12 +121,17 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
         <div>
             <xsl:attribute name="class">feed togglercontentbody</xsl:attribute>
  
-            <ul id="feedlist">
-                <xsl:for-each select="body/item">
-<!--					<br />-->
-                    <xsl:apply-templates select="." />
-                </xsl:for-each>
-            </ul>
+			<div id="feedlist">
+				<xsl:for-each select="body/channel">
+					<ul>
+						<li class="feedhead"><xsl:value-of select="@name"/></li>
+						<xsl:for-each select="item">
+		<!--					<br />-->
+							<xsl:apply-templates select="." />
+						</xsl:for-each>
+					</ul>
+				</xsl:for-each>
+			</div>
             <a href="link" class="feedconfig">
                  <img src="gfx/icons/FeedPref.png" alt="Prenumerera" id="feedconfig"/>
                  <span class="togglerbuttontext">Val av nyhetsflöden</span>
