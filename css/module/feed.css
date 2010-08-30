@@ -5,31 +5,3 @@
   margin-right:5px;
 }
 
-.feed .item {
-  margin-bottom: 15px;
-  text-align: left;
-}
-.feedform{
-  margin:5px 0;
-}
-.feedform ul{
-  text-align:left;
-}
-
-.feedform li{
-  margin:10px 0;
-  font-size:90%;
-}
-
-.item
-{
-}
-
-#feedlist ul{
-	padding:10px;
-	border-radius: 10px;
-    border-width: 2px;
-    border-style: solid;
-    border-color: #b2b2b2;
-    margin-top:5px;
-}

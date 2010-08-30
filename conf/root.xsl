@@ -38,9 +38,10 @@
     <!-- <meta charset="UTF-8" /> -->
                 <link rel="stylesheet" type="text/css" href="css/reset.css" media="all" />
                 <link rel="stylesheet" type="text/css" href="css/module/statictext.css" media="all" />
-                
-                <link rel="stylesheet" type="text/css" href="css/layout.css" media="all" />
                 <link rel="stylesheet" type="text/css" href="css/style.css" media="all" />
+                <link rel="stylesheet" type="text/css" href="css/layout.css" media="all" />
+                <link rel="stylesheet" type="text/css" href="css/module/multifeed.css" media="all" />
+                
                 <link rel="stylesheet" type="text/css" href="css/module/uumaps.css" media="all" />
                 <link rel="stylesheet" type="text/css" href="css/module/timeedit.css" media="all" />
                 <link rel="stylesheet" type="text/css" href="css/module/feed.css" media="all" />
