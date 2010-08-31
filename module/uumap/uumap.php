@@ -33,7 +33,7 @@ class UUMap extends ContentModule
   function __construct($settings)
   {
     parent::__construct();
-    $this->configPath = '../module/uumap/uumap.xml';
+    $this->configPath = '../mapdata/uumap.xml';
     $this->name = "<name>$settings[name]</name>";
     $this->icon = (isset ($settings['icon'])) ?
       "<icon>$settings[icon]</icon>": '';

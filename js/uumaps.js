@@ -270,7 +270,7 @@ $(function()
         directionsR = new google.maps.DirectionsRenderer();
         directionsS = new google.maps.DirectionsService();
         //Loading XML-document
-        $.get("module/uumap/uumap.xml", function(data, status, xhr){
+        $.get("mapdata/uumap.xml", function(data, status, xhr){
           doc = xhr.responseXML;
           locations = doc.getElementsByTagName("location");
           //this is a callbackfunction for geolocation, if we get a positive result the following will happen:
