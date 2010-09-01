@@ -22,7 +22,8 @@ $(function() {
 
     $('.empform .button a').live('click', function() {
         $(this).parents('form').trigger('submit');
-    return false;});
+        return false;
+    });
 
     $('.empform').live('submit', function() {
         var toggler = $(this).parents('.toggler');
@@ -70,7 +71,7 @@ $(function() {
                             .css("background-image"
                                 ,"url(gfx/module/empsearch/plus-8.png)");
                         }else {
-                            $(this).parent('li').find('a b').unwrap();
+                            $(this).parent('li').find('a b').eq(0).unwrap();
                         }
                     });
                 } else {
@@ -83,8 +84,8 @@ $(function() {
                             .css("background-image"
                                 ,"url(gfx/module/empsearch/minus-8.png)");
                         } else {
-                            $(this).parent('li').find('a b')/*.eq(0)*/.unwrap();
-                        }
+                    $(this).parent('li').find('a b').eq(0).unwrap();
+                    }
                     });
                 }
                 togglerBtn.trigger('click');
@@ -92,7 +93,7 @@ $(function() {
             });
         }
 
-         if (togglCBody.size()==1){
+        if (togglCBody.size()==1){
             return false
         }
         //When run from a "page" with js on.

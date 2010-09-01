@@ -269,7 +269,7 @@ FORM;
         if ($this->nExactSEntries > 0) {
             $tmpSt = '<message>' . 'Din sökning gav '
                     . $this->nExactSEntries
-                    . ' resulat' . '</message>' . "\n";
+                    . ' resultat' . '</message>' . "\n";
         }
 
         if (($this->nExactSEntries > 0) &&
