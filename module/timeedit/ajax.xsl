@@ -12,6 +12,10 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 </ajax>
 </xsl:template>
 
+<xsl:template match="calendar/error">
+  <error><xsl:value-of select="." /></error>
+</xsl:template>
+
 <!-- a link to the configuration page -->
 <xsl:template match="calendar/conf">
 <xsl:copy-of select="." />
