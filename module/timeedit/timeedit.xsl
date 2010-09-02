@@ -43,24 +43,33 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template match="ajax/timeedit">
 <div>
-  <xsl:attribute name="class">togglercontentbody</xsl:attribute>
-  <!-- Head -->
-  <xsl:if test="head">
-    <h1><xsl:value-of select="head" /></h1>
-  </xsl:if>
-
-  <!-- Config link -->
-  <div><xsl:copy-of select="conf/*" /></div>
-
-  <!-- Events -->
   <xsl:choose>
-    <xsl:when test="view/events">
-      <xsl:apply-templates select="view/events" />
+    <xsl:when test="error">
+      <xsl:attribute name="class">togglercontentbody</xsl:attribute>
+      <span class="error"><xsl:value-of select="error" /></span>
     </xsl:when>
 
     <xsl:otherwise>
-      Det finns inget schemalagt inom de närmsta
-      två-tre veckorna för de valda kurserna.
+      <xsl:attribute name="class">togglercontentbody</xsl:attribute>
+      <!-- Head -->
+      <xsl:if test="head">
+        <h1><xsl:value-of select="head" /></h1>
+      </xsl:if>
+
+      <!-- Config link -->
+      <div><xsl:copy-of select="conf/*" /></div>
+
+      <!-- Events -->
+      <xsl:choose>
+        <xsl:when test="view/events">
+          <xsl:apply-templates select="view/events" />
+        </xsl:when>
+
+        <xsl:otherwise>
+          Det finns inget schemalagt inom de närmsta
+          två-tre veckorna för de valda kurserna.
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:otherwise>
   </xsl:choose>
 </div>

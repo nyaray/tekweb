@@ -60,7 +60,7 @@ class LibTimeEdit
   // generate XML for displaying the calendar
   public static function generateView($name, $head)
   {
-    //echo "<!--\n";
+    echo "<!--\n";
     $objects =
       (isset($_COOKIE['timeeditobjects']) && $_COOKIE['timeeditobjects'] != '')?
       explode(',', $_COOKIE['timeeditobjects']): array();
@@ -73,21 +73,36 @@ class LibTimeEdit
       $objStr .= "&wv_obj$thisNum=$objects[$i]";
     }
 
-    $url = "http://schema.angstrom.uu.se/4DACTION/WebShowSearchPrint/2/1?".
+    $url = "http://scchema.angstrom.uu.se/4DACTION/WebShowSearchPrint/2/1?".
       "wv_text=text&$objStr";
     //echo "---$url---\n";
-    $timeeditHTML = getRemoteFile($url);
-    $calXML = self::transform($timeeditHTML, MODULE_DIR.'timeedit/calendar.xsl');
-    $calDoc = new DOMDocument();
-    $calDoc->loadXML($calXML);
+    $timeeditHTML = @getRemoteFile($url);
+    $viewXML = '';
 
-    // augment DOM Document
-    self::augmentViewDOM($calDoc, $name, $head);
+    if($timeeditHTML !== '')
+    {
+      $calXML = self::transform($timeeditHTML, MODULE_DIR.'timeedit/calendar.xsl');
+      $calDoc = new DOMDocument();
+      $calDoc->loadXML($calXML);
 
-    $viewXML = $calDoc->saveXML();
-    $viewXML = str_replace('<?xml version="1.0"?'.'>', '', $viewXML);
+      // augment DOM Document
+      self::augmentViewDOM($calDoc, $name, $head);
 
-    //echo "-->\n";
+      $viewXML = $calDoc->saveXML();
+      $viewXML = str_replace('<?xml version="1.0"?'.'>', '', $viewXML);
+    }
+    else
+    {
+      $viewXML = <<< XML
+<calendar>
+  <error>
+    Det uppstod ett fel, försök gärna igen om en liten stund.
+  </error>
+</calendar>
+XML;
+    }
+
+    echo "-->\n";
     return $viewXML;
   }
 
