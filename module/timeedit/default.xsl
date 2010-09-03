@@ -15,6 +15,11 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 </section>
 </xsl:template>
 
+<!-- pass the error through -->
+<xsl:template match="calendar/error">
+  <xsl:copy-of select="." />
+</xsl:template>
+
 <!-- a link to the configuration page -->
 <xsl:template match="calendar/conf">
 <conf>

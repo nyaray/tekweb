@@ -23,7 +23,7 @@ class LibTimeEdit
   // generate XML for the config/search form
   public static function generateSearch($name, $head)
   {
-    //echo "<!--\n";
+    echo "<!--\n";
 
     // get the timeedit arguments
     $wvArgs = self::filterGETParams();
@@ -39,19 +39,33 @@ class LibTimeEdit
     $wvStr = http_build_query($wvArgs, '', '&');
     $url = "http://schema.angstrom.uu.se/4DACTION/WebShowSearch/2/1?$wvStr";
     //echo "---$url---\n";
-    $timeeditHTML = getRemoteFile($url);
+    $timeeditHTML = @getRemoteFile($url);
+    $configXML = '';
 
-    $searchXML = self::transform($timeeditHTML, MODULE_DIR.'timeedit/search.xsl');
-    $searchDoc = new DOMDocument();
-    $searchDoc->loadXML($searchXML);
+    if($timeeditHTML !== '')
+    {
+      $searchXML = self::transform($timeeditHTML, MODULE_DIR.'timeedit/search.xsl');
+      $searchDoc = new DOMDocument();
+      $searchDoc->loadXML($searchXML);
 
-    // augment DOM document
-    self::augmentSearchDOM($searchDoc, $name, $head);
+      // augment DOM document
+      self::augmentSearchDOM($searchDoc, $name, $head);
 
-    $configXML = $searchDoc->saveXML();
-    $configXML = str_replace('<?xml version="1.0"?'.'>', '', $configXML);
+      $configXML = $searchDoc->saveXML();
+      $configXML = str_replace('<?xml version="1.0"?'.'>', '', $configXML);
+    }
+    else
+    {
+      $configXML = <<< XML
+<calendar>
+  <error>
+    Det uppstod ett fel, försök gärna igen om en liten stund.
+  </error>
+</calendar>
+XML;
+    }
 
-    //echo "-->\n";
+    echo "-->\n";
     return $configXML;
   }
 
@@ -73,7 +87,7 @@ class LibTimeEdit
       $objStr .= "&wv_obj$thisNum=$objects[$i]";
     }
 
-    $url = "http://scchema.angstrom.uu.se/4DACTION/WebShowSearchPrint/2/1?".
+    $url = "http://schema.angstrom.uu.se/4DACTION/WebShowSearchPrint/2/1?".
       "wv_text=text&$objStr";
     //echo "---$url---\n";
     $timeeditHTML = @getRemoteFile($url);

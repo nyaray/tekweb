@@ -43,14 +43,14 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template match="ajax/timeedit">
 <div>
+  <xsl:attribute name="class">togglercontentbody</xsl:attribute>
+
   <xsl:choose>
     <xsl:when test="error">
-      <xsl:attribute name="class">togglercontentbody</xsl:attribute>
       <span class="error"><xsl:value-of select="error" /></span>
     </xsl:when>
 
     <xsl:otherwise>
-      <xsl:attribute name="class">togglercontentbody</xsl:attribute>
       <!-- Head -->
       <xsl:if test="head">
         <h1><xsl:value-of select="head" /></h1>
@@ -77,28 +77,35 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template match="timeedit/view" mode="section">
 <div>
-  <xsl:attribute name="id"><xsl:value-of select="name" /></xsl:attribute>
-  <xsl:attribute name="class">section</xsl:attribute>
-
-  <!-- Head -->
-  <xsl:if test="head">
-    <h1><xsl:value-of select="head" /></h1>
-  </xsl:if>
-
-  <!-- Config link -->
-  <xsl:copy-of select="conf/*" />
-
-  <!-- Events -->
   <xsl:choose>
-    <xsl:when test="events">
-      <xsl:apply-templates select="events" />
+    <xsl:when test="error">
+      <span class="error"><xsl:value-of select="error" /></span>
     </xsl:when>
 
     <xsl:otherwise>
-      Det finns inget schemalagt inom de närmsta
-      två-tre veckorna för de valda kurserna.
-    </xsl:otherwise>
-  </xsl:choose>
+      <xsl:attribute name="id"><xsl:value-of select="name" /></xsl:attribute>
+      <xsl:attribute name="class">section</xsl:attribute>
+
+      <!-- Head -->
+      <xsl:if test="head">
+        <h1><xsl:value-of select="head" /></h1>
+      </xsl:if>
+
+      <!-- Config link -->
+      <xsl:copy-of select="conf/*" />
+
+      <!-- Events -->
+      <xsl:choose>
+        <xsl:when test="events">
+          <xsl:apply-templates select="events" />
+        </xsl:when>
+
+        <xsl:otherwise>
+          Det finns inget schemalagt inom de närmsta
+          två-tre veckorna för de valda kurserna.
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:template>
 </div>
 </xsl:template>
 
