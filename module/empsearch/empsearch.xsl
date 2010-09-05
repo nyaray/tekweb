@@ -79,7 +79,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
             </xsl:attribute>
             <fieldset>
                 <legend>
-                <xsl:value-of select="../head"/>
+                    <xsl:value-of select="../head"/>
                 </legend>
                 <label>
                     <xsl:attribute name="for">
@@ -229,57 +229,97 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
                                 </a>
                             </li>
                         </xsl:if>
-                        <xsl:if test="phonenumber">
-                            <li class="phonenumber">
-                                <a>
-                                    <xsl:attribute name="href">
-                                        <xsl:text>tel:0</xsl:text>
-                                        <xsl:value-of select="substring(phonenumber, 4)"/>
-                                    </xsl:attribute>
-                                    <b>
-                                        <xsl:text>TEL: </xsl:text>
-                                    </b>
-                                    <xsl:text>0</xsl:text>
-                                    <xsl:value-of select="substring(phonenumber, 4, 2)"/>
-                                    <xsl:text>&#160;</xsl:text>
-                                    <xsl:value-of select="substring(phonenumber, 6, 3)"/>
-                                    <xsl:text>&#160;</xsl:text>
-                                    <xsl:value-of select="substring(phonenumber, 9)"/>
-                                </a>
-                            </li>
-                        </xsl:if>
-                        <xsl:if test="mobilenumber">
-                            <li class="phonenumber">
-                                <a>
-                                    <xsl:attribute name="href">
-                                        <xsl:text>tel:0</xsl:text>
-                                        <xsl:value-of select="substring(mobilenumber, 4)"/>
-                                    </xsl:attribute>
-                                    <b>
-                                        <xsl:text>TEL: </xsl:text>
-                                    </b>
-                                    <xsl:text>0</xsl:text>
-                                    <xsl:value-of select="substring(mobilenumber, 4, 2)"/>
-                                    <xsl:text>&#160;</xsl:text>
-                                    <xsl:value-of select="substring(mobilenumber, 6, 3)"/>
-                                    <xsl:text>&#160;</xsl:text>
-                                    <xsl:value-of select="substring(mobilenumber, 9)"/>
-                                </a>
-                            </li>
-                        </xsl:if>
-                        <xsl:if test="faxnumber">
+
+                        <xsl:for-each select="phonenumber">
+                            <xsl:choose>
+                                <xsl:when test="substring(.,1,3) = '+46'">
+                                    <li class="phonenumber">
+                                        <a>
+                                            <xsl:attribute name="href">
+                                                <xsl:text>tel:0</xsl:text>
+                                                <xsl:value-of select="substring(., 4)"/>
+                                            </xsl:attribute>
+                                            <b>
+                                                <xsl:text>TEL: </xsl:text>
+                                            </b>
+                                            <xsl:text>0</xsl:text>
+                                            <xsl:value-of select="substring(., 4, 2)"/>
+                                            <xsl:text>&#160;</xsl:text>
+                                            <xsl:value-of select="substring(., 6, 3)"/>
+                                            <xsl:text>&#160;</xsl:text>
+                                            <xsl:value-of select="substring(., 9)"/>
+                                        </a>
+                                    </li>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <li class="phonenumber">
+                                        <a>
+                                            <xsl:attribute name="href">
+                                                <xsl:text>tel:</xsl:text>
+                                                <xsl:value-of select="."/>
+                                            </xsl:attribute>
+                                            <b>
+                                                <xsl:text>TEL: </xsl:text>
+                                            </b>
+                                            <xsl:value-of select="."/>
+                                        </a>
+                                    </li>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:for-each>
+
+                        <xsl:for-each select="mobilenumber">
+                            <xsl:choose>
+                                <xsl:when test="substring(.,1,3) = '+46'">
+                                    <li class="phonenumber">
+                                        <a>
+                                            <xsl:attribute name="href">
+                                                <xsl:text>tel:0</xsl:text>
+                                                <xsl:value-of select="substring(., 4)"/>
+                                            </xsl:attribute>
+                                            <b>
+                                                <xsl:text>TEL: </xsl:text>
+                                            </b>
+                                            <xsl:text>0</xsl:text>
+                                            <xsl:value-of select="substring(., 4, 2)"/>
+                                            <xsl:text>&#160;</xsl:text>
+                                            <xsl:value-of select="substring(., 6, 3)"/>
+                                            <xsl:text>&#160;</xsl:text>
+                                            <xsl:value-of select="substring(., 9)"/>
+                                        </a>
+                                    </li>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <li class="phonenumber">
+                                        <a>
+                                            <xsl:attribute name="href">
+                                                <xsl:text>tel:</xsl:text>
+                                                <xsl:value-of select="."/>
+                                            </xsl:attribute>
+                                            <b>
+                                                <xsl:text>TEL: </xsl:text>
+                                            </b>
+                                            <xsl:value-of select="."/>
+                                        </a>
+                                    </li>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:for-each>
+
+                       <xsl:for-each select="faxnumber">
                             <li class="faxnumber">
                                 <b>
                                     <xsl:text>FAX: </xsl:text>
                                 </b>
                                 <xsl:text>0</xsl:text>
-                                <xsl:value-of select="substring(faxnumber, 4, 2)"/>
+                                <xsl:value-of select="substring(., 4, 2)"/>
                                 <xsl:text>&#160;</xsl:text>
-                                <xsl:value-of select="substring(faxnumber, 6, 3)"/>
+                                <xsl:value-of select="substring(., 6, 3)"/>
                                 <xsl:text>&#160;</xsl:text>
-                                <xsl:value-of select="substring(faxnumber, 9)"/>
+                                <xsl:value-of select="substring(., 9)"/>
                             </li>
-                        </xsl:if>
+                        </xsl:for-each>
+
                     </ul>
                 </li>
             </xsl:for-each>
