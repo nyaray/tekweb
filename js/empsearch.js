@@ -88,6 +88,10 @@ $(function() {
                     }
                     });
                 }
+                var winWidth = $(window).width();
+                //alert("WIN" + winWidth);
+                //-4 for borders set in css
+                $(".empsearchmodule .togglercontentbody").width(winWidth-24);
                 togglerBtn.trigger('click');
                 togglerBtn.trigger('click');
             });
