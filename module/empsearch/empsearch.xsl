@@ -256,7 +256,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
                                         <a>
                                             <xsl:attribute name="href">
                                                 <xsl:text>tel:</xsl:text>
-                                                <xsl:value-of select="."/>
+                                                <xsl:value-of select="translate(.,'-','')"/>
                                             </xsl:attribute>
                                             <b>
                                                 <xsl:text>TEL: </xsl:text>
@@ -294,7 +294,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
                                         <a>
                                             <xsl:attribute name="href">
                                                 <xsl:text>tel:</xsl:text>
-                                                <xsl:value-of select="."/>
+                                                <xsl:value-of select="translate(.,'-','')"/>
                                             </xsl:attribute>
                                             <b>
                                                 <xsl:text>TEL: </xsl:text>
