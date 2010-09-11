@@ -35,6 +35,7 @@
         </xsl:text>
         <html lang="se-SV">
             <head>
+                <meta name="keywords" content="Uppsala universitet, teknisk-naturvetenskapliga fakulteten, student, mobilwebb, schema, sök personal, sök student"/>
     <!-- <meta charset="UTF-8" /> -->
                 <link rel="stylesheet" type="text/css" href="css/reset.css" media="all" />
                 <link rel="stylesheet" type="text/css" href="css/module/statictext.css" media="all" />
@@ -52,8 +53,8 @@
                 <script type="text/javascript" src="js/main.js"></script>
                 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
                 <script type="text/javascript" src="js/empsearch.js"></script>
-				<script type="text/javascript" src="js/multifeed.js"></script>
-        <script type="text/javascript" src="js/timeedit.js"></script>
+                <script type="text/javascript" src="js/multifeed.js"></script>
+                <script type="text/javascript" src="js/timeedit.js"></script>
 
                 <meta name="viewport" content="width=device-width" />
                 <title>
