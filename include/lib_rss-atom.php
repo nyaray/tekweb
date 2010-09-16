@@ -228,7 +228,7 @@ class RssAtomReader {
   	$this->Universal_Doc  = new DOMDocument("1.0");
   	  $test = getRemoteFile($url);
     
-  	$this->Universal_Doc->loadXML($test);
+  	@$this->Universal_Doc->loadXML($test);
     //var_dump($this->Universal_Doc);
   	$this->Universal_Content = array();
 
